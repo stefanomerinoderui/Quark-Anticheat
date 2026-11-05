@@ -46,7 +46,7 @@ MODULE_VERSION("0.4.0");
 #define NETLINK_QUARK 31 // Custom netlink protocol number
 #define MAX_PROTECTED_PROCESSES 16
 #define QUARK_MAX_SIG_LEN 72 // max DER-encoded ECDSA P-256 signature size
-#define QUARK_MAX_EXE_SIZE (1 << 20) // 1MB cap on the exe file we'll hash
+#define QUARK_MAX_EXE_SIZE (1U << 20U) // 1MB cap on the exe file we'll hash
 
 // Wire format for commands 1 (protect) and 2 (unprotect): authenticated and
 // replay-protected, since either one changes real protection state for a PID.
@@ -78,6 +78,7 @@ struct quark_protect_response {
 // so it can't be spoofed by anything running in userspace.
 static bool quark_running_in_vm(void) {
 #ifdef CONFIG_X86_64
+  // NOLINTNEXTLINE(bugprone-signed-bitwise) kernel macro uses signed ops
   return boot_cpu_has(X86_FEATURE_HYPERVISOR);
 #else
   return false;
@@ -97,6 +98,7 @@ static int quark_sha256(const void *data, size_t len, u8 digest[32]) {
   if (IS_ERR(tfm))
     return PTR_ERR(tfm);
 
+  // NOLINTNEXTLINE(bugprone-signed-bitwise) kernel macro uses signed ops
   desc = kmalloc(sizeof(*desc) + crypto_shash_descsize(tfm), GFP_KERNEL);
   if (!desc) {
     crypto_free_shash(tfm);
@@ -186,6 +188,7 @@ static int quark_hash_file(struct file *file, u8 digest[32]) {
   if (size <= 0 || size > QUARK_MAX_EXE_SIZE)
     return -EFBIG;
 
+  // NOLINTNEXTLINE(bugprone-signed-bitwise) kernel macro uses signed ops
   buf = kvmalloc(size, GFP_KERNEL);
   if (!buf)
     return -ENOMEM;
@@ -217,6 +220,7 @@ static int quark_hash_file(struct file *file, u8 digest[32]) {
 static bool quark_check_sender(const struct sk_buff *skb) {
   struct scm_creds *creds = NETLINK_CREDS(skb);
   char path[32];
+  int path_len;
   struct file *exe_file;
   u8 digest[32];
   bool ok = false;
@@ -236,7 +240,13 @@ static bool quark_check_sender(const struct sk_buff *skb) {
   // /proc/<pid>/exe is already a magic symlink the kernel resolves straight to
   // the same file task->mm->exe_file points at -- no task_struct/mm_struct
   // walking needed.
-  snprintf(path, sizeof(path), "/proc/%u/exe", creds->pid);
+  path_len = snprintf(path, sizeof(path), "/proc/%u/exe", creds->pid);
+  if (path_len < 0 || (size_t)path_len >= sizeof(path)) {
+    pr_err("[QUARK-KERNEL] Rejecting netlink command: exe path for pid %u "
+           "does not fit the buffer\n",
+           creds->pid);
+    return false;
+  }
   exe_file = filp_open(path, O_RDONLY, 0);
 
   if (IS_ERR(exe_file)) {
@@ -356,6 +366,7 @@ static void quark_send_protect_response(u32 dest_pid, bool ok) {
 #endif
   strscpy(resp.version, QUARK_KERNEL_VERSION, sizeof(resp.version));
 
+  // NOLINTNEXTLINE(bugprone-signed-bitwise) kernel macro uses signed ops
   skb_out = nlmsg_new(msg_size, GFP_KERNEL);
   if (!skb_out) {
     pr_err("[QUARK-KERNEL] Failed to allocate response skb for pid %d\n",
@@ -476,6 +487,7 @@ static int ptrace_may_access_ret_handler(struct kretprobe_instance *ri,
     // a real attacker (e.g. Cheat Engine) polls, and the daemon's BPF telemetry
     // is the authoritative per-attempt record anyway (docs/features.md §1.6).
     if (target_pid != parent_pid && parent_pid != trusted_monitor_pid &&
+        // NOLINTNEXTLINE(bugprone-signed-bitwise) kernel macro, signed ops
         (call->mode & PTRACE_MODE_ATTACH)) {
       pr_warn_ratelimited(
           "[QUARK-KERNEL ALERT] Blocked memory access to protected process %d "
@@ -580,6 +592,9 @@ static void quark_nl_recv_msg(struct sk_buff *skb) {
     trusted_monitor_pid = req.pid;
     pr_info("[QUARK-KERNEL] Trusted monitor pid set to %d\n", req.pid);
     quark_send_protect_response(nlh->nlmsg_pid, true);
+    break;
+  default:
+    pr_warn("[QUARK-KERNEL] Ignoring unknown command %d\n", msg_type);
     break;
   }
 }
