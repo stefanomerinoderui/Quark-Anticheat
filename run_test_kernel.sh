@@ -26,8 +26,14 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Compiling Ring 0 Kernel Module..."
-make -C kernel > /dev/null
+echo "Compiling Ring 0 Kernel Module (testing build -- this test rig is itself a VM, so"
+echo "the VM-check bypass has to be compiled in for protection to work here at all;"
+echo "see run_test_kernel_release.sh for the test that the release build correctly"
+echo "refuses in exactly this situation)..."
+# Top-level target, not `make -C kernel testing` directly -- it also regenerates
+# kernel/quark_cli_hash.h from whatever quark_cli was just compiled above, which
+# quark_kernel.c needs for its sender exe-identity check.
+make kernel-testing > /dev/null
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error: Kernel module compilation failed! Are kernel headers installed?${NC}"
     exit 1
