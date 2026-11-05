@@ -29,6 +29,21 @@ kernel/quark_cli_hash.h
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+cheat/cheat
+game_target/game
+
+# Compilation database
+compile_commands.json
+
+# Linux kernel build artifacts
+kernel/.*
+kernel/*.ko
+kernel/*.o
+kernel/*.mod
+kernel/*.mod.c
+kernel/Module.symvers
+kernel/modules.order
+
 # Generated from the build host's kernel BTF (`make vmlinux`), consumed by
 # quark_daemon/src/bpf/quark.bpf.c -- ~160k lines, host-specific, not tracked.
 quark_daemon/src/bpf/vmlinux.h
