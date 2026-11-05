@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=BAR (Quark Protected)
+Comment=Beyond All Reason engine (RecoilEngine), patched with the Quark Anticheat SDK
+Exec=env SPRING_DATADIR=/home/quark/RecoilEngine/build:/home/quark/RecoilEngine/cont /home/quark/RecoilEngine/build/spring
+Path=/home/quark/RecoilEngine/build
+Icon=/home/quark/RecoilEngine/rts/RecoilEngine_Icon.svg
+Terminal=false
+Categories=Game;
