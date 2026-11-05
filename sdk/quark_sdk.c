@@ -86,9 +86,11 @@ static void *quark_watchdog_main(void *arg) {
         }
 
         int disconnected = 0;
-        if (ready > 0 && (pfd.revents & (POLLHUP | POLLERR | POLLNVAL))) {
+        const unsigned int revents = (unsigned int)pfd.revents;
+        const unsigned int hangup_mask = (unsigned int)POLLHUP | (unsigned int)POLLERR | (unsigned int)POLLNVAL;
+        if (ready > 0 && (revents & hangup_mask)) {
             disconnected = 1;
-        } else if (ready > 0 && (pfd.revents & POLLIN)) {
+        } else if (ready > 0 && (revents & (unsigned int)POLLIN)) {
             // The daemon never sends data to us (fire-and-forget protocol), so
             // the only thing that should ever make the socket readable is the
             // peer closing it. Peek to confirm EOF vs. genuinely unexpected data.
@@ -100,9 +102,9 @@ static void *quark_watchdog_main(void *arg) {
         }
 
         if (disconnected) {
-            fprintf(stderr, "[QUARK-SDK] FATAL: lost connection to the Quark Anticheat daemon. "
+            (void)fprintf(stderr, "[QUARK-SDK] FATAL: lost connection to the Quark Anticheat daemon. "
                              "Refusing to continue unsupervised.\n");
-            fflush(stderr);
+            (void)fflush(stderr);
             _exit(137);
         }
     }
@@ -130,7 +132,7 @@ int quark_sdk_init(void) {
 
     pid_t pid = getpid();
     if (send_packet(CMD_REGISTER_GAME, &pid, sizeof(pid_t)) != 0) {
-        fprintf(stderr, "[QUARK-SDK] Failed to send game registration\n");
+        (void)fprintf(stderr, "[QUARK-SDK] Failed to send game registration\n");
         close(quark_socket_fd);
         quark_socket_fd = -1;
         return -1;
@@ -145,7 +147,7 @@ int quark_sdk_init(void) {
     uint8_t ack[QUARK_REGISTER_ACK_SIZE];
     ssize_t n = read(quark_socket_fd, ack, sizeof(ack));
     if (n != (ssize_t)sizeof(ack) || ack[0] != 1) {
-        fprintf(stderr, "[QUARK-SDK] FATAL: kernel-level protection was not confirmed "
+        (void)fprintf(stderr, "[QUARK-SDK] FATAL: kernel-level protection was not confirmed "
                          "(daemon is reachable, but Ring 0 registration failed -- is "
                          "quark_kernel.ko loaded, or refused because this looks like a VM?). "
                          "Refusing to continue unprotected.\n");
@@ -160,12 +162,12 @@ int quark_sdk_init(void) {
     quark_bpf_lsm_active = ack[18] ? 1 : 0;
 
     if (quark_is_testing_build) {
-        fprintf(stderr, "[QUARK-SDK] WARNING: kernel module reports this is a TESTING "
+        (void)fprintf(stderr, "[QUARK-SDK] WARNING: kernel module reports this is a TESTING "
                          "build (VM check bypassed) -- not a substitute for real protection.\n");
     }
 
     if (!quark_bpf_lsm_active) {
-        fprintf(stderr, "[QUARK-SDK] WARNING: BPF-LSM hooks are not active for this process "
+        (void)fprintf(stderr, "[QUARK-SDK] WARNING: BPF-LSM hooks are not active for this process "
                          "(no gate on BPF tracing programs, no telemetry) -- kretprobe "
                          "protection only.\n");
     }
@@ -203,7 +205,7 @@ int quark_sdk_register_var(void *address, uint32_t size, const char *name) {
     }
 
     if (send_packet(CMD_REGISTER_VAR, payload, 44) != 0) {
-        fprintf(stderr, "[QUARK-SDK] Failed to register variable '%s'\n", name ? name : "unknown");
+        (void)fprintf(stderr, "[QUARK-SDK] Failed to register variable '%s'\n", name ? name : "unknown");
         return -1;
     }
 
@@ -222,7 +224,7 @@ int quark_sdk_update_var(void *address, uint64_t new_value) {
     memcpy(&payload[8], &new_value, 8);
 
     if (send_packet(CMD_UPDATE_VAR, payload, 16) != 0) {
-        fprintf(stderr, "[QUARK-SDK] Failed to send update for variable at %p\n", address);
+        (void)fprintf(stderr, "[QUARK-SDK] Failed to send update for variable at %p\n", address);
         return -1;
     }
 

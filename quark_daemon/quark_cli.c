@@ -1,3 +1,5 @@
+#include <errno.h>
+#include <limits.h>
 #include <linux/netlink.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
@@ -71,10 +73,10 @@ static int quark_sign_request(uint8_t command, int32_t pid, uint64_t nonce,
     return -1;
   }
   pkey = PEM_read_PrivateKey(fp, NULL, NULL, NULL);
-  fclose(fp);
+  (void)fclose(fp);
   if (!pkey) {
-    fprintf(stderr, "[QUARK-CLI] Failed to parse signing key: %s\n",
-            ERR_reason_error_string(ERR_get_error()));
+    (void)fprintf(stderr, "[QUARK-CLI] Failed to parse signing key: %s\n",
+                  ERR_reason_error_string(ERR_get_error()));
     return -1;
   }
 
@@ -91,8 +93,8 @@ static int quark_sign_request(uint8_t command, int32_t pid, uint64_t nonce,
     req->sig_len = (uint16_t)sig_len;
     ret = 0;
   } else {
-    fprintf(stderr, "[QUARK-CLI] Signing failed: %s\n",
-            ERR_reason_error_string(ERR_get_error()));
+    (void)fprintf(stderr, "[QUARK-CLI] Signing failed: %s\n",
+                  ERR_reason_error_string(ERR_get_error()));
   }
 
   EVP_MD_CTX_free(mdctx);
@@ -100,21 +102,43 @@ static int quark_sign_request(uint8_t command, int32_t pid, uint64_t nonce,
   return ret;
 }
 
+// Parses a base-10 int from `text`, rejecting empty input, trailing junk and
+// out-of-range values (unlike atoi, which silently returns 0 on bad input).
+// Returns 0 on success and stores the result in *out, -1 otherwise.
+static int parse_int(const char *text, int *out) {
+  char *end = NULL;
+  errno = 0;
+  long value = strtol(text, &end, 10);
+  if (errno != 0 || end == text || *end != '\0' || value < INT_MIN ||
+      value > INT_MAX) {
+    return -1;
+  }
+  *out = (int)value;
+  return 0;
+}
+
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    fprintf(
+    (void)fprintf(
         stderr,
         "Usage: %s <1=protect/2=unprotect/3=register-trusted-monitor> <pid>\n",
         argv[0]);
     return 1;
   }
 
-  int command = atoi(argv[1]);
-  int target_pid = atoi(argv[2]);
+  int command = 0;
+  int target_pid = 0;
+  if (parse_int(argv[1], &command) != 0 ||
+      parse_int(argv[2], &target_pid) != 0) {
+    (void)fprintf(stderr,
+                  "Invalid arguments: command and pid must be integers.\n");
+    return 1;
+  }
 
   if (command != 1 && command != 2 && command != 3) {
-    fprintf(stderr, "Invalid command. Use 1 for protect, 2 for unprotect, 3 to "
-                    "register a trusted monitor pid.\n");
+    (void)fprintf(stderr,
+                  "Invalid command. Use 1 for protect, 2 for unprotect, 3 to "
+                  "register a trusted monitor pid.\n");
     return 1;
   }
 
@@ -159,7 +183,7 @@ int main(int argc, char *argv[]) {
   req.nonce = nonce;
 
   if (quark_sign_request((uint8_t)command, target_pid, nonce, &req) != 0) {
-    fprintf(
+    (void)fprintf(
         stderr,
         "[QUARK-CLI] Failed to sign request; refusing to send it unsigned.\n");
     close(sock_fd);
@@ -169,7 +193,7 @@ int main(int argc, char *argv[]) {
   // Allocate space for netlink message header + signed request payload
   struct nlmsghdr *nlh = (struct nlmsghdr *)malloc(NLMSG_SPACE(sizeof(req)));
   if (!nlh) {
-    fprintf(stderr, "[QUARK-CLI] Out of memory\n");
+    (void)fprintf(stderr, "[QUARK-CLI] Out of memory\n");
     close(sock_fd);
     return 1;
   }
@@ -220,7 +244,7 @@ int main(int argc, char *argv[]) {
   if (n < (ssize_t)NLMSG_SPACE(sizeof(struct quark_protect_response)) ||
       resp_nlh->nlmsg_len <
           NLMSG_LENGTH(sizeof(struct quark_protect_response))) {
-    fprintf(stderr, "[QUARK-CLI] Malformed response from kernel\n");
+    (void)fprintf(stderr, "[QUARK-CLI] Malformed response from kernel\n");
     return 1;
   }
 
