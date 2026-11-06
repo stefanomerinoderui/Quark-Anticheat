@@ -24,6 +24,8 @@ Acceso: `ssh quark` (usuario `quark`) y `ssh quark-root` (root).
 
 ## Quark Anticheat
 
+Instalado en `/opt/quark-anticheat` con `tooling/install.sh` (compilar antes con `make daemon && make kernel-testing`). El script avisa si BPF-LSM no está activo; en esta VM sí lo está (`bpf` figura en `/sys/kernel/security/lsm`). La clave de firma de pruebas existe solo en la VM; no copiar de vuelta `kernel/quark_pubkey.h` al repo.
+
 - Ruta: `~/Projects/Quark-Anticheat` (copia sincronizada desde el host con `rsync`, sin `target/`, `*.ko` ni `*.o`).
 - Userspace: `make` compila el demonio, el cliente, el juego de prueba y el cheat.
 - Módulo de kernel: `make -C kernel` (el Makefile añade `LLVM=1` si el kernel fue compilado con clang). Se compila en la VM, nunca se copia un `.ko` del host, porque el kernel del host es distinto.
