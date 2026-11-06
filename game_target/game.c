@@ -48,6 +48,16 @@ int main(void) {
            version, quark_sdk_is_testing_build(),
            quark_sdk_is_bpf_lsm_active());
 
+    // Without BPF-LSM the enforcement hooks are missing and a cheater controls
+    // the boot parameters on their own machine, so refuse to run.
+    if (!quark_sdk_is_bpf_lsm_active()) {
+      (void)fprintf(stderr,
+                    "[GAME] FATAL: BPF-LSM is not active on this system. "
+                    "Refusing to run without full Quark protection.\n");
+      quark_sdk_close();
+      return 1;
+    }
+
     // 3. Register target variables
     quark_sdk_register_var(&health, sizeof(health), "health");
     quark_sdk_register_var(&score, sizeof(score), "score");

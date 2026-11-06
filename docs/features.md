@@ -257,7 +257,8 @@ the SDK copy in the RecoilEngine submodule is synced from `sdk/`.
 - **End-to-end client↔server test**: current validation (`docs/vm_test_environment.md`)
   covers a single protected process against local attack tools; a real two-instance
   client/server game connection hasn't been tested yet.
-- **Engine policy for `bpf_lsm_active`**: the SDK exposes it (§3), but the RecoilEngine
+- **Engine policy for `bpf_lsm_active`**: the SDK exposes it (§3). The mock game
+  (`game_target/game.c`) now refuses to run when it is `0`, but the RecoilEngine
   integration still only checks `quark_sdk_is_active()` when deciding whether a
   protected match can start.
 - **`process_vm_readv`/`writev`**: answered by reading the code rather than a new hook.
