@@ -37,33 +37,36 @@ int main(void) {
 
   // 2. Initialize Quark SDK
   printf("[GAME] Connecting to Quark Anticheat...\n");
+  // Fails if the daemon isn't running or if it couldn't confirm Ring 0
+  // protection for this process. Never run unprotected.
   if (quark_sdk_init() == -1) {
-    printf("[GAME] WARNING: Quark Anticheat Daemon not detected. Running "
-           "without protection.\n");
-  } else {
-    char version[32];
-    quark_sdk_get_version(version, sizeof(version));
-    printf("[GAME] Quark kernel version: %s (testing build: %d, BPF-LSM "
-           "hooks: %d)\n",
-           version, quark_sdk_is_testing_build(),
-           quark_sdk_is_bpf_lsm_active());
-
-    // Without BPF-LSM the enforcement hooks are missing and a cheater controls
-    // the boot parameters on their own machine, so refuse to run.
-    if (!quark_sdk_is_bpf_lsm_active()) {
-      (void)fprintf(stderr,
-                    "[GAME] FATAL: BPF-LSM is not active on this system. "
-                    "Refusing to run without full Quark protection.\n");
-      quark_sdk_close();
-      return 1;
-    }
-
-    // 3. Register target variables
-    quark_sdk_register_var(&health, sizeof(health), "health");
-    quark_sdk_register_var(&score, sizeof(score), "score");
-    printf(
-        "[GAME] Monitored variables registered with Quark Anticheat Daemon.\n");
+    (void)fprintf(stderr,
+                  "[GAME] FATAL: Quark Anticheat protection could not be "
+                  "established (is the Quark daemon running?). Refusing to "
+                  "run unprotected.\n");
+    return 1;
   }
+
+  char version[32];
+  quark_sdk_get_version(version, sizeof(version));
+  printf("[GAME] Quark kernel version: %s (testing build: %d, BPF-LSM "
+         "hooks: %d)\n",
+         version, quark_sdk_is_testing_build(), quark_sdk_is_bpf_lsm_active());
+
+  // Without BPF-LSM the enforcement hooks are missing and a cheater controls
+  // the boot parameters on their own machine, so refuse to run.
+  if (!quark_sdk_is_bpf_lsm_active()) {
+    (void)fprintf(stderr, "[GAME] FATAL: BPF-LSM is not active on this system. "
+                          "Refusing to run without full Quark protection.\n");
+    quark_sdk_close();
+    return 1;
+  }
+
+  // 3. Register target variables
+  quark_sdk_register_var(&health, sizeof(health), "health");
+  quark_sdk_register_var(&score, sizeof(score), "score");
+  printf(
+      "[GAME] Monitored variables registered with Quark Anticheat Daemon.\n");
 
   print_status();
 
