@@ -6,7 +6,7 @@
 # anything built here is a straight `scp` away from running there, and none of the
 # compilation eats the VM's own limited CPU/RAM.
 #
-# See ../../docs/vm_test_environment.md section 6 for how this was derived and used.
+# See ../../docs/obsidian-vault/quark-vault/03-Testing/VM-test-environment.md section 6 for how this was derived and used.
 
 FROM fedora:44
 
