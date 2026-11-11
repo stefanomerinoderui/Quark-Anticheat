@@ -53,3 +53,8 @@ Proyecto desarrollado como Proyecto Integrador Final (PIF) en la carrera de Inge
 
 ## Update 2026-11-11 — agent:claude
 Snapshot del README **local sin commitear**. El README de `origin/Dev` es la versión aspiracional anterior (Rust, LSM, `/userspace`, `/tests` que no existen). Ver [[Contexto-del-proyecto]] Update 2026-11-11.
+
+
+## Update 2026-11-11 — agent:claude — README reescrito contra Dev
+- **REPLACES** — todo el contenido de arriba (snapshot del README local sin commitear) → el `README.md` de `dev/docs` se reescribió contra `origin/Dev@35c6031`: kretprobe + BPF-LSM/telemetría eBPF, canal firmado ECDSA, dependencias reales (`libbpf-rs`, `bpftool`, `libcrypto`, `lsm=bpf`), targets `kernel` / `kernel-testing` / `lint`, estructura actual del repo y limitaciones. Cada afirmación se verificó contra `Makefile`, `Cargo.toml`, `quark_kernel.c` (v0.4.0), `sdk/quark_sdk.h` y las unidades systemd.
+- **ADDED** — Cierra el riesgo R12 de [[Risk-Register]] («Documentación contradice al código»), salvo que el README de `Dev` siga siendo el viejo hasta mergear este PR.
