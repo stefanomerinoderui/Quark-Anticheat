@@ -57,3 +57,13 @@ Regla de lectura: **la última entrada sobre un tema gana.** Para saber el estad
 - Limitación: el chequeo no puede juzgar si un `REPLACES` es verdadero; eso lo revisa la otra persona.
 
 Ver también: [[Working-Guidelines]], [[Vault-Guide]].
+
+## Update 2026-11-14 — agent:claude-sonnet-5-5 — append-only pasa a aplicarse solo a la zona de evidencia
+Decisión de Gabriel (2026-11-14): git ya aporta versionado, autoría y trazabilidad, y acumular `## Update` en notas de referencia dejaba textos contradictorios (el informe todavía afirmaba «Rust» y «LSM» en el cuerpo y lo corregía 600 líneas después). Este Update se agrega bajo la regla vigente y la reemplaza en el alcance que indica.
+
+- **REPLACES** — «**solo se agrega texto; nunca se edita ni se borra lo ya escrito.** … Aplica por igual a personas y a agentes» (regla única) → la regla se aplica **solo a la zona de evidencia**: `03-Testing/Capture-findings-2026-08-29.md`, `03-Testing/Claims-Ledger.md`, `03-Testing/Test-Status.md`, `06-Cycles/Cycle-Log.md`, `05-Meta/Process-Recommendation.md` (ADR), esta nota y `05-Meta/Working-Guidelines.md`. La lista vive en `EVIDENCE` de `tooling/check_append_only.py`; los ADR y actas nuevas se agregan a ella al crearse.
+- **REPLACES** — «Referencia viva … Se agrega al final un bloque `## Update`» (§1) → las notas de referencia (Features, Known-Limitations, Architecture-Overview, Risk-Register, Roadmap, Contexto, README-del-repo, Funcionamiento-del-codigo, Log-messages, VM-test-environment, Test-Procedure-Cheatsheet, `docs/literatura/`) y el informe entregable **se editan en el lugar**. El historial es `git log`.
+- **ADDED** — Condiciones de la edición libre: (a) mensaje de commit que diga qué cambió y por qué; (b) prohibido reescribir historia publicada (sin `--force`, sin `amend` de commits ya subidos); (c) lo no verificado sigue marcado `UNVERIFIED` y toda afirmación técnica conserva su fuente; (d) una edición que cambie el sentido de una afirmación ya citada en el informe se refleja en [[Claims-Ledger]] con un `## Update`.
+- **ADDED** — `Informe-PIF-Avance.md` queda como instantánea de mayo (`status: snapshot`) más el Update del 2026-11-13; el entregable editable se construye aparte (ver `AGENTS.md`).
+- **ADDED** — `tooling/check_append_only.py` verifica solo la zona de evidencia. El hook `.githooks/pre-commit` sigue sin activarse por defecto (`git config core.hooksPath .githooks`).
+- Siguen vigentes las §3.2–3.7 y la §2 (formato de deltas) para la zona de evidencia.

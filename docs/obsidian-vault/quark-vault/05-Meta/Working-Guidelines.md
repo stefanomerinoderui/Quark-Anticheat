@@ -63,3 +63,7 @@ Máximo **un ciclo abierto** a la vez. Regla WIP del Kanban: ≤2 tarjetas *Doin
 
 ## 6. Definición de "hecho" para una afirmación
 Una afirmación está lista para el informe cuando: (a) tiene fila en [[Claims-Ledger]]; (b) su evidencia se puede reproducir con comandos escritos; (c) su alcance (VM, build *testing*, mock vs. motor real) está dicho en la misma frase.
+
+## Update 2026-11-14 — agent:claude-sonnet-5-5 — alinear con el nuevo alcance de append-only
+- **REPLACES** — «No usar `Write` sobre archivos existentes del vault; solo apéndices.» y «Correr `python3 tooling/check_append_only.py` antes de dar por terminado» (§4) → solo la zona de evidencia es append-only ([[Append-Only-Standard]] Update 2026-11-14); el resto del vault y el informe entregable se editan en el lugar. En esa zona el chequeo se corre con `python tooling/check_append_only.py --worktree` (en este entorno `python3` es un alias de la Store que no ejecuta).
+- **ADDED** — Requisito de entrega (Reglamento RR-97/23, Art. 22 y 24; cátedra, 2026-11-14): **todos** los capítulos I–XIII, Conclusiones, Bibliografía y Anexos deben estar desarrollados; los placeholders no cuentan. Detalle en `AGENTS.md`. El plan de cierre de §3 queda subordinado a este requisito.

@@ -6,7 +6,7 @@ Usage:
     python3 tooling/check_append_only.py --worktree # working tree vs HEAD
     python3 tooling/check_append_only.py --base REF # HEAD..worktree-free: REF vs HEAD (CI)
 
-Rules for tracked .md files under the vault (exempt: 04-Kanban/Board.md, Templates/, .obsidian/):
+Rules for the evidence notes listed in EVIDENCE below (all other vault notes are editable):
   * no line may be removed or changed, except frontmatter keys status/superseded-by/updated;
   * insertions are allowed only at end of file;
   * deletions and non-100% renames are rejected. New files are always fine.
@@ -15,17 +15,20 @@ Exit 0 = ok, 1 = violations. Standard library only.
 import argparse, re, subprocess, sys
 
 VAULT = 'docs/obsidian-vault/quark-vault/'
-EXEMPT_PREFIX = (VAULT + 'Templates/', VAULT + '.obsidian/')
-EXEMPT_FILES = {VAULT + '04-Kanban/Board.md'}
 FM_KEYS = ('status:', 'superseded-by:', 'updated:')
 HUNK = re.compile(r'^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@')
 
 def git(*a):
     return subprocess.run(['git', *a], capture_output=True, text=True, check=True).stdout
 
+# Zona de evidencia (desde 2026-11-14); el resto del vault es editable, git es su historial.
+EVIDENCE = {VAULT + p for p in (
+    '03-Testing/Capture-findings-2026-08-29.md', '03-Testing/Claims-Ledger.md',
+    '03-Testing/Test-Status.md', '06-Cycles/Cycle-Log.md', '05-Meta/Process-Recommendation.md',
+    '05-Meta/Append-Only-Standard.md', '05-Meta/Working-Guidelines.md')}
+
 def covered(path):
-    return (path.startswith(VAULT) and path.endswith('.md')
-            and path not in EXEMPT_FILES and not path.startswith(EXEMPT_PREFIX))
+    return path in EVIDENCE
 
 def fm_end(lines):
     """1-based index of the closing '---' of the frontmatter, or 0 if none."""
