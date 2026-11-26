@@ -791,7 +791,7 @@ Recomendación: solicitar clase 9 y evaluar la 42 con el tutor. Cada clase adici
 
 ## **8.3. Búsqueda de antecedentes en INPI**
 
-El autor realizó la búsqueda de la denominación **"quark"** en el buscador de marcas del Instituto Nacional de la Propiedad Industrial (INPI, Argentina) y aportó el listado de registros **no vencidos**. Se transcribe sin modificaciones de contenido; se omiten los datos de identificación fiscal de los titulares y los nombres de personas humanas, y se conserva el número de acta para trazabilidad.
+El autor realizó la búsqueda de las denominaciones **"quark"** y **"quark anticheat"** en el buscador de marcas del Instituto Nacional de la Propiedad Industrial (INPI, Argentina) y aportó el listado de registros **no vencidos** para "quark". La búsqueda de **"quark anticheat" no arrojó registros**; la denominación completa se mantiene como **"Quark Anticheat"**. Se transcribe sin modificaciones de contenido; se omiten los datos de identificación fiscal de los titulares y los nombres de personas humanas, y se conserva el número de acta para trazabilidad.
 
 **Tabla 8.1. Marcas "quark" no vencidas (búsqueda aportada por el autor, 2026-11-25)**
 
@@ -819,9 +819,9 @@ Los códigos de estado "C" y "NU" se transcriben como figuran en la fuente; su s
 - **Clase 9:** un registro mixto, QUARK TOP (acta 4596199, vigente hasta 2036). Es la clase de prioridad alta para Quark Anticheat.
 - **Clase 42:** un registro mixto, QUARK ENGINEERING Q (acta 3580141, vigente hasta 2028).
 - Las clases 35, 41 y 43 no son candidatas; los registros allí listados no se analizan.
-- Ningún registro de la lista contiene el término "anticheat". La denominación completa "Quark Anticheat" agrega un elemento distintivo respecto de los registros listados, pero si esa diferencia alcanza para descartar confusión **no se determinó**: es una valoración del examinador del INPI y, en su caso, de un profesional de propiedad intelectual (**UNVERIFIED**; no es asesoramiento legal).
+- La denominación completa "Quark Anticheat" no tiene registros no vencidos idénticos (búsqueda de "quark anticheat" sin resultados) y ningún registro de la lista contiene el término "anticheat". Los registros de "Quark" en las clases 9 y 42 son antecedentes del primer término; si la diferencia alcanza para descartar confusión **no se determinó**: es una valoración del examinador del INPI y, en su caso, de un profesional de propiedad intelectual (**UNVERIFIED**; no es asesoramiento legal).
 
-**Alcance y límites de la búsqueda.** Se buscó solo "quark". No se buscaron "anticheat", la denominación completa, variantes fonéticas ni clases conexas, y no hay captura de pantalla con fecha y hora en el vault. Esas tareas quedan pendientes de una persona (ver Tabla 8.2). La ausencia de esos pasos limita cualquier conclusión sobre la registrabilidad.
+**Alcance y límites de la búsqueda.** Se buscó "quark" y "quark anticheat". No se buscaron "anticheat" solo, variantes fonéticas ni clases conexas, y no hay captura de pantalla con fecha y hora en el vault. Esas tareas quedan pendientes de una persona (ver Tabla 8.2). La ausencia de esos pasos limita cualquier conclusión sobre la registrabilidad.
 
 **Procedimiento de repetición** (sujeto a verificación en el sitio oficial; **UNVERIFIED** en pasos y nombres de pantallas):
 
@@ -836,7 +836,7 @@ Los códigos de estado "C" y "NU" se transcriben como figuran en la fuente; su s
 | Término | Clases | Estado | Captura |
 |---|---|---|---|
 | quark | todas | realizada (resultado en Tabla 8.1) | pendiente |
-| Quark Anticheat | 9, 42 | pendiente | pendiente |
+| quark anticheat | todas | realizada: sin registros | pendiente |
 | anticheat | 9, 42 | pendiente | pendiente |
 | variantes fonéticas | 9, 42 | pendiente | pendiente |
 
@@ -882,7 +882,7 @@ Los programas que interactúan por terminal pueden mostrar al iniciar un aviso b
 
 ## **8.6. Limitaciones**
 
-No se consultó a un profesional de propiedad intelectual. Los datos legales, plazos y costos no se verificaron. El logo no existe. La búsqueda INPI se limitó al término "quark" y sin captura.
+No se consultó a un profesional de propiedad intelectual. Los datos legales, plazos y costos no se verificaron. El logo no existe. La búsqueda INPI cubrió "quark" y "quark anticheat" y no tiene captura.
 
 # **CAPÍTULO IX — DISEÑO DE LA SOLUCIÓN**
 
