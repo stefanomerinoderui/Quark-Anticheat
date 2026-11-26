@@ -54,16 +54,7 @@ ZA/DM
 
 — Formulario N*2: Autorización para
 
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 5)
-
-RESOLUCIÓN N*97/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
-
-## ANEXOI
+## ANEXO I
 
 ## REGLAMENTO GENERAL DEL PROYECTO INTEGRADOR FINAL DE LA CARRERA INGENIERÍA EN SISTEMAS DE INFORMACIÓN
 
@@ -117,17 +108,6 @@ ser compartido por varios estudiantes, distribuyéndose en forma clara y expresa
 
 y responsabilidades de cada uno.
 
-actividades
-
-avalle 50, Corrientes. Argentina (3400) + Tel:
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACION DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (3)
-
-## CORRIENTES, 11 DE MAYO DE 2023 RESOLUCIÓN N*97/2023
-
 ## Estructura Funcionamiento de la Actividad Curricular y
 
 Artículo El PIF se llevará adelante en la cátedra Proyecto Final de Grado de la carrera de Ingeniería en Sistemas de Información, realizado con la orientación del docente responsable de la asignatura y el equipo de cátedra. El profesor, junto al equipo de gestión, podrá solicitar el apoyo de docentes disciplinares de la Universidad de la Cuenca del Plata expertos, en caso de que la temática abordada por el estudiante así lo requiera.
@@ -143,13 +123,6 @@ Artículo El PIF se llevará adelante en la cátedra Proyecto Final de Grado de 
 - 8.2. El equipo docente tendrá las siguientes funciones específicas:
 
 - 8.2.1. Recepcionar la propuesta de los temas de Proyecto Final presentados por los estudiantes, para su evaluación. Será responsable de controlar que se cumplan los requisitos formales y académicos para la presentación del tema y del grupo de trabajo.
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 6)
-
-## CORRIENTES, 11 DE MAYO DE 2023 RESOLUCIÓN N*97/2023
 
 Llevará registro de las presentaciones, evaluaciones y seguimiento del proceso de aceptación o rechazo del tema propuesto.
 
@@ -168,13 +141,6 @@ Artículo 9*.- En los casos que se requieran, el equipo de gestión, podrá conv
 - 9.1. El equipo docente de la asignatura y el /los expertos orientará a cada estudiante en un mismo momento y espacio (el cual podrá ser físico o virtual), en el ámbito de la Universidad de la Cuenca del Plata.
 
 - 9.2. Cada vez que un docente disciplinar experto de la Universidad de la Cuenca del Plata participe en el apoyo de un estudiante que se encuentre desarrollando su PIF, deberá completar el Formulario N*1 que se adjunta a la presente como Anexo II de la presente Disposición.
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 €)
-
-## CORRIENTES, 11 DE MAYO DE 2023 RESOLUCIÓN N*97/2023
 
 - 9.3. Al docente disciplinar experto que haya participado, en más de cinco (5) instancias de apoyo disciplinar de un estudiante durante todo el proceso de elaboración de PIF, se certificará a través de una Disposición de Decanato la Dirección del PIF correspondiente.
 
@@ -204,15 +170,6 @@ para régimen de la asignatura, habilitándolo a la defensa oral del Proyecto an
 
 ias de evaluación establecida:
 
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06
-
-## RESOLUCIÓN N*97/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
-
 ## Exposición y defensa oral del Proyecto Integrador Final
 
 Artículo 129.- Para acceder a la defensa oral del PIF ante tribunal constituido a tal fin, el estudiante deberá tener aprobadas el resto de las asignaturas del Plan de Estudios de la Carrera, y regular la asignatura Proyecto Final de Grado.
@@ -232,15 +189,6 @@ Artículo 169.- El acto de la Defensa del PIF será público. La duración estip
 Artículo El tribunal tendrá a su cargo la evaluación de la defensa oral del PIF, que estará conformado los docentes de la asignatura Proyecto Final de Grado, donde se por desarrolló el Proyecto y dos profesores de la carrera vinculados con la temática del PIF. El tribunal será convocado la Dirección de Carrera designado por Disposición de la por y Facultad de Ingeniería y Tecnología.
 
 Artículo Una vez finalizada la defensa oral por parte del estudiante, el tribunal evaluador emitirá la calificación registrándola en el acta volante y/o registros definidos por Resolución Rectoral.
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACION DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 €5)
-
-## RESOLUCIÓN N*97/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
 
 - 18.1. El criterio general para la asignación de la calificación de la defensa oral, por parte del tribunal, deberá considerar todo el proceso llevado a cabo por el estudiante hasta su defensa oral. Para la asignación de la calificación se tendrán en cuenta los siguientes criterios generales de evaluación:
 
@@ -267,13 +215,6 @@ CORRIENTES, 11 DE MAYO DE 2023
 - 18.3. La defensa oral del PIF, ante el Tribunal, constituye la instancia final para la obtención del título de grado, por parte del estudiante.
 
 - Artículo 19%.- Una vez concluida la instancia de la defensa oral del PIF, el estudiante entregará un ejemplar de su trabajo en soporte digital para que sea archivado en la Biblioteca de la Universidad. La Dirección de Carrera será la responsable de solicitar al estudiante la
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 6)
-
-## CORRIENTES, 11 DE MAYO DE 2023 RESOLUCIÓN Ne97/2023
 
 autorización la publicación de su PIF, según se detalla en el Formulario de Aprobación para de PIF presentado como Anexo III. En caso de aceptar la publicación se enviará por correo electrónico la copia digitalizada a Biblioteca posterior a la Defensa Oral para ser archivado en un repositorio institucional creado a tal efecto.
 
@@ -303,13 +244,6 @@ Artículo 209.- El Proyecto escrito deberá cumplir con los siguientes aspectos 
 
 La entrega digital deberá incluir la documentación que constituye el PIF, además de todos los documentos digitales generados que correspondan al Sistema de Información, tales como código fuente, tablero de gestión del proyecto y demás datos digitales.
 
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
-
-## CORRIENTES, 11 DE MAYO DE 2023 RESOLUCIÓN N*97/2023
-
 Artículo 219.- El Proyecto en lo que respecta a su forma de redacción deberá cumplir con los siguientes requisitos:
 
 - e Deberá ser impersonal.
@@ -330,17 +264,17 @@ Ingeniería y Tecnología, Ingeniería en Sistemas de Información, el título d
 
 del/ los autor/es
 
-- 22.2. Resumen: un resumen de no más de 600 palabras, que refleje el contenido del trabajo.
+22.2. Resumen: un resumen de no más de 600 palabras, que refleje el contenido del trabajo.
 
-- 22.3. Índice: debe contener el índice de los Capítulos, Anexos, Tablas y Figuras.
+22.3. Índice: debe contener el índice de los Capítulos, Anexos, Tablas y Figuras.
 
-- 22.4. Cuerpo del Proyecto: se organizará en Capítulos.
+22.4. Cuerpo del Proyecto: se organizará en Capítulos.
 
 Cada uno de los Capítulos comenzará en una hoja aparte, se identificará con un número (en números romanos) y título, en mayúscula, centrados y en el centro de la hoja, constituyendo una carátula que inicia el capítulo. El texto del capítulo comenzará a escribirse en una hoja aparte, sin repetir el título del mismo. Los Capítulos serán los siguientes:
 
 22.4.1. Capítulo I: Definición del Proyecto
 
-- 22.4.2. Capítulo II: Rel i el igación de Mercado
+22.4.2. Capítulo II: Rel i el igación de Mercado
 
 22.4.3. Capítulo III: Entorno y Dominio del Sistema de Información
 
@@ -348,18 +282,7 @@ Cada uno de los Capítulos comenzará en una hoja aparte, se identificará con u
 
 22.4.5. Capítulo V: Planificación del Proyecto
 
-nombre
-
-y año de la presentación.
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 6)
-
-## RESOLUCIÓN Ne97/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
+nombre y año de la presentación.
 
 22.4.6. Capítulo VI: Metodologías de Gestión
 
@@ -411,22 +334,9 @@ Sistema de Información existente (puede ser un paquete estándar, una solución
 
 libre, etc.), que pueda dar respuesta a las necesidades de Sistemas y Tecnologías de la
 
-que se encuentren presentes en el entorno o dominio donde se llevará a cabo el
+que se encuentren presentes en el entorno o dominio donde se llevará a cabo el proyecto.
 
-Información
-
-proyecto.
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACION DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 ()
-
-## RESOLUCIÓN N*97/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
-
-y Desarrollo de un Sistema de Información: consiste en la creación de una
+Desarrollo de un Sistema de Información: consiste en la creación de una
 
 solución de Sistema de Información, que brinde respuesta a necesidades del entorno y
 
@@ -476,15 +386,6 @@ para su puesta en marcha.
 
 - \- Descripción detallada del Sistema de Información
 
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACION DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
-
-RESOLUCIÓN N*197/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
-
 ## 24.3.2. Capítulo II: Rel i € Investigación de Mercado:
 
 - \- Fuentes de datos utilizadas
@@ -527,17 +428,6 @@ Mercado - Competidores Potenciales - Competidores Sustitutos - Proveedores - Cli
 
 - \- Descripción de Entregables de cada etapa de la planificación
 
-cp.edu.ar
-
-+
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
-
-## CORRIENTES, 11 DE MAYO DE 2023 RESOLUCIÓN N*97/2023
-
 - \- Organización del Equipo de Proyecto
 
 - \- Cronograma del Proyecto
@@ -575,15 +465,6 @@ AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
 - 24.3.9. Capítulo IX: Diseño de Solución
 
 - \- Arquitectura del Sistema de Información
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
-
-## RESOLUCIÓN
-
-CORRIENTES, 11 DE MAYO DE 2023
 
 - \- Diseño de Solución
 
@@ -628,14 +509,6 @@ CORRIENTES, 11 DE MAYO DE 2023
 - 24.4. Conclusiones del Proyecto
 
 
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
-
-## RESOLUCIÓN
-
-CORRIENTES, 11 DE MAYO DE 2023
-
 ## 24.5. Bibliografía
 
 24.6. Anexos: la información aclaratoria o suplementaria se incorporará en forma de anexos, los anexos usuales se detallan a continuación. Sin embargo, podrán incorporarse otros en caso de ser necesarios como folletería, tablas y nomogramas usados para el cálculo proveni de publicaci el ial
@@ -645,15 +518,6 @@ CORRIENTES, 11 DE MAYO DE 2023
 24.6.2. Anexo II: Documentos del entorno o dominio del Proyecto
 
 24.6.3. Anexo III: Otros Anexos
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
-
-## RESOLUCIÓN N*97/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
 
 ## ANEXO II
 
@@ -692,15 +556,6 @@ de la Asignatura
 de carrera
 
 Apoyo Disciplinar
-
-
-## UNIVERSIDAD DE LA CUENCA DEL PLATA
-
-AUTORIZACIÓN DEFINITIVA: DECRETO PODER EJECUTIVO NACIONAL N* 091/06 (5)
-
-## RESOLUCIÓN N*97/2023
-
-CORRIENTES, 11 DE MAYO DE 2023
 
 ## ANEXO III
 
