@@ -29,7 +29,7 @@ Responsable de todo lo que figura aquí: **Gabriel Sebastián Martinez Alarcón*
 | SDK | API de integración | `init` con fallo cerrado y watchdog | ~80 % | SDK de servidor, prueba cliente↔servidor (opcional) |
 | Integración RecoilEngine/BAR | juego open source | integrado (PR #1) | ~75 % | cobertura de pruebas sobre el motor real |
 | Validación y pruebas | tasas de detección, overhead | 10/10 en VM, control negativo, 5/5 sin defensa | ~40 % | **overhead, TDP/falsos positivos, evasión, release en hardware**, harness de captura |
-| Gestión del repo | — | `dev/docs` publicada; `main` atrasada | ~60 % | tag `rc-1`, `LICENSE` y manual en `Dev`, decidir `gameStartProtection` |
+| Gestión del repo | — | `dev/docs` publicada; `main` (2026-11-26) ya incluye `Dev@35c6031`, `LICENSE`, empaquetado Arch (`packaging/arch`), CI y el socket en `/run/quark` (`e9f8c00`), que `Dev` no tiene; tag solo `v0.1.0` | ~60 % | tag `rc-1` y manual en `Dev` (`LICENSE` ya está en `main`), decidir `gameStartProtection` |
 
 **Global módulos ≈ 70 %.** El trabajo restante se concentra en validación (≈ 60 % de lo que queda) y en gestión del repo.
 
@@ -119,7 +119,7 @@ Parten de [[Risk-Register]] R11–R14 y se agregan los nuevos de este plan.
 |---|---|---|---|
 | R11 — validación solo con build *testing* | Alta | Alto | hardware físico si se consigue; si no, alcance declarado |
 | R12 — docs contradicen al código | Alta | Medio | pasada de paridad contra `origin/Dev` en la semana 9 y [[Claims-Ledger]] |
-| R13 — divergencia de ramas | Alta | Medio | semana 1: decidir ramas, actualizar `main` o dejar documentado |
+| R13 — divergencia de ramas | Alta | Medio | semana 1: decidir qué rama es el MVP congelado (`Dev@35c6031` vs `main`, que difiere en el socket `/run/quark`) y documentarlo |
 | R14 — overhead sin medir | Alta | Alto | semana 4 reservada; si falla, declarar "no medido" y no afirmar bajo impacto |
 | Un único defensor (Gabriel) y poca disponibilidad | Media | Alto | semanas holgadas (5) y estimaciones S/M/L revisables; recortar encuesta y correos antes que las mediciones |
 | Hallazgos técnicos que contradigan lo declarado (p. ej. TDP < 75 %) | Media | Alto | es un resultado válido: se informa tal cual y se acota el alcance en Conclusiones; no se ajusta el KPI |

@@ -1630,7 +1630,7 @@ Alcance común: **máquina virtual QEMU/KVM, build de pruebas del módulo** (`is
 
 | Repositorio | Ubicación | Estado | Fuente |
 |---|---|---|---|
-| `Quark-Anticheat` | `https://github.com/stefanomerinoderui/Quark-Anticheat` (remoto `origin`) | Código en rama `Dev`; documentación en `dev/docs`; `main` atrasada | `git remote -v` |
+| `Quark-Anticheat` | `https://github.com/stefanomerinoderui/Quark-Anticheat` (remoto `origin`) | Código en rama `Dev`; documentación en `dev/docs`; `main` integra `Dev@35c6031` más empaquetado Arch, CI y el socket en `/run/quark` (2026-11-26) | `git remote -v` |
 | `RecoilEngine` | Submódulo en `RecoilEngine/`; URL `https://github.com/Billones142/RecoilEngine.git`, rama `quark-anticheat-integration`; commit fijado `29e5b0b44a7604011eca4aaf1281c9c7e86ba5fd` | La integración con el SDK está en esa rama; el submódulo no está inicializado en los worktrees de lectura | `.gitmodules`; `git submodule status` |
 | `proton-anticheats` | Repositorio local `uni-dev/proton-anticheats2026-11-13/proton-anticheats` (último commit `cc5078e`, 2026-11-13, según [[Proton-Anticheat-Research]]); URL remota: UNVERIFIED (pendiente de aportar) | La copia local analizada no contiene el directorio `.git`; el commit citado proviene de la nota del vault. Contiene `EAC.md`, `BattlEye.md`, `EAC_BPF_LSM_Service.md`, `Validation_Log.md` y otros | listado del directorio; [[Proton-Anticheat-Research]] |
 

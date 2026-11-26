@@ -25,7 +25,7 @@ Autor: agent:claude-sonnet-5-5 · 2026-11-25. Los porcentajes son **estimaciones
 - SDK ~80 %: falta SDK de servidor y prueba cliente↔servidor.
 - Integración RecoilEngine/BAR ~75 %.
 - Validación ~40 %: 10/10 en VM (build testing); falta overhead, tasa de detección/falsos positivos, evasión; harness con defectos.
-- Gestión del repo ~60 %: `main` atrasada; `feature/gameStartProtection` sin integrar.
+- Gestión del repo ~60 %: `main` atrasada al 2026-11-25 (el 2026-11-26 ya integra `Dev@35c6031`); `feature/gameStartProtection` sin integrar.
 
 ## Estado de capítulos (~60 %)
 - Desarrollados: I, III, V, VI, X, XIII, Resumen, Bibliografía, Anexo II.

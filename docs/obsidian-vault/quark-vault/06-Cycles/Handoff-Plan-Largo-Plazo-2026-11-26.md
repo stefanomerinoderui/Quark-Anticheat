@@ -30,7 +30,7 @@ Autor: agent:claude-sonnet-5-5 · 2026-11-26. Para quien redacte el plan sin hab
 
 ## 3. Estado de partida (hechos con fuente)
 
-Ramas y commits: informe y docs en `dev/docs` (`ea676de` publicado); el trabajo del harness vive en la rama `review/harness-autorevision-2026-11-25` (HEAD `854533b`, publicada), que está **por delante** de `dev/docs` y contiene `tooling/informe/pif-review-harness/`. MVP congelado en `origin/Dev` `35c6031`; `origin/feature/gameStartProtection` `2b088ab` sin integrar; `main` atrasada. **Decisión abierta:** en qué rama consolidar y si se integra `review/...` en `dev/docs`.
+Ramas y commits: informe y docs en `dev/docs` (`ea676de` publicado); el trabajo del harness vive en la rama `review/harness-autorevision-2026-11-25` (HEAD `854533b`, publicada), que está **por delante** de `dev/docs` y contiene `tooling/informe/pif-review-harness/`. MVP congelado en `origin/Dev` `35c6031`; `origin/feature/gameStartProtection` `2b088ab` sin integrar; `main` actualizada el 2026-11-26 (incluye `35c6031`, `LICENSE`, empaquetado Arch, CI y socket en `/run/quark`; `Dev` no). **Decisión abierta:** en qué rama consolidar y si se integra `review/...` en `dev/docs`.
 
 Resultado de la segunda pasada del harness (informe `tooling/informe/pif-review-harness/pif-review-harness/entregas/quark-anticheat/informes/REENTREGA-1_devolucion.md`, 2026-11-26): **sin observaciones bloqueantes; 14 corregibles** (OBS-01, 02/15, 03/16, 07, 08, 10, 12/20, 13, 14/21, 17, 18, 19). Son el backlog natural de este plan:
 
