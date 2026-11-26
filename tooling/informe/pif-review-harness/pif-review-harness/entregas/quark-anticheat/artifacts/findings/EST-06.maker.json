@@ -1,0 +1,56 @@
+[
+ {
+  "item_id": "EST-06",
+  "clave": "EST-06:anexos_numerados",
+  "semaforo": "VERDE",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 20"
+   },
+   {
+    "fuente": "RR97",
+    "ref": "Art. 22.7"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "pdf_format.json#annex_numbering"
+   },
+   {
+    "tipo": "pdf",
+    "pdf_page": 169,
+    "cita_literal": "Numeración propia: «página X de Y»."
+   }
+  ],
+  "observacion": "Las 29 páginas de anexos llevan 'página X de 29'; el script informa 29 de 157 porque delimita mal el inicio de los anexos.",
+  "destino": "ambos",
+  "origen": "maker"
+ },
+ {
+  "item_id": "EST-06",
+  "clave": "EST-06:conclusiones_honestas",
+  "semaforo": "VERDE",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 22.5"
+   },
+   {
+    "fuente": "RR97",
+    "ref": "Art. 24.4"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "pdf",
+    "pdf_page": 159,
+    "cita_literal": "La defensa puede sostener que el prototipo demuestra viabilidad técnica en el alcance"
+   }
+  ],
+  "observacion": "Las Conclusiones distinguen lo medido de lo no medido y limitan la defensa al alcance probado.",
+  "destino": "ambos",
+  "origen": "maker"
+ }
+]

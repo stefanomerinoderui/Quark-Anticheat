@@ -1,0 +1,39 @@
+[
+ {
+  "item_id": "DIA-01",
+  "clave": "DIA-01:sin_declaracion_de_ia",
+  "semaforo": "ROJO",
+  "norma": [
+   {
+    "fuente": "CAT",
+    "ref": "CAT-IA"
+   },
+   {
+    "fuente": "RR97",
+    "ref": "Art. 10.1.2"
+   },
+   {
+    "fuente": "RR97",
+    "ref": "Art. 18.1.8"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "coherence.json#ai_declaration"
+   },
+   {
+    "tipo": "pdf",
+    "pdf_page": 185,
+    "cita_literal": "Nota 2026-11-25 (agent:claude-sonnet-5-5): el contenido de este bloque se"
+   }
+  ],
+  "observacion": "No hay apartado final de declaración de uso de IA y el PDF mismo contiene firmas 'agent:claude-sonnet-5-5'; el repo tiene archivo de contexto de agentes.",
+  "destino": "ambos",
+  "origen": "maker",
+  "que_se_espera": "Apartado final con para qué se usó, cómo se verificó, prompts y enlace a la conversación.",
+  "evidencia_a_presentar": "Apartado de declaración con las cinco partes de CAT-IA.",
+  "pregunta_coloquio": "¿Qué partes del informe y del código se hicieron con asistencia de IA y cómo verificaron cada una?",
+  "bloqueante": true
+ }
+]

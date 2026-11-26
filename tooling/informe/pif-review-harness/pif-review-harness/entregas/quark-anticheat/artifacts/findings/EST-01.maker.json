@@ -1,0 +1,53 @@
+[
+ {
+  "item_id": "EST-01",
+  "clave": "EST-01:caratula_completa",
+  "semaforo": "VERDE",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 22.1"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "pdf",
+    "pdf_page": 1,
+    "cita_literal": "Universidad de la Cuenca del Plata"
+   },
+   {
+    "tipo": "pdf",
+    "pdf_page": 1,
+    "cita_literal": "PROYECTO INTEGRADOR FINAL"
+   }
+  ],
+  "observacion": "La carátula incluye universidad, facultad, carrera, denominación, título, autores y fecha. Falta el logo de la UCP (no hay archivo en el repositorio).",
+  "destino": "ambos",
+  "origen": "maker"
+ },
+ {
+  "item_id": "EST-01",
+  "clave": "EST-01:resumen_dentro_del_limite",
+  "semaforo": "VERDE",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 22.2"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "pdf_format.json#abstract_words"
+   },
+   {
+    "tipo": "pdf",
+    "pdf_page": 5,
+    "cita_literal": "Resumen"
+   }
+  ],
+  "observacion": "El Resumen de la fuente cuenta 446 palabras; el script informa 715 porque suma páginas contiguas. Dentro de las 600 palabras.",
+  "destino": "ambos",
+  "origen": "maker"
+ }
+]

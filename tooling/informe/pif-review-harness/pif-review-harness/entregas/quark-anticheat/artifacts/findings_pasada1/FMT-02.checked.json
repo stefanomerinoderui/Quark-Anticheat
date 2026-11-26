@@ -1,0 +1,52 @@
+[
+  {
+    "item_id": "FMT-02",
+    "clave": "FMT-02:marcas_de_edicion_internas",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 21"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 185,
+        "cita_literal": "Update 2026-11-13 — agent:claude-sonnet-5-5 — desarro-"
+      },
+      {
+        "tipo": "pdf",
+        "pdf_page": 4,
+        "cita_literal": "Update 2026-11-13 — agent:claude-sonnet-5-5 — desarrollos posteriores al"
+      }
+    ],
+    "observacion": "El documento conserva bloques 'Update' con firma de agente y notas de edición propias del vault ('se conserva sin cambios como historial'). Rompe el registro impersonal uniforme del Art. 21 y el documento único.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Informe final con un solo cuerpo; el historial queda en git.",
+    "evidencia_a_presentar": "Índice y páginas sin los bloques 'Update'.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "aproximada"
+        },
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [
+        "cita_aproximada"
+      ],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "Citas literales (p.4, p.185) demuestran bloques 'Update' con firma de agente dentro del PDF; Art. 21 (criterio uniforme de formato) en 00_fuentes. 'Documento único' es apreciación, no norma.",
+      "cambios": []
+    }
+  }
+]

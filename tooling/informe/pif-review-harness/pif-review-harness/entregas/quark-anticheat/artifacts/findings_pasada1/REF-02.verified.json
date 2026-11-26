@@ -1,0 +1,49 @@
+[
+  {
+    "item_id": "REF-02",
+    "clave": "REF-02:entradas_con_verificacion_pendiente",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 10.1.2"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 18.1.7"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 161,
+        "cita_literal": "de investigación]. URL: pendiente de aportar."
+      },
+      {
+        "tipo": "pdf",
+        "pdf_page": 162,
+        "cita_literal": "m/wiki/Valve_Anti-Cheat (contenido tomado de resumen de búsqueda)"
+      }
+    ],
+    "observacion": "Hay entradas que declaran fuente no consultada o incompleta ('URL: pendiente de aportar', 'contenido tomado de resumen de búsqueda'). En Capa 1, 5 referencias quedaron 'No localizada' y 2 'Con discrepancias' sin búsqueda manual (varias por artefactos de extracción).",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "URL o datos completos de cada fuente y consulta directa de la fuente citada.",
+    "evidencia_a_presentar": "DOI o URL verificada por entrada.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        },
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

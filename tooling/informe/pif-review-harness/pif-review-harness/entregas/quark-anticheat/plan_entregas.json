@@ -1,0 +1,53 @@
+{
+  "proyecto_id": "quark-anticheat",
+  "titulo": "Quark Anticheat",
+  "cohorte": "2026",
+  "equipo": [
+    {
+      "nombre": "Gabriel Sebastián Martinez Alarcón",
+      "emails_git": [
+        "68785609+gmartineza@users.noreply.github.com",
+        "gabymartinezalarcon@gmail.com"
+      ],
+      "usuario_git": "gmartineza"
+    },
+    {
+      "nombre": "Stefano Nahuel Merino De Rui",
+      "emails_git": [
+        "stefanomerinoderui@gmail.com",
+        "84104251+Billones142@users.noreply.github.com",
+        "84104251+stefanomerinoderui@users.noreply.github.com"
+      ],
+      "usuario_git": "Billones142"
+    }
+  ],
+  "modalidad": "23.2",
+  "repos": {
+    "codigo": {
+      "url": "https://github.com/stefanomerinoderui/Quark-Anticheat.git"
+    },
+    "docs": {
+      "url": "https://github.com/stefanomerinoderui/Quark-Anticheat.git"
+    }
+  },
+  "instancias": [
+    {
+      "id": "FINAL",
+      "perfil": "pif_final",
+      "fecha_limite": "2026-12-15T23:59:00-03:00",
+      "tag_esperado": "",
+      "politica_ia": "declaracion_catedra",
+      "exige_portafolio_bitacora": false,
+      "variaciones": []
+    },
+    {
+      "id": "REENTREGA-1",
+      "perfil": "reentrega",
+      "fecha_limite": "2026-12-15T23:59:00-03:00",
+      "tag_esperado": "",
+      "politica_ia": "declaracion_catedra",
+      "exige_portafolio_bitacora": false,
+      "variaciones": []
+    }
+  ]
+}

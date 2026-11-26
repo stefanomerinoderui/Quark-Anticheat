@@ -1,0 +1,28 @@
+[
+ {
+  "item_id": "FMT-01",
+  "clave": "FMT-01:tipografia_no_times",
+  "semaforo": "AMARILLO",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 20"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "pdf_format.json#fonts"
+   },
+   {
+    "tipo": "artifact",
+    "artifact": "pdf_format.json#margins"
+   }
+  ],
+  "observacion": "El PDF sigue usando TeX Gyre Termes (clon métrico de Times), no Times New Roman: tectonic no cargó la fuente del sistema. Márgenes izquierdo 2,99 cm y derecho 2,93 cm.",
+  "destino": "ambos",
+  "origen": "maker",
+  "que_se_espera": "Times New Roman 12 o aceptación docente del clon métrico.",
+  "evidencia_a_presentar": "Salida de pdffonts o constancia docente."
+ }
+]

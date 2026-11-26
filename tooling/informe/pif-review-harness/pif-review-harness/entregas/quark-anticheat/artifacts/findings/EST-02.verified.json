@@ -1,0 +1,37 @@
+[
+  {
+    "item_id": "EST-02",
+    "clave": "EST-02:encuesta_no_publicada",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.2"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 19,
+        "cita_literal": "Estado: diseñada, no publicada. Fuente del diseño: docs/Quark_Encuesta_Diapositivas.txt."
+      }
+    ],
+    "observacion": "El Cap. II declara que la encuesta no se publicó: sin n ni datos primarios. Marcadores de cátedra ausentes en el .tex: implicancia decisoria y análisis del entorno.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Datos con n y análisis, o alcance documental acordado con la cátedra.",
+    "evidencia_a_presentar": "Resultados o acta del acuerdo.",
+    "pregunta_coloquio": "¿Qué evidencia propia sostiene H-D1 a H-D3?",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

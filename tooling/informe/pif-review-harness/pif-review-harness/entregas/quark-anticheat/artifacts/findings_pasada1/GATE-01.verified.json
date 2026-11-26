@@ -1,0 +1,49 @@
+[
+  {
+    "item_id": "GATE-01",
+    "clave": "GATE-01:sin_manual_despliegue",
+    "semaforo": "ROJO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 3"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.13"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "repos.json#deploy_manual"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "repos.json#build_plan"
+      }
+    ],
+    "observacion": "En Dev@35c6031 no hay manual de despliegue ni plan de construcción inferible, y no hay CI. El PDF describe el MVP, pero un tercero no puede construirlo y arrancarlo solo con el manual.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Manual de despliegue (README o archivo) con requisitos, construcción del módulo, demonio y SDK, arranque y verificación en la VM.",
+    "evidencia_a_presentar": "Sección del README en Dev con los pasos y tag de la versión entregada.",
+    "pregunta_coloquio": "¿Pueden construir y cargar el módulo desde cero en una VM limpia, mostrando cada paso?",
+    "bloqueante": true,
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (FALLA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

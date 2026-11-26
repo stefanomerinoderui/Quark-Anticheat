@@ -1,0 +1,36 @@
+[
+  {
+    "item_id": "ENT-01",
+    "clave": "ENT-01:entrega_digital_identificada",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 150,
+        "cita_literal": "Repositorio oficial y versión entregada. Repositorio"
+      }
+    ],
+    "observacion": "La URL oficial y el commit constan en el Cap. XIII y el PDF se generó desde un commit limpio. Faltan el tablero de gestión entre los entregables digitales y la etiqueta de la versión. El aviso de 5 URL del script proviene de cortes de línea del PDF.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Tablero de gestión listado en el Cap. XIII y tag de la versión.",
+    "evidencia_a_presentar": "Cap. XIII con tablero y tag.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

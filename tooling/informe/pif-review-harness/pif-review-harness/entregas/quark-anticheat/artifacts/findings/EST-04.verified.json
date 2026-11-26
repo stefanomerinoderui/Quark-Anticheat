@@ -1,0 +1,36 @@
+[
+  {
+    "item_id": "EST-04",
+    "clave": "EST-04:inpi_incompleto",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.8"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 97,
+        "cita_literal": "8.3. Búsqueda de antecedentes en INPI"
+      }
+    ],
+    "observacion": "La búsqueda INPI cubre 'quark' y 'quark anticheat'; faltan 'anticheat', variantes fonéticas y capturas con fecha, y no hay logotipo.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Búsquedas completas con capturas fechadas y constancia.",
+    "evidencia_a_presentar": "Capturas INPI con fecha.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

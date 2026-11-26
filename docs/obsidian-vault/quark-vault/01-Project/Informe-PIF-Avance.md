@@ -1419,12 +1419,12 @@ Este apartado cumple la cláusula de cátedra sobre uso de IA generativa y el Ar
 - Las citas bibliográficas se contrastaron con las fuentes cuando fue posible; las que no se consultaron directamente quedan declaradas en la Bibliografía.
 - Los autores revisan y responden por lo incluido, y pueden dar cuenta oralmente de cada parte.
 
-**Prompts.** Las instrucciones permanentes dadas a los agentes están versionadas en `AGENTS.md`, en `Working-Guidelines.md` y en `Append-Only-Standard.md` del vault. Los pedidos puntuales de cada sesión constan en el registro de la sesión indicada abajo. La transcripción de los prompts de las demás sesiones de este informe es UNVERIFIED: queda pendiente que los autores la exporten.
+**Prompts.** Las instrucciones permanentes dadas a los agentes están versionadas en `AGENTS.md`, en `Working-Guidelines.md` y en `Append-Only-Standard.md` del vault. Los pedidos de cada sesión se registran de forma resumida, no textual, en `docs/obsidian-vault/quark-vault/06-Cycles/AI-Prompt-Log.md`: qué se pidió y qué se produjo, y, cuando el pedido remite a un archivo, un resumen de las instrucciones de ese archivo. Los pedidos de la sesión de desarrollo de agosto de 2026 son UNVERIFIED (no se conserva la transcripción).
 
 **Enlaces a las conversaciones.**
 
 - Desarrollo del código: `https://claude.ai/code/session_01JeTq4KYFDuzr41fQnUoCfQ` (trailer `Claude-Session` de los 11 commits indicados).
-- Sesiones de redacción del informe y autorrevisión: enlace pendiente de aportar por los autores (UNVERIFIED).
+- Sesiones de redacción del informe y de autorrevisión (2026-11-25 y 2026-11-26): sesiones de terminal local, sin enlace compartible; su contenido consta en el registro resumido indicado arriba.
 
 **Alcance de la declaración.** Se declara el uso de Claude Code. UNVERIFIED si los integrantes usaron otras herramientas de IA generativa; en ese caso los autores las agregan aquí.
 

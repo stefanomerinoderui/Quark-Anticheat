@@ -1,0 +1,46 @@
+[
+  {
+    "item_id": "FMT-01",
+    "clave": "FMT-01:tipografia_no_times",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "pdf_format.json#fonts"
+      }
+    ],
+    "observacion": "El PDF usa TeX Gyre Termes (clon métrico de Times), no Times New Roman: tectonic no cargó la fuente del sistema (pdf_format.json#fonts: 0 % Times New Roman).",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Times New Roman 12 o aceptación docente del clon métrico.",
+    "evidencia_a_presentar": "Salida de pdffonts o constancia docente.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (FALLA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "Los márgenes medidos (2,99 y 2,93 cm) están dentro de la tolerancia y el script los da en ALERTA solo en la p. 19; no sustentan observación.",
+      "cambios": [
+        "Eliminada la afirmación de márgenes y su ubicación"
+      ]
+    }
+  }
+]

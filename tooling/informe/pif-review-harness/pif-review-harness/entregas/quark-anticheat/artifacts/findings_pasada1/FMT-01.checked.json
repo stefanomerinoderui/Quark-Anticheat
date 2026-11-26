@@ -1,0 +1,59 @@
+[
+  {
+    "item_id": "FMT-01",
+    "clave": "FMT-01:tipografia_no_times",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "pdf_format.json#fonts"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "pdf_format.json#margins"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "pdf_format.json#line_spacing"
+      }
+    ],
+    "observacion": "El PDF usa TeX Gyre Termes (clon métrico de Times), no Times New Roman (fonts: FALLA). Margen derecho fuera de tolerancia solo en la p.19; 3 de 53 páginas (2-4) con interlineado menor a 1,9×.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Times New Roman 12, márgenes 3 cm izq./der. y 2,5 cm sup./inf., interlineado doble.",
+    "evidencia_a_presentar": "Páginas corregidas y salida de pdffonts.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (FALLA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "fonts FALLA se sostiene (TeX Gyre Termes, clon métrico). Pero márgenes: medianas 2,99/2,93 cm dentro de la tolerancia de 6 pt; solo la p.19 viola el margen derecho. Afirmar incumplimiento general contradice el script.",
+      "cambios": [
+        "margenes: solo p.19 con margen derecho fuera de tolerancia",
+        "interlineado: 3 de 53 páginas (pp.2-4), sin cambio"
+      ]
+    }
+  }
+]

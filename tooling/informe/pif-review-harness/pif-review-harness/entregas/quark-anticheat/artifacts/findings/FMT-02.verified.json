@@ -1,0 +1,34 @@
+[
+  {
+    "item_id": "FMT-02",
+    "clave": "FMT-02:sin_marcas_de_agente",
+    "semaforo": "VERDE",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 21"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 162,
+        "cita_literal": "agent:<modelo>."
+      }
+    ],
+    "observacion": "Desaparecieron los bloques 'Update' con firma de agente; la única mención 'agent:<modelo>' está en la declaración de IA, como convención de firma.",
+    "destino": "ambos",
+    "origen": "maker",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

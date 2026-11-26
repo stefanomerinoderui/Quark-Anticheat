@@ -1,0 +1,39 @@
+[
+  {
+    "item_id": "DAT-01",
+    "clave": "DAT-01:datos_personales_en_pdf",
+    "semaforo": "GRIS",
+    "norma": [
+      {
+        "fuente": "LEY",
+        "ref": "25.326"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#pii_pdf"
+      }
+    ],
+    "observacion": "3 páginas con posibles datos personales según regex; no se revisó a mano si son datos de terceros.",
+    "destino": "ambos",
+    "origen": "maker",
+    "motivo_gris": "Falta revisión manual de las 3 páginas marcadas.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "GRIS: 3 páginas por regex (teléfonos), sin revisión manual; la nota del script indica que contactos del equipo no son observación. Sin evidencia queda GRIS.",
+      "cambios": []
+    }
+  }
+]

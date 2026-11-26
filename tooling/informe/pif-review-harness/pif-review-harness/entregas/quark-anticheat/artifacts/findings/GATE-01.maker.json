@@ -1,0 +1,34 @@
+[
+ {
+  "item_id": "GATE-01",
+  "clave": "GATE-01:manual_no_ejecutado",
+  "semaforo": "AMARILLO",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 3"
+   },
+   {
+    "fuente": "RR97",
+    "ref": "Art. 24.3.13"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "pdf",
+    "pdf_page": 188,
+    "cita_literal": "III.5. Manual de despliegue y reproducción"
+   },
+   {
+    "tipo": "artifact",
+    "artifact": "repos.json#deploy_manual"
+   }
+  ],
+  "observacion": "El Anexo III.5 pasa a ser el manual de despliegue, pero declara que no se ejecutó, y Dev@35c6031 sigue sin manual propio ni CI. Mejora respecto de la pasada anterior (ROJO); sin ejecución no hay evidencia de que un tercero construya el sistema.",
+  "destino": "ambos",
+  "origen": "maker",
+  "que_se_espera": "Manual ejecutado de punta a punta en una VM limpia, con registro de comandos y salida.",
+  "evidencia_a_presentar": "Log de la corrida y commit del manual en Dev.",
+  "pregunta_coloquio": "¿Pueden construir y cargar el módulo desde cero en una VM limpia?"
+ }
+]

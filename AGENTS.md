@@ -23,3 +23,6 @@ Fuente: `docs/RR-97-23-Reglamento-de-Proyecto-Integrador-Final.md` (Art. 22 y Ar
 - Entrega: copia del PIF por correo a la Dirección de Carrera **5 días hábiles antes** de la defensa (Art. 14); defensa pública de hasta **45 min** (Art. 16); nota mínima 6.
 - Generar el documento para revisión con `sh tooling/build_informe.sh` (pandoc + tectonic); fuente única: el informe del vault.
 - Estado al 2026-11-14 de lo que sigue en placeholder en `Informe-PIF-Avance.md`: Cap. II (encuesta), IV (mapeo de competencia), VII, VIII, IX (modelo de datos, infraestructura), XI (CANVAS), XII, Conclusiones, Anexo I. Verificar con `grep -n "A completar\|Pendiente"` antes de dar el informe por listo. Los agregados van como `## Update` (append-only) o en una nota consolidada `Informe-PIF-v2` acordada por ambos.
+
+## Autodocumentación de prompts (CAT-IA)
+Las sesiones de terminal no tienen enlace compartible. Al terminar cada tarea, agregar una entrada **resumida** (no textual) a `docs/obsidian-vault/quark-vault/06-Cycles/AI-Prompt-Log.md`: qué se pidió y qué se produjo. Si el prompt remite a un archivo ("ejecutá X"), resumir las instrucciones de ese archivo con su ruta. Detalle y reglas en ese registro; la declaración de uso de IA del informe se apoya en él.

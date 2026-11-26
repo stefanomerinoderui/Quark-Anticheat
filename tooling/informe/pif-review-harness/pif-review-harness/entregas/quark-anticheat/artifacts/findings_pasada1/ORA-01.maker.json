@@ -1,0 +1,23 @@
+[
+ {
+  "item_id": "ORA-01",
+  "clave": "ORA-01:no_evaluado_a_fondo",
+  "semaforo": "GRIS",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 24.3"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "coherence.json#content_markers"
+   }
+  ],
+  "observacion": "No evaluado en esta pasada: el detector de contenido no halló capítulos por los residuos de Pandoc.",
+  "destino": "informe_docente",
+  "origen": "maker",
+  "motivo_gris": "Requiere lectura capítulo por capítulo; no se hizo."
+ }
+]

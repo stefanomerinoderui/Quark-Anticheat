@@ -1,0 +1,39 @@
+[
+  {
+    "item_id": "DAT-01",
+    "clave": "DAT-01:datos_personales_en_pdf",
+    "semaforo": "GRIS",
+    "norma": [
+      {
+        "fuente": "LEY",
+        "ref": "25.326"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#pii_pdf"
+      }
+    ],
+    "observacion": "3 páginas con posibles datos personales por regex; sin revisión manual.",
+    "destino": "ambos",
+    "origen": "maker",
+    "motivo_gris": "Falta revisión manual.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "GRIS: pii_pdf lista 3 páginas por regex (22, 174, 175), sin revisión manual; se mantiene GRIS.",
+      "cambios": []
+    }
+  }
+]

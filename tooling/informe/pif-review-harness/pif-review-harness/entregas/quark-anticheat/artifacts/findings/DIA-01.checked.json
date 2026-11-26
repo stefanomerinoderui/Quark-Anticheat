@@ -1,0 +1,59 @@
+[
+  {
+    "item_id": "DIA-01",
+    "clave": "DIA-01:declaracion_incompleta",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "CAT",
+        "ref": "CAT-IA"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 10.1.2"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 18.1.8"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 162,
+        "cita_literal": "Declaración de uso de inteligencia"
+      },
+      {
+        "tipo": "pdf",
+        "pdf_page": 163,
+        "cita_literal": "Desarrollo del código: https://claude.ai/code/session_01JeTq4KYFDuzr41fQnUoCfQ"
+      }
+    ],
+    "observacion": "Hay apartado de declaración con para qué, verificación, prompts por referencia y un enlace real (sesión de desarrollo). Faltan el enlace de las sesiones de redacción y autorrevisión, la transcripción de sus prompts y la confirmación de otras herramientas. El detector no ubicó el apartado porque lo confundió con el índice.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Enlaces y prompts de todas las sesiones, o la declaración de que no existen.",
+    "evidencia_a_presentar": "Apartado completado por los autores.",
+    "pregunta_coloquio": "¿Qué partes del informe se redactaron con IA y cómo las verificaron?",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        },
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "Citas p. 162 y 163 respaldan que existe el apartado y un enlace; CAT-IA, 10.1.2 y 18.1.8 registrados.",
+      "cambios": []
+    }
+  }
+]

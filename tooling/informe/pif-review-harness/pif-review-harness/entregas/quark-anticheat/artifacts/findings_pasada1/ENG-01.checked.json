@@ -1,0 +1,48 @@
+[
+  {
+    "item_id": "ENG-01",
+    "clave": "ENG-01:sin_tests_ci_ni_specs",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "CAT",
+        "ref": "05 §higiene"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#tests"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#quality_gates"
+      }
+    ],
+    "observacion": "El repo no tiene tests, CI, quality gates ni carpetas specs/ADR detectables. Las pruebas existen como scripts de VM, que el detector no cuenta.",
+    "destino": "informe_docente",
+    "origen": "maker",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "La parte '.env no figura en .gitignore' no se sostiene: sdd_harness env_tracked es ALERTA con archivos [] (no hay .env versionado). Tests y quality gates sí están como ALERTA.",
+      "cambios": [
+        "observacion: se quita la afirmación sobre .env; queda sin tests, CI, quality gates ni specs/ADR detectables"
+      ]
+    }
+  }
+]

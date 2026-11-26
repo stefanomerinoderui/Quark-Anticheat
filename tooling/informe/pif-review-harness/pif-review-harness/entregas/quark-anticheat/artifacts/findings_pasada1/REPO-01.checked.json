@@ -1,0 +1,50 @@
+[
+  {
+    "item_id": "REPO-01",
+    "clave": "REPO-01:sin_license_en_dev",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "repos.json#license"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "repos_docs.json#license"
+      }
+    ],
+    "observacion": "LICENSE (GPLv3) existe solo en dev/docs; el código entregado (Dev@35c6031) no la tiene. La referencia evaluada es un commit, no una etiqueta.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Repositorio único con LICENSE en la versión entregada y tag de la versión.",
+    "evidencia_a_presentar": "URL, tag, captura de colaboradores con acceso de la cátedra y del historial con aportes de ambos integrantes.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (FALLA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "ok (OK)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "repos.json#license FALLA y repos_docs.json#license OK sostienen la observación. El Art. 24.3.13 (código fuente) no exige LICENSE; queda Art. 20. No hay tag esperado en el plan: el tag es pedido de cátedra.",
+      "cambios": [
+        "norma: se retira Art. 24.3.13"
+      ]
+    }
+  }
+]

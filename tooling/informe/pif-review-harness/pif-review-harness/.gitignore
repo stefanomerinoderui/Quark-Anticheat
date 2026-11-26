@@ -1,6 +1,11 @@
-# Datos de estudiantes (Ley 25.326): nunca versionar
-entregas/*
-!entregas/.gitkeep
+# Entregas: este repo revisa el PIF propio del equipo, asi que se versionan el plan, el estado,
+# los informes con la matriz de respuesta y los hallazgos. No se versionan la ingesta (input/:
+# PDF, clones bare, repo exportado) ni los artefactos regenerables de la Capa 1.
+# Si se revisan PIF de terceros (Ley 25.326), volver a ignorar entregas/* completo.
+entregas/*/input/
+entregas/*/artifacts/*
+!entregas/*/artifacts/findings*/
+entregas/**/*.pdf
 # Normativa de circulación interna
 reglamento/fuentes/*
 !reglamento/fuentes/.gitkeep

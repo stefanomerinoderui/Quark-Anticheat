@@ -1,0 +1,41 @@
+[
+  {
+    "item_id": "COH-01",
+    "clave": "COH-01:control_negativo_invalidado",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 18.1.6"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 176,
+        "cita_literal": "Esta rama modifica el control negativo «sin Quark» (el juego deja de arrancar sin demo-"
+      }
+    ],
+    "observacion": "El Anexo III declara que feature/gameStartProtection invalida el control negativo; la conclusión depende de un control no reproducible fuera de Dev@35c6031.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Control negativo re-ejecutado o acotado a Dev@35c6031.",
+    "evidencia_a_presentar": "Captura con commit.",
+    "verificacion_mecanica": {
+      "estado": "pagina_corregida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "pagina_corregida:177->176"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "Cita en p. 176 demuestra que la rama invalida el control negativo; Art. 18.1.6 registrado.",
+      "cambios": []
+    }
+  }
+]

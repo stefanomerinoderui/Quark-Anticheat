@@ -1,0 +1,23 @@
+[
+ {
+  "item_id": "SEG-01",
+  "clave": "SEG-01:sin_observaciones_previas",
+  "semaforo": "GRIS",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 8.2.2"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "diff_versiones.json"
+   }
+  ],
+  "observacion": "No aplica: no hay OBS previas.",
+  "destino": "ambos",
+  "origen": "maker",
+  "motivo_gris": "state.observaciones_abiertas = 0"
+ }
+]

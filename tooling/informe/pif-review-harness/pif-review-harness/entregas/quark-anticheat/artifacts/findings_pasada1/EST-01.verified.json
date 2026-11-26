@@ -1,0 +1,133 @@
+[
+  {
+    "item_id": "EST-01",
+    "clave": "EST-01:caratula_incompleta",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.1"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 1,
+        "cita_literal": "Martínez Alarcón, Gabriel Sebastián (colaborador: Merino De Rui, Stefano Nahuel)"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "coherence.json#caratula"
+      }
+    ],
+    "observacion": "La carátula no muestra universidad, facultad, carrera, la denominación 'Proyecto Integrador Final' ni el año de presentación en la forma pedida; la fecha lleva '(commit … +cambios sin commitear)'.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Carátula con logo y nombre de la UCP, facultad, carrera 'Ingeniería en Sistemas de Información', 'Proyecto Integrador Final', título, autores y año.",
+    "evidencia_a_presentar": "Página 1 corregida.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  },
+  {
+    "item_id": "EST-01",
+    "clave": "EST-01:atributos_pandoc_en_titulos",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.3"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.4"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 7,
+        "cita_literal": "{#capítulo-i-—-definición-del-proyecto}"
+      },
+      {
+        "tipo": "pdf",
+        "pdf_page": 132,
+        "cita_literal": "{#capítulo-x-—-recursos-del-proyecto}"
+      }
+    ],
+    "observacion": "Atributos de Pandoc ({#…}) aparecen impresos en carátulas de capítulo, índice y notas, en 16 páginas. Por esos residuos el detector no reconoció ninguna de las 13 carátulas de capítulo.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Títulos limpios en carátulas e índice.",
+    "evidencia_a_presentar": "Páginas 2–4, 7, 132, 149 y 184 corregidas.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        },
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  },
+  {
+    "item_id": "EST-01",
+    "clave": "EST-01:resumen_excede_600",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.2"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "pdf_format.json#abstract_words"
+      },
+      {
+        "tipo": "pdf",
+        "pdf_page": 5,
+        "cita_literal": "Resumen"
+      }
+    ],
+    "observacion": "El Resumen cuenta 696 palabras según el script (límite 600). Falta confirmar el conteo a mano.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Resumen de hasta 600 palabras que refleje el trabajo completo.",
+    "evidencia_a_presentar": "Páginas 5–6 corregidas con conteo.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (FALLA)"
+        },
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

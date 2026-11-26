@@ -1,0 +1,48 @@
+[
+  {
+    "item_id": "REPO-01",
+    "clave": "REPO-01:license_y_tag_en_dev",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.13"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "repos.json#license"
+      },
+      {
+        "tipo": "pdf",
+        "pdf_page": 150,
+        "cita_literal": "Repositorio oficial y versión entregada. Repositorio"
+      }
+    ],
+    "observacion": "El Cap. XIII identifica repositorio y commit 35c6031, pero Dev no tiene LICENSE ni etiqueta de la versión entregada.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "LICENSE y tag en la versión entregada.",
+    "evidencia_a_presentar": "URL, tag y captura de colaboradores con acceso de la cátedra.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (FALLA)"
+        },
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]
