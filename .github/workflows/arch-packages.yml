@@ -30,12 +30,18 @@ jobs:
     steps:
       # git must exist before checkout, otherwise actions/checkout falls back to
       # a plain tarball and `git archive` in build-packages.sh fails.
-      - name: Install build dependencies
-        run: pacman -Syu --noconfirm --needed git bpf clang libelf namcap openssl rust zlib
+      - name: Install git and namcap
+        run: pacman -Syu --noconfirm --needed git namcap
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
+      # Read from the PKGBUILD itself so this list can't drift from makedepends.
+      - name: Install build dependencies from the PKGBUILD
+        run: |
+          mapfile -t deps < <(source packaging/arch/PKGBUILD && printf '%s\n' "${makedepends[@]}")
+          pacman -S --noconfirm --needed "${deps[@]}"
 
       # makepkg refuses to run as root.
       - name: Create unprivileged build user
