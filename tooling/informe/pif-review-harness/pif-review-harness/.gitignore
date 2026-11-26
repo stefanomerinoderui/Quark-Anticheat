@@ -1,0 +1,9 @@
+# Datos de estudiantes (Ley 25.326): nunca versionar
+entregas/*
+!entregas/.gitkeep
+# Normativa de circulación interna
+reglamento/fuentes/*
+!reglamento/fuentes/.gitkeep
+__pycache__/
+*.pyc
+.venv/

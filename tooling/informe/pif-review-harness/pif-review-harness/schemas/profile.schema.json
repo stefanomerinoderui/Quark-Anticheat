@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Perfil de evaluación",
+  "type": "object",
+  "required": [
+    "perfil",
+    "instancia",
+    "items"
+  ],
+  "properties": {
+    "perfil": {
+      "type": "string"
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "instancia": {
+      "type": "string"
+    },
+    "notas": {
+      "type": "array"
+    },
+    "capitulos_esperados": {
+      "type": "array"
+    },
+    "defaults_plan": {
+      "type": "object"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "titulo",
+          "modulo",
+          "secciones",
+          "artifacts",
+          "bloqueante",
+          "norma",
+          "pregunta",
+          "destino"
+        ]
+      }
+    }
+  }
+}

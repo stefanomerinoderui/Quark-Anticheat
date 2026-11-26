@@ -1,0 +1,85 @@
+{
+  "proyecto_id": "pif-2026-ejemplo",
+  "titulo": "Título del PIF",
+  "cohorte": "2026",
+  "equipo": [
+    {
+      "nombre": "Integrante Uno",
+      "emails_git": [
+        "uno@example.com"
+      ],
+      "usuario_git": "uno"
+    },
+    {
+      "nombre": "Integrante Dos",
+      "emails_git": [
+        "dos@example.com",
+        "dos@personal.com"
+      ],
+      "usuario_git": "dos"
+    }
+  ],
+  "modalidad": "23.2",
+  "repos": {
+    "codigo": {
+      "url": "https://github.com/equipo/pif-codigo"
+    },
+    "docs": {
+      "url": "https://github.com/equipo/pif-docs"
+    }
+  },
+  "instancias": [
+    {
+      "id": "AE1",
+      "perfil": "ae1_entrega_parcial",
+      "fecha_limite": "2026-09-05T23:59:00-03:00",
+      "politica_ia": "declaracion_catedra",
+      "exige_portafolio_bitacora": true,
+      "variaciones": []
+    },
+    {
+      "id": "AE2",
+      "perfil": "ae2_entrega_parcial",
+      "fecha_limite": "2026-10-01T23:59:00-03:00",
+      "tag_esperado": "v1",
+      "politica_ia": "declaracion_catedra",
+      "exige_portafolio_bitacora": true,
+      "variaciones": []
+    },
+    {
+      "id": "AE4",
+      "perfil": "ae4_entrega_integral",
+      "fecha_limite": "2026-11-17T23:59:00-03:00",
+      "tag_esperado": "v-final",
+      "politica_ia": "declaracion_catedra",
+      "exige_portafolio_bitacora": true,
+      "variaciones": [
+        {
+          "item_id": "EST-04",
+          "accion": "ajustar",
+          "detalle": "El proyecto no usa datasets ni modelos de IA: omitir el eje 3 del Cap. VIII.",
+          "motivo": "Acordado con la cátedra",
+          "acordado_el": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "id": "FINAL",
+      "perfil": "pif_final",
+      "fecha_limite": "2026-12-15T23:59:00-03:00",
+      "tag_esperado": "v-final",
+      "politica_ia": "declaracion_catedra",
+      "exige_portafolio_bitacora": false,
+      "variaciones": []
+    },
+    {
+      "id": "REENTREGA-1",
+      "perfil": "reentrega",
+      "fecha_limite": "2027-02-15T23:59:00-03:00",
+      "tag_esperado": "v-final-r1",
+      "politica_ia": "declaracion_catedra",
+      "exige_portafolio_bitacora": false,
+      "variaciones": []
+    }
+  ]
+}
