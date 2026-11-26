@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=BAR 2xAI Skirmish (Quark Protected)
+Comment=Beyond All Reason: two BARb-controlled sides fighting on Techno Lands, for testing Quark Anticheat against a live game
+Exec=env SPRING_DATADIR=/home/quark/RecoilEngine/build:/home/quark/RecoilEngine/cont /home/quark/RecoilEngine/build/spring skirmish_2ai.txt
+Path=/home/quark/RecoilEngine/build
+Icon=/home/quark/RecoilEngine/rts/RecoilEngine_Icon.svg
+Terminal=false
+Categories=Game;
