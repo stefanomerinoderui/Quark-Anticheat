@@ -75,7 +75,9 @@ autotermina con `_exit(137)` (`quark_sdk.c:95`), en lugar de continuar sin super
 
 ## 3. Protocolo de comunicación (IPC)
 
-### 3.1. SDK y demonio: Unix Domain Socket (`/tmp/quark.sock`)
+### 3.1. SDK y demonio: Unix Domain Socket (`/run/quark/quark.sock`)
+
+El socket vive en `/run/quark/`, que crea systemd (o root) con dueño root: ningún proceso sin privilegios puede crear ese camino antes que el demonio y hacerse pasar por él, cosa que sí era posible en `/tmp`. La ruta es fija en la SDK a propósito: el juego no puede apuntarse a otro socket en tiempo de ejecución.
 
 Cada mensaje consta de un encabezado de 8 bytes seguido de un payload variable:
 

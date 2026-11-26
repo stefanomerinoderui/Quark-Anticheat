@@ -8,7 +8,12 @@
 #include <poll.h>
 #include <pthread.h>
 
-#define QUARK_SOCKET_PATH "/tmp/quark.sock"
+// Mirrored by SOCKET_PATH in quark_daemon/src/main.rs and ListenStream= in
+// quark.socket. /run/quark/ is created by root (systemd), so unlike /tmp no
+// unprivileged process can pre-create this path and impersonate the daemon,
+// and systemd-tmpfiles never ages it out. Deliberately not overridable at run
+// time: a game must not be pointable at a socket of the user's choosing.
+#define QUARK_SOCKET_PATH "/run/quark/quark.sock"
 
 #define CMD_REGISTER_GAME 1
 #define CMD_REGISTER_VAR  2

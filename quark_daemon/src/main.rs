@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::os::fd::{AsRawFd, FromRawFd};
+use std::os::unix::fs::PermissionsExt;
 use std::os::unix::net::{UnixListener, UnixStream};
 use std::path::Path;
 use std::process::Command;
@@ -14,6 +15,10 @@ mod bpf;
 // First file descriptor systemd hands to a socket-activated service, per the
 // sd_listen_fds(3) protocol (fds 0/1/2 are stdio, activation fds start at 3).
 const SD_LISTEN_FDS_START: i32 = 3;
+
+// Unix socket games connect to. Mirrored by QUARK_SOCKET_PATH in sdk/quark_sdk.c
+// and ListenStream= in quark.socket (see the SDK for why /run and not /tmp).
+const SOCKET_PATH: &str = "/run/quark/quark.sock";
 
 // Location of the quark_cli netlink client. Baked in at compile time so distro
 // packages can point at their installed copy (QUARK_CLI_PATH=/usr/lib/...);
@@ -161,7 +166,7 @@ fn get_peer_pid(stream: &UnixStream) -> Option<i32> {
 fn handle_client(mut stream: UnixStream, bpf: Option<&bpf::QuarkBpf>) -> std::io::Result<()> {
     println!("[QUARK-DAEMON] Client connected.");
 
-    // /tmp/quark.sock is world read/write (game processes need to reach it), so the
+    // SOCKET_PATH is world read/write (game processes need to reach it), so the
     // pid a client *claims* in CMD_REGISTER_GAME's payload can't be trusted -- a
     // malicious local process could claim someone else's real, already-protected pid
     // and then just disconnect, tricking this function's own cleanup path into
@@ -527,27 +532,41 @@ fn run_monitor_loop(state: Arc<Mutex<Option<QuarkState>>>) -> std::io::Result<()
     Ok(())
 }
 
+/// Binds SOCKET_PATH directly, for runs without systemd socket activation (e.g. the
+/// test scripts). The parent directory must already exist or be creatable by this
+/// process: /run is root-only, so unprivileged dev runs need it pre-created once
+/// (`sudo install -d -o "$(id -u)" /run/quark`, as the run_test*.sh scripts do).
+fn bind_socket_directly() -> std::io::Result<UnixListener> {
+    let path = Path::new(SOCKET_PATH);
+    if let Some(dir) = path.parent() {
+        std::fs::create_dir_all(dir)?;
+    }
+    if path.exists() {
+        std::fs::remove_file(path)?;
+    }
+    let listener = UnixListener::bind(path)?;
+    // Same as quark.socket's SocketMode=0666: games run as regular users and must
+    // be able to connect even when the daemon itself runs as root.
+    std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o666))?;
+    Ok(listener)
+}
+
 fn main() {
-    let socket_path = "/tmp/quark.sock";
+    let socket_path = SOCKET_PATH;
 
     let (listener, activated) = match systemd_activated_listener() {
         Some(l) => (l, true),
-        None => {
-            // Not socket-activated (no systemd, or launched directly for
-            // testing) -- fall back to binding the socket ourselves, same as
-            // before.
-            if Path::new(socket_path).exists() {
-                let _ = std::fs::remove_file(socket_path);
+        None => match bind_socket_directly() {
+            Ok(l) => (l, false),
+            Err(e) => {
+                eprintln!(
+                    "Failed to bind socket {}: {:?} (does /run/quark exist and is it writable \
+                     by this user? see bind_socket_directly)",
+                    socket_path, e
+                );
+                std::process::exit(1);
             }
-
-            match UnixListener::bind(socket_path) {
-                Ok(l) => (l, false),
-                Err(e) => {
-                    eprintln!("Failed to bind socket: {:?}", e);
-                    std::process::exit(1);
-                }
-            }
-        }
+        },
     };
 
     println!("==================================================");

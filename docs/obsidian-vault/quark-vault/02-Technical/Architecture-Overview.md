@@ -7,7 +7,7 @@ tags: [tecnico, arquitectura]
 
 ```mermaid
 graph TD
-    G[Juego + SDK C] <-->|Unix socket /tmp/quark.sock| D[Daemon Rust]
+    G[Juego + SDK C] <-->|Unix socket /run/quark/quark.sock| D[Daemon Rust]
     D -->|quark_cli → Netlink proto 31| K{Módulo de kernel}
     K -->|kretprobe ptrace_may_access → EACCES| X[Cheat: open /proc/PID/mem]
 ```

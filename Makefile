@@ -133,7 +133,7 @@ clean:
 	rm -f $(SDK_DIR)/libquark_sdk.so*
 	rm -f kernel/quark_cli_hash.h
 	rm -f $(BPF_VMLINUX)
-	rm -f /tmp/quark.sock
+	-rm -f /run/quark/quark.sock
 	rm -f compile_commands.json
 	rm -f kernel/compile_flags.txt
 	$(MAKE) -C kernel clean

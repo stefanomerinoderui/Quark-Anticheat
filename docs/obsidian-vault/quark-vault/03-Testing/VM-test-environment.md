@@ -871,3 +871,10 @@ workaround would be correlating the ptrace and capability hooks per task, which 
 judged too fragile. The same rule applies to protected games' `/proc/<pid>/maps`
 (`docs/features.md` §1.1).
 
+## Update 2026-11-26 — agent:claude-opus-5-5 — socket movido a /run/quark
+
+- **REPLACES** — en §3.2 y en el resto de este registro, `/tmp/quark.sock` → **`/run/quark/quark.sock`** (SDK, demonio y `quark.socket`; rama `feat/arch-packaging`). Las menciones anteriores describen las corridas tal como se hicieron y se conservan.
+- Motivo: `/run/quark/` lo crea systemd con dueño root, así que un proceso sin privilegios ya no puede crear el socket antes que el demonio y hacerse pasar por él, y `systemd-tmpfiles` no lo borra por antigüedad como podía pasar en `/tmp`.
+- Corridas sin socket activation (`run_test*.sh`, `capture.sh`): los scripts ejecutan `sudo install -d -o "$(id -u)" /run/quark` antes de lanzar el demonio como usuario. En la VM, re-copiar `quark_daemon/systemd/quark.socket` a `/etc/systemd/system/` y hacer `systemctl daemon-reload && systemctl restart quark.socket`.
+- **Pendiente:** el `quark_sdk.c` copiado en RecoilEngine (`rts/System/QuarkAnticheat/`) todavía apunta a `/tmp/quark.sock`; hay que re-sincronizarlo y recompilar el motor antes de la próxima prueba con BAR.
+

@@ -16,7 +16,7 @@ Qué hace cada pieza, con detalle y referencias de código: nota **Features** de
 
 * **Lenguajes**: C (módulo de kernel, SDK, `quark_cli`, juego y *cheat* de prueba) y Rust, edición 2024 (demonio).
 * **Mediación en el kernel**: kretprobe sobre `ptrace_may_access()` (bloqueo) y BPF-LSM (`bpf_prog_load`, acceso a objetos BPF y al demonio) más telemetría eBPF por ring buffer. Un LSM clásico no es viable desde un módulo fuera del árbol, por eso se usa BPF-LSM.
-* **Comunicación interna**: netlink (protocolo 31) entre `quark_cli` y el módulo, con comandos firmados; socket Unix (`/tmp/quark.sock`) entre SDK y demonio, con el PID del cliente verificado por `SO_PEERCRED`.
+* **Comunicación interna**: netlink (protocolo 31) entre `quark_cli` y el módulo, con comandos firmados; socket Unix (`/run/quark/quark.sock`, en un directorio que sólo root puede crear) entre SDK y demonio, con el PID del cliente verificado por `SO_PEERCRED`.
 * **Servicios**: unidades systemd `quark.socket`, `quark.service` y `quark-kernel.service` (`quark_daemon/systemd/`).
 * **Entorno**: el proyecto declara Nobara Linux como distribución de referencia; la VM de pruebas actual es CachyOS (ver `vm/README.md`). Pruebas con QEMU/KVM.
 * **Motor real de validación**: RecoilEngine (submódulo) con el SDK integrado, ejecutando Beyond All Reason.

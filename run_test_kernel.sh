@@ -54,6 +54,10 @@ echo -e "${GREEN}Kernel module loaded successfully.${NC}\n"
 # Clean up logs
 rm -f daemon.log game.log cheat.log
 
+# The daemon binds /run/quark/quark.sock itself here (no systemd socket activation)
+# and runs as this user, so /run/quark (root-only by default) must be ours.
+sudo install -d -m 0755 -o "$(id -u)" -g "$(id -g)" /run/quark
+
 # 3. Start the Quark Daemon in the background
 echo "Starting Quark Daemon..."
 ./quark_daemon/target/release/quark_daemon > daemon.log 2>&1 &
@@ -139,7 +143,7 @@ fi
 echo -e "\nUnloading kernel module..."
 sudo rmmod quark_kernel
 kill $GAME_PID $DAEMON_PID 2>/dev/null
-rm -f /tmp/quark.sock
+rm -f /run/quark/quark.sock
 
 echo -e "\n${BOLD}=== Kernel Ring Buffer Logs (dmesg) ===${NC}"
 sudo dmesg | tail -n 12
