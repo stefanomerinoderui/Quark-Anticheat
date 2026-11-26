@@ -25,3 +25,10 @@ Sesión de terminal local, sin enlace compartible.
 3. **Commit y push del estado, y mejoras en las fuentes `.md`/`.tex` según el flujo de redacción, incluida la declaración de IA; luego otra pasada del harness leyendo el `.tex`.** Resultado: commits `535885f` y `cbfb87b` (carátula, ids de títulos, anexos "X de Y", Anexo III.5/III.6, Cap. XIII, declaración de IA) y segunda pasada sin ROJO.
 4. **Publicar todo, conservar las matrices en git y agregar autodocumentación de prompts.** Resultado: este registro, la regla en `AGENTS.md` y el ajuste de `.gitignore` de `entregas/`.
 5. **Entradas de bitácora de agosto a noviembre.** Se pidió generar entradas fechadas por trabajo realizado, a partir de los commits propios que no estaban en `Bitacora_GabrielMartinezA.md`, imitando el tono, estilo y extensión de ese archivo. Resultado: `06-Cycles/Bitacora-GabrielMartinezA-entradas-2026-08-a-11.md`.
+
+## 2026-11-26 — Claude Code (terminal) — `agent:claude-sonnet-5-5` — handoff del plan a largo plazo
+Sesión de terminal local, sin enlace compartible. Es la continuación de la sesión del 2026-11-25 (plan inmediato, integración de capítulos, handoff del harness); solo se resumen los pedidos que esa sesión vio.
+1. **Plan inmediato y relevamiento (2026-11-25).** Se pidió medir el estado de módulos y capítulos y armar el plan de un día con agentes. Resultado: `06-Cycles/Plan-Inmediato-2026-11-25.md`, borradores en `01-Project/draft/` e integración en `Informe-PIF-Avance.md`.
+2. **Integración con decisiones del autor, GPLv3 e INPI.** Resultado: capítulos integrados, `LICENSE`, Cap. VIII con las búsquedas "quark" y "quark anticheat", commits y push a `dev/docs`.
+3. **Handoff del harness.** Se pegó la introducción de la guía de la cátedra. Resultado: `06-Cycles/Handoff-Harness-2026-11-25.md`.
+4. **Handoff del plan a largo plazo.** Se pidió un handoff específico para redactar ese plan. Resultado: `06-Cycles/Handoff-Plan-Largo-Plazo-2026-11-26.md` (pedido, restricciones, 14 observaciones del harness como backlog, insumos y preguntas abiertas). No incluye el plan en sí.
