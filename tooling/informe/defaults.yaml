@@ -9,7 +9,7 @@ filters: [tooling/informe/filter.lua]
 include-in-header: [tooling/informe/header.tex]
 metadata:
   title: "Quark Anticheat: análisis de viabilidad técnica e implementación de un sistema anticheat nativo para GNU/Linux"
-  author: "Martínez Alarcón, Gabriel Sebastián — Merino De Rui, Stefano Nahuel"
+  author: "Martínez Alarcón, Gabriel Sebastián (colaborador: Merino De Rui, Stefano Nahuel)"
   lang: es
 variables:
   documentclass: report

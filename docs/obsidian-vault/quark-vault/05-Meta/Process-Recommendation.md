@@ -10,6 +10,8 @@ author: agent:claude
 
 Entrada de decisión (ledger, append-only). **Estado: propuesta** hasta que Gabriel y Stefano agreguen abajo una línea `## AAAA-MM-DD — <nombre> — ACEPTADA / RECHAZADA`.
 
+## 2026-11-25 — Gabriel — ACEPTADA
+
 ## Contexto
 - El informe (§6.1) declara **modelo en espiral + prácticas SCRUM**. La evidencia en git ([[Cycle-Log]]) muestra prototipos sucesivos cada vez más realistas, integrados por PR en `Dev`, trabajo en ráfagas (jun, fin de ago, oct, nov), sin sprints, backlog en git ni registro de riesgos actualizado.
 - Hoy es 2026-11-11 y H5 (validación + documentación + defensa) está estimado para **mediados de noviembre**. No hay tiempo para otro ciclo de desarrollo completo; lo que queda es estabilizar, medir y documentar.

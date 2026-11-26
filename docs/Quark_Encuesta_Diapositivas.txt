@@ -1,0 +1,90 @@
+04 · ENCUESTA A STAKEHOLDERS
+Qué queremos saber y de quién
+Encuesta anónima, publicada en Reddit, dirigida a usuarios de Linux, jugadores y desarrolladores de juegos.
+01
+Perfil
+Nivel técnico, años usando Linux, motivos y si usa solo Linux.
+02
+Interés
+Likert sobre cada característica de Quark y sobre los anticheats de kernel.
+03
+Adopción
+Probabilidad de instalarlo según condiciones y si cambiaría su uso de Windows.
+04
+Propuestas
+Qué agregarían, qué los haría rechazarlo y qué trampas contemplar.
+05
+Contacto
+Canales para seguir el proyecto, desvinculados de las respuestas.
+La encuesta sirve para validar con usuarios reales dos supuestos del proyecto: que existe interés y que el código abierto es un diferencial. Primero se segmenta al encuestado para poder cruzar su perfil con su interés y su intención de adopción.
+
+
+Las preguntas que más nos importan
+
+¿Confían más en el código abierto?
+“Confiaría más en un anticheat de kernel de código abierto que en uno cerrado.”
+Valida el diferencial
+¿Abrir el código ayuda al tramposo?
+“Publicar el código de un anticheat facilita que los tramposos lo evadan.”
+Mide la objeción principal
+¿Bajo qué condiciones lo instalarían?
+Repositorios de la distro, carga solo durante el juego, Secure Boot, auditoría independiente.
+Orienta el diseño
+¿Dejarían Windows?
+“Si estos juegos funcionaran en Linux, dejaría de usar Windows por completo.”
+Mide el impacto potencial
+Estas cuatro preguntas justifican la encuesta. La segunda está incluida a propósito para no sesgar a favor del proyecto. La cuarta es hipotética: la vamos a presentar como intención declarada, no como predicción de conducta.
+
+
+¿Es demasiado larga?
+
+~50
+preguntas e ítems en el borrador; cada persona ve entre 40 y 45 según sus respuestas
+~33
+ítems en escala Likert, la parte que más fatiga produce
+10–12 min
+estimación realista del tiempo de respuesta, por encima de los 8 anunciados
+En Reddit, cada minuto extra aumenta el abandono. Una encuesta corta con respuestas completas vale más que una larga a medio responder.
+El borrador anuncia 8 minutos, pero con esta cantidad de ítems probablemente tome más, sobre todo con las preguntas abiertas. Las baterías Likert largas generan respuestas automáticas, como marcar siempre 3 o siempre 5. Por eso planteamos recortarla o dividirla.
+
+
+¿Una encuesta o varias?
+
+OPCIONES, puntos a favor y en contra:
+
+Una sola, recortada
+Unos 25 ítems, 6 a 7 minutos
+Cruza perfil, interés y adopción en la misma persona
+Un solo post por subreddit
+En contra
+Se pierde detalle sobre las características
+Dividida por público
+Una para usuarios y jugadores
+Otra para desarrolladores: integración y verificación del servidor
+Cada público responde lo que le aplica
+En contra
+Pocos desarrolladores: muestra chica
+Dividida por etapa
+Primero perfil e interés
+Después adopción, tras una demo o video
+Respuestas más informadas
+En contra
+Al ser anónima, no se vinculan las dos etapas
+La lógica condicional ya evita que cada persona vea todo, pero no alcanza. La división por etapa suena bien, pero al ser anónima perderíamos el cruce entre perfil y adopción, que es lo más valioso. Además, varios subreddits limitan las encuestas: publicar muchas puede traer problemas con los moderadores.
+
+
+Nuestra idea actual
+01
+Mantener una encuesta principal, recortada a unos 25 ítems
+02
+Crear una encuesta corta aparte para desarrolladores de juegos
+03
+Prueba piloto con 5 a 10 personas para medir el tiempo real
+04
+Consultar a los moderadores, con versiones en inglés y en español
+Qué recortar
+Características: de 9 a 6, unificando canal firmado con atestación, y fallo cerrado con monitoreo
+Condiciones de adopción: 5
+Preguntas abiertas: 2
+Recomendamos un punto intermedio: una encuesta principal corta para todos y una muy breve para desarrolladores, que podemos difundir en r/gamedev. Queda abierto a lo que sugiera el tutor. La prueba piloto nos dirá si el recorte alcanza.
+5
