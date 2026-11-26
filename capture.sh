@@ -76,11 +76,15 @@ sudo -v || die "sudo required"
 ( while true; do sudo -n true 2>/dev/null; sleep 45; done ) &
 SUDO_KEEPALIVE=$!
 
+# The daemon binds /run/quark/quark.sock itself here (no systemd socket activation)
+# and runs as this user, so /run/quark (root-only by default) must be ours.
+sudo install -d -m 0755 -o "$(id -u)" -g "$(id -g)" /run/quark
+
 cleanup() {
     kill "$SUDO_KEEPALIVE" 2>/dev/null
     pkill -f "$DAEMON_BIN" 2>/dev/null
     sudo rmmod "$MODULE_NAME" 2>/dev/null
-    rm -f /tmp/quark.sock
+    rm -f /run/quark/quark.sock
 }
 trap cleanup EXIT INT TERM
 
@@ -142,7 +146,7 @@ wait_for_exit() {
 reset_state() {
     pkill -f "$DAEMON_BIN" 2>/dev/null
     sudo rmmod "$MODULE_NAME" 2>/dev/null
-    rm -f /tmp/quark.sock
+    rm -f /run/quark/quark.sock
     sleep 0.3
     sudo dmesg -C >/dev/null 2>&1
 }
@@ -269,7 +273,7 @@ run_rep() {
     kill "$game_pid" 2>/dev/null
     [ -n "$daemon_pid" ] && kill "$daemon_pid" 2>/dev/null
     sudo rmmod "$MODULE_NAME" 2>/dev/null
-    rm -f /tmp/quark.sock
+    rm -f /run/quark/quark.sock
     return 0
 }
 
@@ -308,7 +312,7 @@ run_negative_control() {
 
     sudo dmesg > "$tag.dmesg" 2>/dev/null
     kill "$gp" "$dp" 2>/dev/null
-    rm -f /tmp/quark.sock
+    rm -f /run/quark/quark.sock
 }
 
 # ---------------------------------------------------------------- watchdog probe
@@ -350,7 +354,7 @@ run_watchdog_probe() {
             && echo "  fatal message present in game log" \
             || echo "  fatal message NOT in game log"
     fi
-    rm -f /tmp/quark.sock
+    rm -f /run/quark/quark.sock
 }
 
 # ---------------------------------------------------------------- summary

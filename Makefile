@@ -1,5 +1,11 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O2
+# `?=`/`+=` so distro build systems (makepkg) can inject their own optimisation
+# and hardening flags through the environment; the warning flags are always kept.
+CFLAGS ?= -O2
+CFLAGS += -Wall -Wextra
+LDFLAGS ?=
+# Extra cargo flags, e.g. `--frozen` for reproducible package builds.
+CARGO_FLAGS ?=
 
 # Paths
 SDK_DIR = sdk
@@ -8,14 +14,33 @@ CHEAT_DIR = cheat
 DAEMON_DIR = quark_daemon
 BPF_VMLINUX = $(DAEMON_DIR)/src/bpf/vmlinux.h
 
+# The daemon's Cargo.toml is the single source of truth for the project version.
+VERSION := $(shell sed -n 's/^version = "\(.*\)"/\1/p' $(DAEMON_DIR)/Cargo.toml)
+SDK_SONAME = libquark_sdk.so.$(firstword $(subst ., ,$(VERSION)))
+SDK_LIB = $(SDK_DIR)/libquark_sdk.so.$(VERSION)
 
-.PHONY: all daemon vmlinux game cheat kernel kernel-testing clean lint compile_commands.json kernel/compile_flags.txt
+# Optional override of where quark_cli looks for its signing key (defaults to
+# the dev rig's /opt path, see quark_daemon/quark_cli.c). Packages set it.
+ifdef QUARK_SIGNING_KEY_PATH
+QUARK_CLI_DEFS = -DQUARK_SIGNING_KEY_PATH='"$(QUARK_SIGNING_KEY_PATH)"'
+endif
 
-all: daemon game cheat
+
+.PHONY: all daemon sdk vmlinux game cheat kernel kernel-testing clean lint compile_commands.json kernel/compile_flags.txt
+
+all: daemon sdk game cheat
 
 daemon: $(DAEMON_DIR)/quark_cli $(BPF_VMLINUX)
 	@echo "=== Compiling Quark Daemon (Rust) ==="
-	cargo build --release --manifest-path $(DAEMON_DIR)/Cargo.toml
+	cargo build --release $(CARGO_FLAGS) --manifest-path $(DAEMON_DIR)/Cargo.toml
+
+# Shared library for games linking the SDK dynamically (the mock game below
+# still compiles quark_sdk.c in statically).
+sdk: $(SDK_LIB)
+
+$(SDK_LIB): $(SDK_DIR)/quark_sdk.c $(SDK_DIR)/quark_sdk.h
+	@echo "=== Compiling SDK shared library (C) ==="
+	$(CC) $(CFLAGS) -fPIC -shared $(LDFLAGS) -Wl,-soname,$(SDK_SONAME) $(SDK_DIR)/quark_sdk.c -o $@ -pthread
 
 # Kernel type definitions for the daemon's BPF-LSM/telemetry programs
 # (quark_daemon/src/bpf/quark.bpf.c), dumped from the build host's BTF. CO-RE
@@ -32,15 +57,15 @@ $(BPF_VMLINUX):
 # (tooling/keys/generate-testing-key.sh) -- needs OpenSSL's libcrypto.
 $(DAEMON_DIR)/quark_cli: $(DAEMON_DIR)/quark_cli.c
 	@echo "=== Compiling Quark Netlink CLI Client (C) ==="
-	$(CC) $(CFLAGS) $(DAEMON_DIR)/quark_cli.c -o $(DAEMON_DIR)/quark_cli -lcrypto
+	$(CC) $(CFLAGS) $(QUARK_CLI_DEFS) $(LDFLAGS) $(DAEMON_DIR)/quark_cli.c -o $(DAEMON_DIR)/quark_cli -lcrypto
 
 game: $(GAME_DIR)/game.c $(SDK_DIR)/quark_sdk.c
 	@echo "=== Compiling Game & SDK (C) ==="
-	$(CC) $(CFLAGS) -I$(SDK_DIR) $(GAME_DIR)/game.c $(SDK_DIR)/quark_sdk.c -o $(GAME_DIR)/game
+	$(CC) $(CFLAGS) -I$(SDK_DIR) $(LDFLAGS) $(GAME_DIR)/game.c $(SDK_DIR)/quark_sdk.c -o $(GAME_DIR)/game
 
 cheat: $(CHEAT_DIR)/cheat.c
 	@echo "=== Compiling Cheat (C) ==="
-	$(CC) $(CFLAGS) $(CHEAT_DIR)/cheat.c -o $(CHEAT_DIR)/cheat
+	$(CC) $(CFLAGS) $(LDFLAGS) $(CHEAT_DIR)/cheat.c -o $(CHEAT_DIR)/cheat
 
 kernel/compile_flags.txt:
 	@echo "=== Generating kernel/compile_flags.txt dynamically for kernel $(shell uname -r) ==="
@@ -105,9 +130,10 @@ clean:
 	rm -f $(DAEMON_DIR)/quark_cli
 	rm -f $(GAME_DIR)/game
 	rm -f $(CHEAT_DIR)/cheat
+	rm -f $(SDK_DIR)/libquark_sdk.so*
 	rm -f kernel/quark_cli_hash.h
 	rm -f $(BPF_VMLINUX)
-	rm -f /tmp/quark.sock
+	-rm -f /run/quark/quark.sock
 	rm -f compile_commands.json
 	rm -f kernel/compile_flags.txt
 	$(MAKE) -C kernel clean

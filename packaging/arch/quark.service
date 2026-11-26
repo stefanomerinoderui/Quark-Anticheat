@@ -1,0 +1,14 @@
+[Unit]
+Description=Quark Anticheat Daemon
+Requires=quark.socket
+After=quark.socket
+
+# Socket-activated through quark.socket (shipped alongside); packaged variant of
+# quark_daemon/systemd/quark.service with FHS paths instead of a repo checkout.
+[Service]
+Type=simple
+ExecStart=/usr/bin/quark_daemon
+# Needs root: the kernel module only accepts netlink commands from root
+# (sent via quark_cli), and the monitor thread reads other processes'
+# /proc/<pid>/mem.
+User=root

@@ -1,0 +1,162 @@
+# Builds the Arch Linux packages (packaging/arch/) on every PR and push to main.
+# On a v* tag it also signs them, attaches them to a GitHub Release and publishes
+# a signed pacman repository on GitHub Pages.
+#
+# One-time repository setup (see README, "Instalación (Arch Linux)"):
+#   secret   PACKAGER_GPG_PRIVATE_KEY  armored private key used to sign packages
+#   variable PACKAGER_GPG_KEY_ID       fingerprint of that key
+#   Settings > Pages > Source: GitHub Actions
+#   Settings > Environments > github-pages: allow tags matching v*
+name: Arch packages
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      # git must exist before checkout, otherwise actions/checkout falls back to
+      # a plain tarball and `git archive` in build-packages.sh fails.
+      - name: Install git and namcap
+        run: pacman -Syu --noconfirm --needed git namcap
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Read from the PKGBUILD itself so this list can't drift from makedepends.
+      - name: Install build dependencies from the PKGBUILD
+        run: |
+          mapfile -t deps < <(source packaging/arch/PKGBUILD && printf '%s\n' "${makedepends[@]}")
+          pacman -S --noconfirm --needed "${deps[@]}"
+
+      # makepkg refuses to run as root.
+      - name: Create unprivileged build user
+        run: |
+          git config --system --add safe.directory "$GITHUB_WORKSPACE"
+          useradd --create-home builder
+          chown -R builder "$GITHUB_WORKSPACE"
+
+      - name: Build packages
+        run: sudo -u builder --preserve-env=GITHUB_REF_TYPE,GITHUB_REF_NAME packaging/arch/build-packages.sh
+
+      # Report-only for now: surfaces packaging issues without blocking merges.
+      - name: Lint with namcap
+        run: namcap packaging/arch/PKGBUILD packaging/arch/out/*.pkg.tar.zst || true
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: arch-packages
+          path: packaging/arch/out/*.pkg.tar.zst
+          if-no-files-found: error
+
+  # Installs the DKMS package against Arch's current linux-headers, so a module
+  # that no longer builds (or a broken PRE_BUILD step) fails CI instead of
+  # failing on users' machines at install time.
+  dkms:
+    needs: build
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - name: Install DKMS and kernel headers
+        run: pacman -Syu --noconfirm --needed dkms linux-headers
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: arch-packages
+          path: out
+
+      - name: Install quark-anticheat-dkms
+        run: pacman -U --noconfirm out/quark-anticheat-dkms-[0-9]*.pkg.tar.zst
+
+      # The pacman DKMS hook skips building here: the container has kernel
+      # headers but no installed kernel. Build explicitly against the headers.
+      - name: Build the module with DKMS
+        run: |
+          pkgver="$(pacman -Q quark-anticheat-dkms | awk '{print $2}' | cut -d- -f1)"
+          kver="$(find /usr/lib/modules -mindepth 1 -maxdepth 1 -printf '%f\n' | head -n1)"
+          if ! dkms build "quark-anticheat/$pkgver" -k "$kver"; then
+            cat "/var/lib/dkms/quark-anticheat/$pkgver/build/make.log" || true
+            echo "::error::DKMS failed to build quark_kernel against $(pacman -Q linux-headers)"
+            exit 1
+          fi
+          dkms status -m quark-anticheat
+          test "$(stat -c %a /etc/quark-anticheat/quark_signing_key.pem)" = 600
+
+  publish:
+    if: github.ref_type == 'tag'
+    needs: [build, dkms]
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    permissions:
+      contents: write
+    env:
+      GPG_KEY_ID: ${{ vars.PACKAGER_GPG_KEY_ID }}
+    steps:
+      - name: Install publishing tools
+        run: pacman -Syu --noconfirm --needed git github-cli
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: arch-packages
+          path: out
+
+      - name: Import signing key
+        env:
+          PACKAGER_GPG_PRIVATE_KEY: ${{ secrets.PACKAGER_GPG_PRIVATE_KEY }}
+        run: |
+          if [ -z "$PACKAGER_GPG_PRIVATE_KEY" ] || [ -z "$GPG_KEY_ID" ]; then
+            echo "::error::PACKAGER_GPG_PRIVATE_KEY secret and PACKAGER_GPG_KEY_ID variable must be set"
+            exit 1
+          fi
+          printf '%s\n' "$PACKAGER_GPG_PRIVATE_KEY" | gpg --batch --import
+
+      - name: Sign packages and build the pacman repository
+        run: |
+          REPO_URL="https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${GITHUB_REPOSITORY#*/}" \
+            packaging/arch/publish-repo.sh out site
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+            --title "$GITHUB_REF_NAME" --generate-notes \
+            site/x86_64/*.pkg.tar.zst site/x86_64/*.pkg.tar.zst.sig site/quark-anticheat.asc
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
+  deploy:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

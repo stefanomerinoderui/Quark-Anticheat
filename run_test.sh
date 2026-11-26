@@ -23,7 +23,11 @@ fi
 echo -e "${GREEN}Compilation successful.${NC}\n"
 
 # Clean up logs and sockets
-rm -f daemon.log game.log /tmp/quark.sock
+rm -f daemon.log game.log /run/quark/quark.sock
+
+# The daemon binds /run/quark/quark.sock itself here (no systemd socket activation)
+# and runs as this user, so /run/quark (root-only by default) must be ours.
+sudo install -d -m 0755 -o "$(id -u)" -g "$(id -g)" /run/quark
 
 # 2. Start the Quark Daemon in the background
 echo "Starting Quark Daemon..."
@@ -99,7 +103,7 @@ echo -e "--------------------------------\n"
 
 # Cleanup background processes
 kill $DAEMON_PID 2>/dev/null
-rm -f daemon.log game.log /tmp/quark.sock
+rm -f daemon.log game.log /run/quark/quark.sock
 
 echo -e "${GREEN}${BOLD}Test completed successfully!${NC}"
 exit 0

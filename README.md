@@ -16,7 +16,7 @@ Qué hace cada pieza, con detalle y referencias de código: nota **Features** de
 
 * **Lenguajes**: C (módulo de kernel, SDK, `quark_cli`, juego y *cheat* de prueba) y Rust, edición 2024 (demonio).
 * **Mediación en el kernel**: kretprobe sobre `ptrace_may_access()` (bloqueo) y BPF-LSM (`bpf_prog_load`, acceso a objetos BPF y al demonio) más telemetría eBPF por ring buffer. Un LSM clásico no es viable desde un módulo fuera del árbol, por eso se usa BPF-LSM.
-* **Comunicación interna**: netlink (protocolo 31) entre `quark_cli` y el módulo, con comandos firmados; socket Unix (`/tmp/quark.sock`) entre SDK y demonio, con el PID del cliente verificado por `SO_PEERCRED`.
+* **Comunicación interna**: netlink (protocolo 31) entre `quark_cli` y el módulo, con comandos firmados; socket Unix (`/run/quark/quark.sock`, en un directorio que sólo root puede crear) entre SDK y demonio, con el PID del cliente verificado por `SO_PEERCRED`.
 * **Servicios**: unidades systemd `quark.socket`, `quark.service` y `quark-kernel.service` (`quark_daemon/systemd/`).
 * **Entorno**: el proyecto declara Nobara Linux como distribución de referencia; la VM de pruebas actual es CachyOS (ver `vm/README.md`). Pruebas con QEMU/KVM.
 * **Motor real de validación**: RecoilEngine (submódulo) con el SDK integrado, ejecutando Beyond All Reason.
@@ -28,6 +28,7 @@ Qué hace cada pieza, con detalle y referencias de código: nota **Features** de
 * `/sdk`: biblioteca de integración (`quark_sdk.h` / `quark_sdk.c`).
 * `/game_target`: videojuego *mock* en C usado como objetivo de prueba.
 * `/cheat`: herramienta de ataque en C que escribe sobre `/proc/<PID>/mem`.
+* `/packaging`: empaquetado para Arch Linux (`arch/`: PKGBUILD y scripts de build y publicación) y configuración DKMS del módulo (`dkms/`).
 * `/tooling`: generador de claves de prueba (`keys/`), compilación en contenedor de RecoilEngine (`recoil-fedora-build/`) y utilidades de documentación.
 * `/vm`: documentación y accesos directos de la VM de pruebas.
 * `/RecoilEngine`: submódulo del motor con el SDK integrado.
@@ -50,7 +51,7 @@ Qué hace cada pieza, con detalle y referencias de código: nota **Features** de
 ```bash
 tooling/keys/generate-testing-key.sh   # una vez: crea el par ECDSA de PRUEBAS y actualiza kernel/quark_pubkey.h
 # instalar la clave privada en /opt/quark-anticheat/keys/quark_signing_key.pem (0600, root) donde corra quark_cli
-make                                   # demonio (Rust + BPF), quark_cli, juego + SDK y cheat
+make                                   # demonio (Rust + BPF), quark_cli, libquark_sdk.so, juego + SDK y cheat
 make kernel-testing                    # módulo con el chequeo de VM desactivado (para la VM de pruebas)
 make kernel                            # módulo de release: se niega a proteger dentro de una VM
 make lint                              # clang-tidy estricto sobre todo el código C (obligatorio al modificar C)
@@ -58,6 +59,44 @@ make clean
 ```
 
 La clave privada no está en el repositorio. En un clon nuevo hay que generar un par y **recompilar el módulo** para que embeba la clave pública correspondiente.
+
+## Instalación (Arch Linux)
+
+Cada tag `v*` publica paquetes firmados en un repositorio pacman servido por GitHub Pages (workflow `.github/workflows/arch-packages.yml`, PKGBUILD en `packaging/arch/`):
+
+| Paquete | Contenido |
+|---|---|
+| `quark-anticheat-dkms` | fuente del módulo para DKMS, `quark_cli` (`/usr/lib/quark-anticheat/`) y carga al arranque |
+| `quark-anticheat-daemon` | `/usr/bin/quark_daemon` y las unidades `quark.socket`/`quark.service`; depende del anterior |
+| `quark-anticheat-sdk` | `libquark_sdk.so`, `quark_sdk.h` y `quark-sdk.pc` para integrar juegos |
+
+```bash
+# confiar en la clave de firma del repositorio (requiere root: modifica el llavero de pacman)
+curl -O https://stefanomerinoderui.github.io/Quark-Anticheat/quark-anticheat.asc
+sudo pacman-key --add quark-anticheat.asc
+sudo pacman-key --lsign-key <HUELLA>    # la que figura en la página del repositorio
+
+# agregar el repositorio al final de /etc/pacman.conf
+[quark-anticheat]
+SigLevel = Required DatabaseRequired
+Server = https://stefanomerinoderui.github.io/Quark-Anticheat/$arch
+
+sudo pacman -Syu quark-anticheat-daemon linux-headers   # usar las cabeceras del kernel instalado
+sudo modprobe quark_kernel
+sudo systemctl enable --now quark.socket
+```
+
+DKMS compila el módulo en la máquina del usuario. En la primera compilación genera una clave de firma **propia de esa máquina** en `/etc/quark-anticheat/quark_signing_key.pem` (0600, root) y embebe en el módulo su clave pública y el hash del `quark_cli` instalado, de modo que no se distribuye ninguna clave privada compartida. El módulo de los paquetes es la versión de release: se niega a proteger procesos dentro de una VM.
+
+Compilación local de los paquetes (sin firmar): `packaging/arch/build-packages.sh` (empaqueta el `HEAD` confirmado; la salida queda en `packaging/arch/out/`).
+
+**Configuración única del repositorio en GitHub** para publicar:
+1. Generar una clave sólo para firmar paquetes, sin contraseña (CI firma sin interacción; una contraseña guardada junto a la clave en los secretos no agrega protección): `gpg --batch --pinentry-mode loopback --passphrase '' --quick-gen-key "Quark Anticheat Packaging" ed25519 sign 2y`.
+2. Secreto `PACKAGER_GPG_PRIVATE_KEY` = salida de `gpg --armor --export-secret-keys <HUELLA>`; variable `PACKAGER_GPG_KEY_ID` = la huella completa.
+3. *Settings → Pages → Source*: **GitHub Actions**.
+4. *Settings → Environments → github-pages*: permitir los tags `v*` (por defecto sólo se admite la rama principal).
+
+Para publicar una versión, `pkgver` en `packaging/arch/PKGBUILD` y `version` en `quark_daemon/Cargo.toml` deben coincidir con el tag (p. ej. `v0.1.0`); el build falla si no coinciden.
 
 ## Documentación y contribución
 

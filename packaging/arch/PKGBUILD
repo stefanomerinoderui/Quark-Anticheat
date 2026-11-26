@@ -1,0 +1,91 @@
+# Maintainer: Quark Anticheat team <https://github.com/stefanomerinoderui/Quark-Anticheat>
+#
+# Split package built from a `git archive` of the current checkout by
+# build-packages.sh (CI and local). pkgver must match quark_daemon/Cargo.toml;
+# build-packages.sh enforces it.
+
+pkgbase=quark-anticheat
+pkgname=(quark-anticheat-daemon quark-anticheat-dkms quark-anticheat-sdk)
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Native kernel-level anticheat for GNU/Linux"
+arch=(x86_64)
+url="https://github.com/stefanomerinoderui/Quark-Anticheat"
+license=(GPL-3.0-only)
+makedepends=(bpf clang dkms gcc libelf make openssl rust zlib)
+# makepkg's -flto=auto turns the vendored static libbpf (built by libbpf-sys
+# with makepkg's CFLAGS) into GCC LTO bytecode that the Rust link can't resolve.
+options=(!lto)
+source=("$pkgbase-$pkgver.tar.gz")
+# Local tarball generated from the checked-out tree in the same job.
+sha256sums=(SKIP)
+
+# FHS locations baked into the binaries at build time (the in-repo defaults
+# target the /opt dev rig instead).
+_cli_path=/usr/lib/quark-anticheat/quark_cli
+_key_path=/etc/quark-anticheat/quark_signing_key.pem
+
+prepare() {
+  cd "$pkgbase-$pkgver"
+  cargo fetch --locked --manifest-path quark_daemon/Cargo.toml \
+    --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+  cd "$pkgbase-$pkgver"
+  export QUARK_CLI_PATH="$_cli_path"
+  export QUARK_SIGNING_KEY_PATH="$_key_path"
+  export CARGO_FLAGS=--frozen
+  make daemon sdk
+}
+
+check() {
+  cd "$pkgbase-$pkgver"
+  export QUARK_CLI_PATH="$_cli_path"
+  cargo test --frozen --release --manifest-path quark_daemon/Cargo.toml
+}
+
+package_quark-anticheat-daemon() {
+  pkgdesc+=" - userspace daemon"
+  depends=(glibc libelf libgcc quark-anticheat-dkms zlib)
+
+  cd "$pkgbase-$pkgver"
+  install -Dm755 quark_daemon/target/release/quark_daemon -t "$pkgdir/usr/bin/"
+  install -Dm644 quark_daemon/systemd/quark.socket packaging/arch/quark.service \
+    -t "$pkgdir/usr/lib/systemd/system/"
+}
+
+# Ships quark_cli together with the module source: the module embeds quark_cli's
+# SHA-256 (computed at DKMS build time), so both must always upgrade together.
+package_quark-anticheat-dkms() {
+  pkgdesc+=" - kernel module (DKMS) and its netlink client"
+  depends=(dkms glibc openssl)
+  install=quark-anticheat-dkms.install
+
+  cd "$pkgbase-$pkgver"
+  install -Dm755 quark_daemon/quark_cli "$pkgdir$_cli_path"
+
+  local _src="$pkgdir/usr/src/$pkgbase-$pkgver"
+  install -Dm644 kernel/quark_kernel.c kernel/Makefile -t "$_src/"
+  install -Dm755 packaging/dkms/quark-dkms-prebuild.sh -t "$_src/"
+  sed "s/@PKGVER@/$pkgver/" packaging/dkms/dkms.conf >"$_src/dkms.conf"
+
+  install -Dm644 packaging/arch/quark-anticheat.modules-load.conf \
+    "$pkgdir/usr/lib/modules-load.d/quark-anticheat.conf"
+}
+
+package_quark-anticheat-sdk() {
+  pkgdesc+=" - game integration SDK"
+  depends=(glibc)
+
+  cd "$pkgbase-$pkgver"
+  local _major="${pkgver%%.*}"
+  install -Dm755 "sdk/libquark_sdk.so.$pkgver" -t "$pkgdir/usr/lib/"
+  ln -s "libquark_sdk.so.$pkgver" "$pkgdir/usr/lib/libquark_sdk.so.$_major"
+  ln -s "libquark_sdk.so.$_major" "$pkgdir/usr/lib/libquark_sdk.so"
+  install -Dm644 sdk/quark_sdk.h -t "$pkgdir/usr/include/"
+
+  install -dm755 "$pkgdir/usr/lib/pkgconfig"
+  sed -e "s|@PREFIX@|/usr|" -e "s|@VERSION@|$pkgver|" \
+    packaging/quark-sdk.pc.in >"$pkgdir/usr/lib/pkgconfig/quark-sdk.pc"
+}
