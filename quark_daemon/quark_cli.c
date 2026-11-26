@@ -18,7 +18,11 @@
 // Private half of tooling/keys/generate-testing-key.sh's testing keypair. Never
 // committed (see .gitignore); must be installed here, root-only-readable, on
 // whichever box actually runs quark_cli. Matches kernel/quark_pubkey.h.
+// Overridable at build time (`make QUARK_SIGNING_KEY_PATH=...`): distro packages
+// use a per-machine key under /etc instead (see packaging/dkms/).
+#ifndef QUARK_SIGNING_KEY_PATH
 #define QUARK_SIGNING_KEY_PATH "/opt/quark-anticheat/keys/quark_signing_key.pem"
+#endif
 
 #define QUARK_MAX_SIG_LEN 72
 

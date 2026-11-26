@@ -1,0 +1,9 @@
+prefix=@PREFIX@
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: quark-sdk
+Description: Quark Anticheat game integration SDK
+Version: @VERSION@
+Libs: -L${libdir} -lquark_sdk
+Cflags: -I${includedir}

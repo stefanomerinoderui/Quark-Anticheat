@@ -35,6 +35,7 @@ kernel/quark_cli_hash.h
 #.idea/
 
 cheat/cheat
+quark_daemon/quark_cli
 game_target/game
 
 # Compilation database
@@ -48,6 +49,17 @@ kernel/*.mod
 kernel/*.mod.c
 kernel/Module.symvers
 kernel/modules.order
+
+# SDK shared library (`make sdk`)
+sdk/libquark_sdk.so*
+
+# Arch packaging build output (packaging/arch/build-packages.sh, publish-repo.sh)
+packaging/arch/src/
+packaging/arch/pkg/
+packaging/arch/out/
+packaging/arch/*.tar.gz
+*.pkg.tar.zst
+*.pkg.tar.zst.sig
 
 # Generated from the build host's kernel BTF (`make vmlinux`), consumed by
 # quark_daemon/src/bpf/quark.bpf.c -- ~160k lines, host-specific, not tracked.

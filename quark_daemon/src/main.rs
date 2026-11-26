@@ -15,6 +15,32 @@ mod bpf;
 // sd_listen_fds(3) protocol (fds 0/1/2 are stdio, activation fds start at 3).
 const SD_LISTEN_FDS_START: i32 = 3;
 
+// Location of the quark_cli netlink client. Baked in at compile time so distro
+// packages can point at their installed copy (QUARK_CLI_PATH=/usr/lib/...);
+// defaults to the in-repo build, relative to the repo root the daemon is run from.
+const QUARK_CLI_PATH: &str = match option_env!("QUARK_CLI_PATH") {
+    Some(path) => path,
+    None => "./quark_daemon/quark_cli",
+};
+
+/// Builds a `quark_cli <command> <pid>` invocation. The kernel module only accepts
+/// netlink commands from root, so when the daemon isn't already root (manual dev
+/// runs) the call goes through sudo; under systemd it runs as root and sudo is
+/// neither needed nor required to be installed.
+fn quark_cli_command(command: u32, pid: impl std::fmt::Display) -> Command {
+    // SAFETY: geteuid() has no preconditions and cannot fail.
+    let is_root = unsafe { libc::geteuid() } == 0;
+    let mut cmd = if is_root {
+        Command::new(QUARK_CLI_PATH)
+    } else {
+        let mut sudo = Command::new("sudo");
+        sudo.arg(QUARK_CLI_PATH);
+        sudo
+    };
+    cmd.args([command.to_string(), pid.to_string()]);
+    cmd
+}
+
 /// Picks up the listening socket from systemd if this process was launched via
 /// socket activation (LISTEN_FDS/LISTEN_PID set by systemd, matching how
 /// `docker.socket` starts `dockerd` on demand): the socket already exists and
@@ -199,9 +225,7 @@ fn handle_client(mut stream: UnixStream, bpf: Option<&bpf::QuarkBpf>) -> std::io
 
                 // 1. Tell kernel module to PROTECT this PID
                 println!("[QUARK-DAEMON] Registering PID {} to Ring 0 Module...", pid);
-                let output = Command::new("sudo")
-                    .args(["./quark_daemon/quark_cli", "1", &pid.to_string()])
-                    .output();
+                let output = quark_cli_command(1, pid).output();
                 // quark_cli exits non-zero on any netlink failure (e.g. the kernel
                 // module isn't loaded, or it refused because it detected a VM), so
                 // its exit status is the actual source of truth for whether Ring 0
@@ -407,9 +431,7 @@ fn handle_client(mut stream: UnixStream, bpf: Option<&bpf::QuarkBpf>) -> std::io
         s.is_active = false;
         let pid = s.pid;
         println!("[QUARK-DAEMON] Unregistering PID {} from Ring 0 Module...", pid);
-        let _ = Command::new("sudo")
-            .args(["./quark_daemon/quark_cli", "2", &pid.to_string()])
-            .status();
+        let _ = quark_cli_command(2, pid).status();
         if let Some(bpf) = bpf {
             bpf.unprotect(pid as u32);
         }
@@ -547,10 +569,7 @@ fn main() {
     // ack/nack already makes "kernel not actually protecting anything" fail closed
     // for clients regardless; this only affects the supplementary monitor thread.
     let own_pid = std::process::id();
-    match Command::new("sudo")
-        .args(["./quark_daemon/quark_cli", "3", &own_pid.to_string()])
-        .output()
-    {
+    match quark_cli_command(3, own_pid).output() {
         Ok(out) if out.status.success() => {
             println!("[QUARK-DAEMON] Registered pid {} as trusted monitor with the kernel module.", own_pid);
         }
@@ -611,6 +630,21 @@ mod tests {
         assert_eq!(&ack[2..7], b"0.5.0");
         assert!(ack[7..18].iter().all(|&b| b == 0));
         assert_eq!(ack[18], 1);
+    }
+
+    #[test]
+    fn quark_cli_command_targets_configured_cli_with_command_and_pid() {
+        let cmd = quark_cli_command(3, 4242);
+        let mut argv: Vec<String> = std::iter::once(cmd.get_program())
+            .chain(cmd.get_args())
+            .map(|a| a.to_string_lossy().into_owned())
+            .collect();
+        // Through sudo or not depending on who runs the tests; either way the
+        // CLI path is followed by exactly the command id and the pid.
+        if argv[0] == "sudo" {
+            argv.remove(0);
+        }
+        assert_eq!(argv, [QUARK_CLI_PATH, "3", "4242"]);
     }
 
     #[test]

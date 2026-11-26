@@ -1,0 +1,16 @@
+post_install() {
+  cat <<'EOF'
+==> The Quark kernel module is built by DKMS for every kernel whose headers are
+    installed (e.g. linux-headers). On its first build it generates this
+    machine's signing key at /etc/quark-anticheat/quark_signing_key.pem.
+==> Load it now with `modprobe quark_kernel` (loaded automatically at boot),
+    then start the daemon with `systemctl enable --now quark.socket`.
+EOF
+}
+
+post_remove() {
+  cat <<'EOF'
+==> The per-machine signing key in /etc/quark-anticheat/ was left in place.
+    Delete that directory if you are not reinstalling.
+EOF
+}
