@@ -791,24 +791,56 @@ Recomendación: solicitar clase 9 y evaluar la 42 con el tutor. Cada clase adici
 
 ## **8.3. Búsqueda de antecedentes en INPI**
 
-**La búsqueda no se ha realizado.** Este apartado describe el procedimiento y queda **pendiente de aportar por una persona** (integrante del equipo con acceso al sitio del INPI).
+El autor realizó la búsqueda de la denominación **"quark"** en el buscador de marcas del Instituto Nacional de la Propiedad Industrial (INPI, Argentina) y aportó el listado de registros **no vencidos**. Se transcribe sin modificaciones de contenido; se omiten los datos de identificación fiscal de los titulares y los nombres de personas humanas, y se conserva el número de acta para trazabilidad.
 
-Procedimiento propuesto (sujeto a verificación en el sitio oficial, **UNVERIFIED** en pasos y nombres de pantallas):
+**Tabla 8.1. Marcas "quark" no vencidas (búsqueda aportada por el autor, 2026-11-25)**
 
-1. Ingresar al buscador de marcas del Instituto Nacional de la Propiedad Industrial (INPI, Argentina).
-2. Buscar la denominación exacta "Quark Anticheat" y sus componentes por separado: "Quark" y "Anticheat".
-3. Repetir con variantes fonéticas y gráficas ("Quarc", "Kwark", "Quark Anti-Cheat") y con las clases 9, 42 (y 41 como control).
+| Acta | Fecha | Clase | Denominación | Tipo | Estado (según fuente) | Vencimiento |
+|---|---|---|---|---|---|---|
+| 3580141 | 10/02/2017 | 42 | QUARK ENGINEERING Q | Mixta | C | 15/06/2028 |
+| 3606184 | 23/05/2017 | 41 | QUARK RECORDS | Mixta | C | 17/10/2028 |
+| 3626590 | 26/07/2017 | 35 | QUARKS SOLUCIONES CON ENERGIA | Mixta | C | 28/03/2032 |
+| 3626591 | 26/07/2017 | 36 | QUARKS SOLUCIONES CON ENERGIA | Mixta | C | 12/09/2032 |
+| 4322188 | 29/12/2023 | 5 | QUARKS | Mixta | NU | sin dato |
+| 4331433 | 07/02/2024 | 35 | QUARKS | Mixta | C | 27/08/2034 |
+| 4331474 | 07/02/2024 | 32 | QUARKS | Mixta | C | 27/08/2034 |
+| 4336628 | 28/02/2024 | 30 | QUARKS | Mixta | NU | sin dato |
+| 4545571 | 24/07/2025 | 5 | QUARKS | Mixta | C | 08/01/2036 |
+| 4545572 | 24/07/2025 | 30 | QUARKS | Mixta | C | 08/01/2036 |
+| 4596199 | 25/10/2025 | **9** | QUARK TOP | Mixta | C | 10/03/2036 |
+| 4670316 | 12/03/2026 | 10 | QUARK | Denominativa | C | 08/05/2036 |
+| 4689161 | 05/04/2026 | 43 | QUARK'S CAFE BRUNCH GRAB & GO | Mixta | C | 08/06/2036 |
+| 4784131 | 09/09/2026 | 35 | QUARK | Mixta | C | 04/11/2036 |
+
+Los códigos de estado "C" y "NU" se transcriben como figuran en la fuente; su significado no se verificó (**UNVERIFIED**).
+
+**Lectura de los resultados.** La denominación "Quark" (o su plural "Quarks") figura en 14 registros vigentes, en las clases 5, 9, 10, 30, 32, 35, 36, 41, 42 y 43. Para las clases candidatas del apartado 8.2:
+
+- **Clase 9:** un registro mixto, QUARK TOP (acta 4596199, vigente hasta 2036). Es la clase de prioridad alta para Quark Anticheat.
+- **Clase 42:** un registro mixto, QUARK ENGINEERING Q (acta 3580141, vigente hasta 2028).
+- Las clases 35, 41 y 43 no son candidatas; los registros allí listados no se analizan.
+- Ningún registro de la lista contiene el término "anticheat". La denominación completa "Quark Anticheat" agrega un elemento distintivo respecto de los registros listados, pero si esa diferencia alcanza para descartar confusión **no se determinó**: es una valoración del examinador del INPI y, en su caso, de un profesional de propiedad intelectual (**UNVERIFIED**; no es asesoramiento legal).
+
+**Alcance y límites de la búsqueda.** Se buscó solo "quark". No se buscaron "anticheat", la denominación completa, variantes fonéticas ni clases conexas, y no hay captura de pantalla con fecha y hora en el vault. Esas tareas quedan pendientes de una persona (ver Tabla 8.2). La ausencia de esos pasos limita cualquier conclusión sobre la registrabilidad.
+
+**Procedimiento de repetición** (sujeto a verificación en el sitio oficial; **UNVERIFIED** en pasos y nombres de pantallas):
+
+1. Ingresar al buscador de marcas del INPI.
+2. Buscar "Quark Anticheat" y, por separado, "Anticheat".
+3. Repetir con variantes fonéticas y gráficas ("Quarc", "Kwark", "Quark Anti-Cheat") y con las clases 9 y 42.
 4. Registrar por cada hallazgo: denominación, titular, clase, estado, fecha y número de acta.
-5. Capturar la pantalla con fecha y hora, y guardarla en el vault (zona de evidencia, append-only).
-6. Analizar si hay marcas idénticas o confundibles en las mismas clases o en clases conexas.
+5. Capturar la pantalla con fecha y hora y guardarla en el vault (zona de evidencia, append-only).
 
-Es esperable que "Quark" sea un término de uso extendido en varios rubros (incluido el software); esto no está verificado y debe resolverlo la búsqueda. El resultado puede imponer agregar un elemento distintivo o descartar el registro. **El resultado de la búsqueda en el INPI y el logotipo los debe aportar una persona del equipo; hasta entonces este apartado declara el procedimiento y no resultados.**
+**Tabla 8.2. Estado de las búsquedas**
 
-Tabla a completar por una persona:
+| Término | Clases | Estado | Captura |
+|---|---|---|---|
+| quark | todas | realizada (resultado en Tabla 8.1) | pendiente |
+| Quark Anticheat | 9, 42 | pendiente | pendiente |
+| anticheat | 9, 42 | pendiente | pendiente |
+| variantes fonéticas | 9, 42 | pendiente | pendiente |
 
-| Fecha | Término buscado | Clase | Resultados | Captura | Responsable |
-|---|---|---|---|---|---|
-| *pendiente* | | | | | |
+El logotipo no existe aún y lo debe aportar una persona.
 
 ## **8.4. Registro de la marca**
 
@@ -822,13 +854,35 @@ Pasos previstos, tras la búsqueda: solicitud en el INPI, pago de tasa, publicac
 
 - `kernel/quark_kernel.c:37`: `MODULE_LICENSE("GPL")`.
 - `quark_daemon/src/bpf/quark.bpf.c:31`: `char LICENSE[] SEC("license") = "GPL";`.
-- No hay archivo `LICENSE` en el árbol; agregarlo, las cabeceras SPDX y una sección de licencia en el README es una acción pendiente, previa a publicar el repositorio (Cap. VII), y no se ejecuta en esta versión del informe.
+- Se agregó el archivo `LICENSE` con el texto oficial de la GNU GPL versión 3 (29 de junio de 2007, publicado por la Free Software Foundation en https://www.gnu.org/licenses/gpl-3.0.txt) en la raíz del repositorio de documentación. En el repositorio de código (rama `Dev`) no hay archivo `LICENSE`; copiarlo allí y agregar las cabeceras SPDX es una acción pendiente, previa a publicar el repositorio (Cap. VII), porque `Dev` está congelada para esta entrega.
+
+**Aviso de licencia por archivo.** La propia GPLv3 recomienda anteponer a cada archivo fuente el siguiente aviso (texto de la sección "How to Apply These Terms to Your New Programs"), con el nombre del programa y el año:
+
+```
+<nombre del programa y una línea con su propósito>
+Copyright (C) <año>  <nombre del autor>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
+
+Los programas que interactúan por terminal pueden mostrar al iniciar un aviso breve ("This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'. This is free software, and you are welcome to redistribute it under certain conditions; type `show c' for details."). La definición de titulares del *copyright* (autor y colaborador) y, si corresponde, la declaración de renuncia de la institución, queda a definir. Dado que el aviso usa la fórmula "o (a su elección) cualquier versión posterior", la declaración es GPL-3.0-or-later.
 
 **Nota a revisar (no bloqueante).** `MODULE_LICENSE("GPL")` en el kernel indica, por convención del kernel, una licencia compatible con GPLv2; el kernel Linux se distribuye bajo GPL-2.0. La compatibilidad entre una licencia GPLv3 declarada para el proyecto y un módulo cargado en un kernel GPLv2, y el efecto de la declaración `"GPL"` sobre el uso de símbolos exportados solo para GPL y de *helpers* eBPF, quedan como tema a revisar con la cátedra o con asesoramiento legal. No se trata como bloqueante para la entrega y no se verificó contra la documentación vigente de kernel.org en esta redacción (UNVERIFIED).
 
 ## **8.6. Limitaciones**
 
-No se consultó a un profesional de propiedad intelectual. Los datos legales, plazos y costos no se verificaron. El logo no existe. La búsqueda INPI queda pendiente.
+No se consultó a un profesional de propiedad intelectual. Los datos legales, plazos y costos no se verificaron. El logo no existe. La búsqueda INPI se limitó al término "quark" y sin captura.
 
 # **CAPÍTULO IX — DISEÑO DE LA SOLUCIÓN**
 
