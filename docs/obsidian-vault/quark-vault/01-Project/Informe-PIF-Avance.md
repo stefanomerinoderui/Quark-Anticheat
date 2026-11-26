@@ -1380,6 +1380,54 @@ El relevamiento muestra que Easy Anti-Cheat para Linux v2 adopta BPF-LSM sin mó
 
 La defensa puede sostener que el prototipo demuestra viabilidad técnica *en el alcance indicado*; no puede sostener bajo overhead, tasas de detección ni resistencia a evasión hasta contar con esas mediciones.
 
+# **Notas al pie de página**
+
+1. GNU/Linux es un sistema operativo libre basado en el kernel Linux, creado por Linus Torvalds en 1991 e integrado con herramientas del proyecto GNU. Su código abierto permite acceder, modificar y distribuir el software. ↩
+
+2. Un sistema anticheat es un conjunto de herramientas diseñadas para detectar y prevenir trampas en videojuegos competitivos, como bots, aimbots y modificaciones no autorizadas. ↩
+
+3. El kernel es el núcleo central del sistema operativo que gestiona la comunicación entre el hardware y las aplicaciones de software. ↩
+
+4. Una API (Interfaz de Programación de Aplicaciones) define las reglas para que diferentes software se comuniquen entre sí. ↩
+
+5. Un SDK (Kit de Desarrollo de Software) proporciona herramientas, librerías y documentación para implementar esa comunicación, facilitando la integración de funcionalidades externas en nuevas aplicaciones. ↩
+
+6. QEMU/KVM es una solución de virtualización que combina QEMU (emulador de código abierto) con KVM (aceleración por hardware del kernel Linux). Permite ejecutar múltiples máquinas virtuales simultáneamente con rendimiento cercano al nativo. ↩
+
+7. LSM (Linux Security Modules) es un framework de seguridad que proporciona ganchos en el kernel para insertar módulos de control de acceso, base de implementaciones como SELinux y AppArmor; BPF-LSM permite adjuntar programas eBPF a esos ganchos. ↩
+
+8. eBPF (Extended Berkeley Packet Filter) es una máquina virtual dentro del kernel que ejecuta bytecode verificado para monitoreo, análisis de tráfico y seguridad, cargable en tiempo de ejecución. ↩
+
+# **Declaración de uso de inteligencia artificial**
+
+Este apartado cumple la cláusula de cátedra sobre uso de IA generativa y el Art. 10.1.2 del Reglamento.
+
+**Herramientas.** Claude Code (Anthropic), con los modelos que cada sesión registra (en este repositorio, `claude-sonnet-5-5`). Las sesiones de agente firman sus entradas como `agent:<modelo>`.
+
+**Para qué se usó.**
+
+1. Redacción e integración del informe: lectura de `origin/Dev` y del vault, armado de los Capítulos I a XIII, de las Conclusiones y de los Anexos a partir de las fuentes del repositorio, cálculo de SLOC y de COCOMO con herramientas del repositorio, y generación del PDF con `tooling/build_informe.sh`.
+2. Redacción de notas del vault (`Claims-Ledger`, `Test-Status`, `Cycle-Log`, ADR) bajo la guía de trabajo del repositorio.
+3. Desarrollo del código: 11 commits de la rama `Dev` (2026-08-27 a 2026-08-31, cuenta `Billones142`) llevan el trailer `Claude-Session` con la sesión de Claude Code citada más abajo. Cubren, entre otros, la autenticación del canal Netlink (`48cc3f6`), el rechazo de la protección en una VM con omisión de pruebas (`333bbe2`), el watchdog y la validación contra el motor real (`6b05ad7`).
+4. Autorrevisión del informe con el harness de revisión de PIF de la cátedra y corrección de las observaciones resultantes (2026-11-25 y 2026-11-26).
+
+**Cómo se verificó.**
+
+- Cada afirmación sobre el código lleva `archivo:línea` o commit y se leyó de `Dev@35c6031`; lo inferido se marca `UNVERIFIED`.
+- Los resultados de pruebas (10/10, 5/5, control negativo) provienen de capturas reproducibles y constan en el `Claims-Ledger`, con su alcance (VM, build de pruebas, juego simulado).
+- El tamaño del código se midió con `tooling/sloc.py`.
+- Las citas bibliográficas se contrastaron con las fuentes cuando fue posible; las que no se consultaron directamente quedan declaradas en la Bibliografía.
+- Los autores revisan y responden por lo incluido, y pueden dar cuenta oralmente de cada parte.
+
+**Prompts.** Las instrucciones permanentes dadas a los agentes están versionadas en `AGENTS.md`, en `Working-Guidelines.md` y en `Append-Only-Standard.md` del vault. Los pedidos puntuales de cada sesión constan en el registro de la sesión indicada abajo. La transcripción de los prompts de las demás sesiones de este informe es UNVERIFIED: queda pendiente que los autores la exporten.
+
+**Enlaces a las conversaciones.**
+
+- Desarrollo del código: `https://claude.ai/code/session_01JeTq4KYFDuzr41fQnUoCfQ` (trailer `Claude-Session` de los 11 commits indicados).
+- Sesiones de redacción del informe y autorrevisión: enlace pendiente de aportar por los autores (UNVERIFIED).
+
+**Alcance de la declaración.** Se declara el uso de Claude Code. UNVERIFIED si los integrantes usaron otras herramientas de IA generativa; en ese caso los autores las agregan aquí.
+
 # **Bibliografía**
 
 AreWeAntiCheatYet. (2026). *Are We Anti-Cheat Yet?* Recuperado el 25 de noviembre de 2026, de [https://areweanticheatyet.com/](https://areweanticheatyet.com/)
@@ -1443,54 +1491,6 @@ World Intellectual Property Organization. (s. f.-a). *Nice Classification*. [htt
 World Intellectual Property Organization. (s. f.-b). *Filing international trademark applications: Classification of goods and services*. [https://www.wipo.int/de/web/madrid-system/how_to/file/madrid-system-filing-international-trademark-applications-classification-of-goods-and-services](https://www.wipo.int/de/web/madrid-system/how_to/file/madrid-system-filing-international-trademark-applications-classification-of-goods-and-services)
 
 #
-
-# **Notas al pie de página**
-
-1. GNU/Linux es un sistema operativo libre basado en el kernel Linux, creado por Linus Torvalds en 1991 e integrado con herramientas del proyecto GNU. Su código abierto permite acceder, modificar y distribuir el software. ↩
-
-2. Un sistema anticheat es un conjunto de herramientas diseñadas para detectar y prevenir trampas en videojuegos competitivos, como bots, aimbots y modificaciones no autorizadas. ↩
-
-3. El kernel es el núcleo central del sistema operativo que gestiona la comunicación entre el hardware y las aplicaciones de software. ↩
-
-4. Una API (Interfaz de Programación de Aplicaciones) define las reglas para que diferentes software se comuniquen entre sí. ↩
-
-5. Un SDK (Kit de Desarrollo de Software) proporciona herramientas, librerías y documentación para implementar esa comunicación, facilitando la integración de funcionalidades externas en nuevas aplicaciones. ↩
-
-6. QEMU/KVM es una solución de virtualización que combina QEMU (emulador de código abierto) con KVM (aceleración por hardware del kernel Linux). Permite ejecutar múltiples máquinas virtuales simultáneamente con rendimiento cercano al nativo. ↩
-
-7. LSM (Linux Security Modules) es un framework de seguridad que proporciona ganchos en el kernel para insertar módulos de control de acceso, base de implementaciones como SELinux y AppArmor; BPF-LSM permite adjuntar programas eBPF a esos ganchos. ↩
-
-8. eBPF (Extended Berkeley Packet Filter) es una máquina virtual dentro del kernel que ejecuta bytecode verificado para monitoreo, análisis de tráfico y seguridad, cargable en tiempo de ejecución. ↩
-
-# **Declaración de uso de inteligencia artificial**
-
-Este apartado cumple la cláusula de cátedra sobre uso de IA generativa y el Art. 10.1.2 del Reglamento.
-
-**Herramientas.** Claude Code (Anthropic), con los modelos que cada sesión registra (en este repositorio, `claude-sonnet-5-5`). Las sesiones de agente firman sus entradas como `agent:<modelo>`.
-
-**Para qué se usó.**
-
-1. Redacción e integración del informe: lectura de `origin/Dev` y del vault, armado de los Capítulos I a XIII, de las Conclusiones y de los Anexos a partir de las fuentes del repositorio, cálculo de SLOC y de COCOMO con herramientas del repositorio, y generación del PDF con `tooling/build_informe.sh`.
-2. Redacción de notas del vault (`Claims-Ledger`, `Test-Status`, `Cycle-Log`, ADR) bajo la guía de trabajo del repositorio.
-3. Desarrollo del código: 11 commits de la rama `Dev` (2026-08-27 a 2026-08-31, cuenta `Billones142`) llevan el trailer `Claude-Session` con la sesión de Claude Code citada más abajo. Cubren, entre otros, la autenticación del canal Netlink (`48cc3f6`), el rechazo de la protección en una VM con omisión de pruebas (`333bbe2`), el watchdog y la validación contra el motor real (`6b05ad7`).
-4. Autorrevisión del informe con el harness de revisión de PIF de la cátedra y corrección de las observaciones resultantes (2026-11-25 y 2026-11-26).
-
-**Cómo se verificó.**
-
-- Cada afirmación sobre el código lleva `archivo:línea` o commit y se leyó de `Dev@35c6031`; lo inferido se marca `UNVERIFIED`.
-- Los resultados de pruebas (10/10, 5/5, control negativo) provienen de capturas reproducibles y constan en el `Claims-Ledger`, con su alcance (VM, build de pruebas, juego simulado).
-- El tamaño del código se midió con `tooling/sloc.py`.
-- Las citas bibliográficas se contrastaron con las fuentes cuando fue posible; las que no se consultaron directamente quedan declaradas en la Bibliografía.
-- Los autores revisan y responden por lo incluido, y pueden dar cuenta oralmente de cada parte.
-
-**Prompts.** Las instrucciones permanentes dadas a los agentes están versionadas en `AGENTS.md`, en `Working-Guidelines.md` y en `Append-Only-Standard.md` del vault. Los pedidos puntuales de cada sesión constan en el registro de la sesión indicada abajo. La transcripción de los prompts de las demás sesiones de este informe es UNVERIFIED: queda pendiente que los autores la exporten.
-
-**Enlaces a las conversaciones.**
-
-- Desarrollo del código: `https://claude.ai/code/session_01JeTq4KYFDuzr41fQnUoCfQ` (trailer `Claude-Session` de los 11 commits indicados).
-- Sesiones de redacción del informe y autorrevisión: enlace pendiente de aportar por los autores (UNVERIFIED).
-
-**Alcance de la declaración.** Se declara el uso de Claude Code. UNVERIFIED si los integrantes usaron otras herramientas de IA generativa; en ese caso los autores las agregan aquí.
 
 # **Anexos**
 
