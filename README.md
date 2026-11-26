@@ -70,21 +70,7 @@ Cada tag `v*` publica paquetes firmados en un repositorio pacman servido por Git
 | `quark-anticheat-daemon` | `/usr/bin/quark_daemon` y las unidades `quark.socket`/`quark.service`; depende del anterior |
 | `quark-anticheat-sdk` | `libquark_sdk.so`, `quark_sdk.h` y `quark-sdk.pc` para integrar juegos |
 
-```bash
-# confiar en la clave de firma del repositorio (requiere root: modifica el llavero de pacman)
-curl -O https://stefanomerinoderui.github.io/Quark-Anticheat/quark-anticheat.asc
-sudo pacman-key --add quark-anticheat.asc
-sudo pacman-key --lsign-key <HUELLA>    # la que figura en la página del repositorio
-
-# agregar el repositorio al final de /etc/pacman.conf
-[quark-anticheat]
-SigLevel = Required DatabaseRequired
-Server = https://stefanomerinoderui.github.io/Quark-Anticheat/$arch
-
-sudo pacman -Syu quark-anticheat-daemon linux-headers   # usar las cabeceras del kernel instalado
-sudo modprobe quark_kernel
-sudo systemctl enable --now quark.socket
-```
+**Cómo instalarlos** (clave PGP, repositorio en `/etc/pacman.conf`, paquetes y solución de problemas): ver [`QUICKSTART.md`](QUICKSTART.md).
 
 DKMS compila el módulo en la máquina del usuario. En la primera compilación genera una clave de firma **propia de esa máquina** en `/etc/quark-anticheat/quark_signing_key.pem` (0600, root) y embebe en el módulo su clave pública y el hash del `quark_cli` instalado, de modo que no se distribuye ninguna clave privada compartida. El módulo de los paquetes es la versión de release: se niega a proteger procesos dentro de una VM.
 
@@ -95,6 +81,8 @@ Compilación local de los paquetes (sin firmar): `packaging/arch/build-packages.
 2. Secreto `PACKAGER_GPG_PRIVATE_KEY` = salida de `gpg --armor --export-secret-keys <HUELLA>`; variable `PACKAGER_GPG_KEY_ID` = la huella completa.
 3. *Settings → Pages → Source*: **GitHub Actions**.
 4. *Settings → Environments → github-pages*: permitir los tags `v*` (por defecto sólo se admite la rama principal).
+
+Si se rota la clave de firma, actualizar la huella publicada en `QUICKSTART.md` en el mismo cambio que actualiza `PACKAGER_GPG_KEY_ID`.
 
 Para publicar una versión, `pkgver` en `packaging/arch/PKGBUILD` y `version` en `quark_daemon/Cargo.toml` deben coincidir con el tag (p. ej. `v0.1.0`); el build falla si no coinciden.
 
