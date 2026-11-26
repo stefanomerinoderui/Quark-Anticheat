@@ -32,3 +32,7 @@ Sesión de terminal local, sin enlace compartible. Es la continuación de la ses
 2. **Integración con decisiones del autor, GPLv3 e INPI.** Resultado: capítulos integrados, `LICENSE`, Cap. VIII con las búsquedas "quark" y "quark anticheat", commits y push a `dev/docs`.
 3. **Handoff del harness.** Se pegó la introducción de la guía de la cátedra. Resultado: `06-Cycles/Handoff-Harness-2026-11-25.md`.
 4. **Handoff del plan a largo plazo.** Se pidió un handoff específico para redactar ese plan. Resultado: `06-Cycles/Handoff-Plan-Largo-Plazo-2026-11-26.md` (pedido, restricciones, 14 observaciones del harness como backlog, insumos y preguntas abiertas). No incluye el plan en sí.
+
+## 2026-11-26 — Claude Code (terminal) — `agent:claude-sonnet-5-5` — plan a largo plazo (borrador v1)
+Sesión de terminal local, sin enlace compartible.
+1. **Implementar el handoff del plan a largo plazo hasta donde se pueda, y commitear y pushear aunque quede incompleto (un colega necesita leerlo).** Instrucciones del handoff (`06-Cycles/Handoff-Plan-Largo-Plazo-2026-11-26.md`, commit `89c8a97`): producir una nota con trabajo restante por módulo y por capítulo, línea de tiempo semanal con qué mostrar y cómo llegar, bloqueantes, riesgos y preparación de la defensa; sin pautar cómo revisa el profesor; sin inventar fechas de la cátedra. Resultado: `06-Cycles/Plan-Largo-Plazo-2026-11-26.md` (borrador v1; fechas y horas como supuestos explícitos en §9).
