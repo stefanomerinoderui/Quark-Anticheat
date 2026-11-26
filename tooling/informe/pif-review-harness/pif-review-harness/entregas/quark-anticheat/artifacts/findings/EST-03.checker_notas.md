@@ -1,0 +1,1 @@
+Omitido por el Maker (para decisión docente): el reparto de commits entre integrantes es métrica de informe docente. Además, DIA-01, EST-02 y GATE-01 llevan pregunta_coloquio con destino 'ambos': esas preguntas solo deben ir al informe docente.

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Build RecoilEngine (or any of its CMake targets) in a Fedora 44 container that
 # matches the test VM's glibc (2.43), so build output can be copied straight to the VM
-# without compiling anything there. See ../../docs/vm_test_environment.md section 6.
+# without compiling anything there. See ../../docs/obsidian-vault/quark-vault/03-Testing/VM-test-environment.md section 6.
 #
 # Usage:
 #   ./build.sh [--reconfigure] [-D<CMAKE_VAR>=<value> ...] [--] <target> [<target> ...]

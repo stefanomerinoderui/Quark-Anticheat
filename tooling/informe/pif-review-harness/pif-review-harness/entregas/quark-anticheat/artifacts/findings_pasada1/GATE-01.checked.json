@@ -1,0 +1,57 @@
+[
+  {
+    "item_id": "GATE-01",
+    "clave": "GATE-01:sin_manual_despliegue",
+    "semaforo": "ROJO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 3"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.13"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "repos.json#deploy_manual"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "repos.json#build_plan"
+      }
+    ],
+    "observacion": "No se localizó manual de despliegue ni plan de construcción inferible en Dev@35c6031, y no hay CI; la construcción no se ejecutó. Sin manual no hay evidencia de que un tercero pueda construirlo y arrancarlo.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Manual de despliegue (README o archivo) con requisitos, construcción del módulo, demonio y SDK, arranque y verificación en la VM.",
+    "evidencia_a_presentar": "Sección del README en Dev con los pasos y tag de la versión entregada.",
+    "pregunta_coloquio": "¿Pueden construir y cargar el módulo desde cero en una VM limpia, mostrando cada paso?",
+    "bloqueante": true,
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (FALLA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "ROJO admitido por perfil bloqueante y causal 1, con repos.json#deploy_manual = FALLA. Pero 'un tercero no puede construirlo' no está demostrado: no se corrió build ni hay intento del docente, y el script solo reporta 'no se encontró manual'. El README tiene sección 'requisitos'. El ROJO lo confirma el docente.",
+      "cambios": [
+        "observacion reescrita: no se localizó manual ni plan de construcción; construcción no ejecutada",
+        "se mantiene ROJO bloqueante pendiente de confirmación docente"
+      ]
+    }
+  }
+]

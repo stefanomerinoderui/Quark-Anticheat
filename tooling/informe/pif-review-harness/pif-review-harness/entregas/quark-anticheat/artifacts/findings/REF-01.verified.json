@@ -1,0 +1,38 @@
+[
+  {
+    "item_id": "REF-01",
+    "clave": "REF-01:cruce_parser_poco_fiable",
+    "semaforo": "GRIS",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.6"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "apa_citations.json#citas_sin_entrada"
+      }
+    ],
+    "observacion": "El cruce automático reporta 11 citas sin entrada y 7 con año distinto, con nombres partidos en el parseo. No se confirma ninguna.",
+    "destino": "ambos",
+    "origen": "maker",
+    "motivo_gris": "Revisar el cruce a mano.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

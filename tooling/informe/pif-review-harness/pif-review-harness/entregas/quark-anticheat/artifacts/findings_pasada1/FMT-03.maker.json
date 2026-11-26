@@ -1,0 +1,23 @@
+[
+ {
+  "item_id": "FMT-03",
+  "clave": "FMT-03:ortografia_no_evaluada",
+  "semaforo": "GRIS",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 18.1.8"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "languagetool.json"
+   }
+  ],
+  "observacion": "Ortografía no evaluada: LanguageTool no está disponible.",
+  "destino": "ambos",
+  "origen": "maker",
+  "motivo_gris": "LT_URL no definido; script omitido."
+ }
+]

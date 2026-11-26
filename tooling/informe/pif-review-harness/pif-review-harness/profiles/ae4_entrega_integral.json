@@ -1,0 +1,550 @@
+{
+  "$schema": "../schemas/profile.schema.json",
+  "perfil": "ae4_entrega_integral",
+  "nombre": "AE4 — Entrega integral del PIF durante el cursado",
+  "instancia": "AE4",
+  "notas": [
+    "Entrega parcial del PIF en una AE: se verifican el contenido entregado, la declaración de uso de IA (cláusula de cátedra) y el Portafolio y la Bitácora según la Guía de Evaluación Multimodal (GD2 7 y 8).",
+    "No se verifican nota, cierre, regularidad ni recuperatorios de la AE: los registra el docente.",
+    "Contenido evaluado contra la RR 97/23 como en la versión final, más Portafolio y Bitácora."
+  ],
+  "capitulos_esperados": [
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+    "XI",
+    "XII",
+    "XIII"
+  ],
+  "defaults_plan": {
+    "politica_ia": "declaracion_catedra",
+    "exige_portafolio_bitacora": true
+  },
+  "items": [
+    {
+      "id": "GATE-01",
+      "titulo": "Sistema de Información entregado y ejecutable",
+      "modulo": "reglamento/03_criterios_academicos.md",
+      "secciones": [
+        "§bloqueo"
+      ],
+      "modulos_extra": [
+        "reglamento/02_estructura_capitulos.md §sistema"
+      ],
+      "artifacts": [
+        "repos.json#deploy_manual",
+        "repos.json#build_plan",
+        "repos.json#ci",
+        "build.json"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 3",
+        "RR97 Art. 20 (entrega digital)",
+        "RR97 Art. 23",
+        "RR97 Art. 24.3.13"
+      ],
+      "pregunta": "¿El sistema (o la evidencia de selección/implementación según la modalidad) está entregado y un tercero puede construirlo y arrancarlo siguiendo solo el manual?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "REPO-01",
+      "titulo": "Repositorio oficial, acceso, etiqueta e historial",
+      "modulo": "reglamento/05_ingenieria_sdd_harness.md",
+      "secciones": [
+        "§repo"
+      ],
+      "artifacts": [
+        "repos.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 20",
+        "RR97 Art. 24.3.13",
+        "CAT"
+      ],
+      "pregunta": "¿Existe un repositorio único, accesible a la cátedra, con la versión entregada etiquetada y aportes de todos?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "ENT-01",
+      "titulo": "Entrega digital completa (Art. 20)",
+      "modulo": "reglamento/01_formato_y_redaccion.md",
+      "secciones": [
+        "§formato"
+      ],
+      "artifacts": [
+        "coherence.json#repo_links"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 20 (entrega digital)",
+        "RR97 Art. 10.2"
+      ],
+      "pregunta": "¿La entrega incluye la documentación del PIF, el código fuente, el tablero de gestión y los demás datos digitales del SI?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "FMT-01",
+      "titulo": "Formato físico (Art. 20)",
+      "modulo": "reglamento/01_formato_y_redaccion.md",
+      "secciones": [
+        "§formato"
+      ],
+      "artifacts": [
+        "pdf_format.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 20"
+      ],
+      "pregunta": "¿Hoja, márgenes, interlineado, tipografía y numeración cumplen el Art. 20?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "FMT-02",
+      "titulo": "Redacción (Art. 21) y registro uniforme",
+      "modulo": "reglamento/01_formato_y_redaccion.md",
+      "secciones": [
+        "§redaccion"
+      ],
+      "artifacts": [
+        "pdf_format.json#first_person"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 21"
+      ],
+      "pregunta": "¿La redacción es impersonal, en presente y afirmativo, con criterio uniforme y sin desarrollos teóricos ni discusiones ajenas al tema?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "FMT-03",
+      "titulo": "Ortografía y redacción (candidatos)",
+      "modulo": "reglamento/01_formato_y_redaccion.md",
+      "secciones": [
+        "§ortografia"
+      ],
+      "artifacts": [
+        "languagetool.json",
+        "ortografia_confirmada.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 18.1.8",
+        "RR97 Art. 8.2.2"
+      ],
+      "pregunta": "¿Qué errores de ortografía y redacción confirmados hay y dónde?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "EST-01",
+      "titulo": "Carátula, Resumen, Índice, modalidad y carátulas de capítulo",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§estructura",
+        "§modalidad"
+      ],
+      "modulos_extra": [
+        "reglamento/01_formato_y_redaccion.md §caratula"
+      ],
+      "artifacts": [
+        "pdf_format.json#abstract_words",
+        "pdf_format.json#chapter_title_pages",
+        "coherence.json#caratula"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 22.1–22.4",
+        "RR97 Art. 23"
+      ],
+      "pregunta": "¿La estructura obligatoria está completa y la modalidad declarada es coherente con lo entregado?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "EST-02",
+      "titulo": "Capítulos I a III",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§caps"
+      ],
+      "capitulos": [
+        "I",
+        "II",
+        "III"
+      ],
+      "artifacts": [
+        "coherence.json#content_markers"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 24.3.1–24.3.3"
+      ],
+      "pregunta": "¿Cada capítulo tiene su contenido mínimo (obligatorio) y el estándar de contenido de cátedra (AMARILLO)?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "REQ-01",
+      "titulo": "Catálogo de requisitos verificables (estándar de cátedra)",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§requisitos"
+      ],
+      "artifacts": [
+        "coherence.json#requirements",
+        "coherence.json#content_markers"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "CAT",
+        "RR97 Art. 18.1.6"
+      ],
+      "pregunta": "¿Cada requisito tiene identificador, tipo, prioridad, criterio de aceptación comprobable y trazabilidad al relevamiento?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "EST-03",
+      "titulo": "Capítulos IV a VII y distribución de responsabilidades",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§caps",
+        "§cap12"
+      ],
+      "capitulos": [
+        "IV",
+        "V",
+        "VI",
+        "VII"
+      ],
+      "artifacts": [
+        "coherence.json#content_markers"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 24.3.4–24.3.7",
+        "RR97 Art. 4"
+      ],
+      "pregunta": "¿Cada capítulo tiene su contenido mínimo y el Cap. V explicita la distribución de actividades y responsabilidades de cada integrante?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "EST-04",
+      "titulo": "Capítulo VIII ampliado y compatibilidad de licencias",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§cap8"
+      ],
+      "capitulos": [
+        "VIII",
+        "IX"
+      ],
+      "artifacts": [
+        "repos.json#license",
+        "repos.json#dependencies",
+        "coherence.json#content_markers"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 24.3.8",
+        "CAT Cap. VIII ampliado"
+      ],
+      "pregunta": "¿Marca, clases internacionales, resultados de búsqueda INPI con fecha y constancia, licencia de la solución y de terceros, y compatibilidad con las dependencias?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "EST-05",
+      "titulo": "Capítulos IX a XI",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§caps"
+      ],
+      "capitulos": [
+        "IX",
+        "X",
+        "XI"
+      ],
+      "artifacts": [
+        "coherence.json#content_markers"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 24.3.9–24.3.11"
+      ],
+      "pregunta": "¿Cada capítulo tiene su contenido mínimo y el estándar de contenido de cátedra?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "EST-06",
+      "titulo": "Cap. XII, Cap. XIII, Conclusiones, Bibliografía y Anexos",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§caps",
+        "§cap12"
+      ],
+      "capitulos": [
+        "XII",
+        "XIII"
+      ],
+      "artifacts": [
+        "coherence.json#cap12_similarity",
+        "pdf_format.json#annex_numbering",
+        "coherence.json#content_markers"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 24.3.12–24.3.13",
+        "RR97 Art. 24.4–24.6",
+        "RR97 Art. 22.5–22.7"
+      ],
+      "pregunta": "¿Aspectos positivos y a mejorar, entregables, conclusiones, bibliografía y anexos completos?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "COH-01",
+      "titulo": "Coherencia interna (Art. 18.1.6)",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§coherencia"
+      ],
+      "artifacts": [
+        "coherence.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 18.1.6"
+      ],
+      "pregunta": "¿Los componentes del proyecto y las conclusiones son coherentes y el documento es uno solo?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "DAT-01",
+      "titulo": "Datos relevados, encuestas, contactos y anonimización",
+      "modulo": "reglamento/02_estructura_capitulos.md",
+      "secciones": [
+        "§datos"
+      ],
+      "artifacts": [
+        "coherence.json#survey_n",
+        "sdd_harness.json#pii_pdf"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 24.3.2",
+        "RR97 Art. 18.1.7",
+        "RR97 Art. 8.2.5",
+        "Ley 25.326"
+      ],
+      "pregunta": "¿Los datos tienen n, procedencia, contactos documentados y están anonimizados?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "REF-01",
+      "titulo": "Citas ↔ Bibliografía y formato APA",
+      "modulo": "reglamento/06_verificacion_referencias.md",
+      "secciones": [
+        "§cruce",
+        "§apa"
+      ],
+      "artifacts": [
+        "apa_citations.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 20",
+        "RR97 Art. 22.6"
+      ],
+      "pregunta": "¿Toda cita tiene su entrada y la lista cumple APA?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "REF-02",
+      "titulo": "Existencia de fuentes y respaldo de afirmaciones",
+      "modulo": "reglamento/06_verificacion_referencias.md",
+      "secciones": [
+        "§existencia",
+        "§señales",
+        "§estados",
+        "§respaldo",
+        "§volcado"
+      ],
+      "artifacts": [
+        "referencias_verificacion.json"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 10.1.2 (segundo inciso)",
+        "RR97 Art. 18.1.7",
+        "RR97 Art. 18.1.8"
+      ],
+      "pregunta": "¿Las fuentes existen y dicen lo que se les atribuye?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "DIA-01",
+      "titulo": "Declaración de uso de IA (cláusula de cátedra)",
+      "modulo": "reglamento/04_etica_y_ia.md",
+      "secciones": [
+        "§clausula"
+      ],
+      "artifacts": [
+        "coherence.json#ai_declaration",
+        "sdd_harness.json#agent_context"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "CAT-IA",
+        "RR97 Art. 10.1.2 (segundo inciso)",
+        "RR97 Art. 18.1.8"
+      ],
+      "pregunta": "¿Hay apartado final de declaración con para qué, cómo se verificó, prompts y enlace a la conversación? ¿Hay evidencia de uso no declarado?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "ETH-01",
+      "titulo": "Integridad, inyección de instrucciones y datos personales",
+      "modulo": "reglamento/04_etica_y_ia.md",
+      "secciones": [
+        "§indicadores",
+        "§datos"
+      ],
+      "artifacts": [
+        "sdd_harness.json#injection",
+        "sdd_harness.json#secrets",
+        "sdd_harness.json#pii_pdf"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "RR97 Art. 10.1.2 (segundo inciso)",
+        "Ley 25.326"
+      ],
+      "pregunta": "¿Hay indicadores verificables de integridad, texto dirigido al evaluador, secretos o datos personales expuestos?",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "PRC-01",
+      "titulo": "Portafolio Digital y Bitácora Individual (Guía de Evaluación Multimodal)",
+      "modulo": "reglamento/04_etica_y_ia.md",
+      "secciones": [
+        "§portafolio"
+      ],
+      "artifacts": [
+        "proceso.json#portafolio",
+        "proceso.json#bitacoras"
+      ],
+      "bloqueante": true,
+      "norma": [
+        "GD2 7, 8.1, 8.2",
+        "AE26 Actividades de proceso y de bitácora"
+      ],
+      "pregunta": "¿Están el portafolio con los elementos que pide la consigna y la bitácora de cada integrante con entradas fechadas y sus seis elementos? Propuesta COMPLETO / INCOMPLETO por componente.",
+      "destino": "ambos",
+      "aplica_si": "plan.exige_portafolio_bitacora == true"
+    },
+    {
+      "id": "SEG-01",
+      "titulo": "Seguimiento de observaciones previas (no reincidencia)",
+      "modulo": "reglamento/01_formato_y_redaccion.md",
+      "secciones": [
+        "§ortografia"
+      ],
+      "artifacts": [
+        "diff_versiones.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 8.2.2"
+      ],
+      "pregunta": "¿Cada OBS abierta fue subsanada, parcialmente o reincide?",
+      "aplica_si": "state.observaciones_abiertas > 0",
+      "destino": "ambos"
+    },
+    {
+      "id": "ENG-01",
+      "titulo": "Apartado de cátedra: SDD, Harness Engineering e higiene",
+      "modulo": "reglamento/05_ingenieria_sdd_harness.md",
+      "secciones": [
+        "§sdd",
+        "§harness",
+        "§trazabilidad",
+        "§higiene"
+      ],
+      "artifacts": [
+        "sdd_harness.json",
+        "repos.json#commits"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "CAT"
+      ],
+      "pregunta": "¿Qué nivel de adopción de SDD, harness y buenas prácticas muestra el repositorio?",
+      "apartado": "catedra",
+      "destino": "ambos",
+      "aplica_si": null
+    },
+    {
+      "id": "ORA-01",
+      "titulo": "Dar cuenta oralmente: banco de preguntas y propuesta",
+      "modulo": "reglamento/04_etica_y_ia.md",
+      "secciones": [
+        "§oral",
+        "§indicadores"
+      ],
+      "artifacts": [
+        "findings/*.checked.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "CAT-IA",
+        "RR97 Art. 8.2.4",
+        "RR97 Art. 11"
+      ],
+      "pregunta": "¿Qué debe poder explicar cada integrante (dar cuenta, fundamentar, profundizar)? ¿Hay indicadores que justifiquen pedirlo de forma específica?",
+      "destino": "informe_docente",
+      "aplica_si": null
+    },
+    {
+      "id": "ACA-01",
+      "titulo": "Valoración orientativa por criterios del Art. 18.1",
+      "modulo": "reglamento/03_criterios_academicos.md",
+      "secciones": [
+        "§art18"
+      ],
+      "artifacts": [
+        "findings/*.checked.json"
+      ],
+      "bloqueante": false,
+      "norma": [
+        "RR97 Art. 18.1.1–18.1.8"
+      ],
+      "pregunta": "¿Cómo se apreciaría cada criterio 18.1.1–18.1.8 según los hallazgos?",
+      "destino": "informe_docente",
+      "aplica_si": null
+    }
+  ]
+}

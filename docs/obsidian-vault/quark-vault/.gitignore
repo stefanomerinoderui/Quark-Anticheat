@@ -1,0 +1,7 @@
+# per-user Obsidian state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+# plugin local state/secrets (obsidian-git may store credentials-related settings)
+.obsidian/plugins/*/data.json
+.trash/

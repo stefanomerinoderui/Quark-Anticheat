@@ -1,0 +1,48 @@
+[
+  {
+    "item_id": "ETH-01",
+    "clave": "ETH-01:sin_inyeccion_ni_secretos",
+    "semaforo": "VERDE",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 10.1.2"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#injection"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#secrets"
+      }
+    ],
+    "observacion": "0 fragmentos dirigidos al evaluador y 0 posibles secretos por regex (sin gitleaks): verificación de secretos no concluyente.",
+    "destino": "ambos",
+    "origen": "maker",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "ok (OK)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "ok (OK)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "VERDE admisible, pero la evidencia es solo regex (sin gitleaks) y el script pide confirmar a mano.",
+      "cambios": [
+        "observacion: aclarar que la verificación de secretos es por regex y no concluyente; sin cambio de color"
+      ]
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "item_id": "REQ-01",
+    "clave": "REQ-01:no_evaluado_a_fondo",
+    "semaforo": "GRIS",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "coherence.json#content_markers"
+      }
+    ],
+    "observacion": "No evaluado a fondo en esta pasada.",
+    "destino": "informe_docente",
+    "origen": "maker",
+    "motivo_gris": "Requiere lectura de los capítulos completos.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (GRIS)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

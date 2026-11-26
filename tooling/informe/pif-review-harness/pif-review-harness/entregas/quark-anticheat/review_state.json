@@ -1,0 +1,471 @@
+{
+  "proyecto_id": "quark-anticheat",
+  "entregas": [
+    {
+      "instancia": "FINAL",
+      "recibido_el": "2026-11-25T23:46:20-03:00",
+      "perfil": "pif_final",
+      "informes": [],
+      "pdf": {
+        "archivo": "FINAL_Informe-PIF-2026-11-25.pdf",
+        "sha256": "630bda3b4e65c5d2b29f92bfc0b041a6de5cffa43612b4e8df49382a704962d1"
+      },
+      "repo_codigo": {
+        "origen": "https://github.com/stefanomerinoderui/Quark-Anticheat.git",
+        "ref": "35c6031",
+        "commit": "35c6031d7b2f48a095e684b7c12c24e396a0cc59",
+        "clonado_el": "2026-11-25T23:46:20-03:00",
+        "tag_esperado": "",
+        "tag_fecha": null,
+        "antes_del_vencimiento": null
+      },
+      "repo_docs": {
+        "origen": "https://github.com/stefanomerinoderui/Quark-Anticheat.git",
+        "ref": "dev/docs",
+        "commit": "ea676decea3a8f69d6162123a429c5a8fbc121fe",
+        "clonado_el": "2026-11-25T23:46:20-03:00",
+        "tag_esperado": null,
+        "tag_fecha": null,
+        "antes_del_vencimiento": null
+      }
+    },
+    {
+      "instancia": "REENTREGA-1",
+      "recibido_el": "2026-11-26T00:08:28-03:00",
+      "perfil": "reentrega",
+      "informes": [],
+      "pdf": {
+        "archivo": "REENTREGA-1_Informe-PIF-2026-11-26.pdf",
+        "sha256": "c9f49900e51be0f9a8d66f56e3292f0ae58688ee7a83b7260b08ebc6ef5574b0"
+      },
+      "repo_codigo": {
+        "origen": "https://github.com/stefanomerinoderui/Quark-Anticheat.git",
+        "ref": "35c6031",
+        "commit": "35c6031d7b2f48a095e684b7c12c24e396a0cc59",
+        "clonado_el": "2026-11-26T00:08:28-03:00",
+        "tag_esperado": "",
+        "tag_fecha": null,
+        "antes_del_vencimiento": null
+      },
+      "repo_docs": {
+        "origen": "C:/Users/gabym/uni-dev/Quark-Anticheat",
+        "ref": "HEAD",
+        "commit": "535885f3a1a5878884d15fd3669f5d1cb08cd62f",
+        "clonado_el": "2026-11-26T00:08:28-03:00",
+        "tag_esperado": null,
+        "tag_fecha": null,
+        "antes_del_vencimiento": null
+      }
+    },
+    {
+      "instancia": "REENTREGA-1",
+      "recibido_el": "2026-11-26T00:14:15-03:00",
+      "perfil": "reentrega",
+      "informes": [],
+      "pdf": {
+        "archivo": "REENTREGA-1_Informe-PIF-2026-11-26.pdf",
+        "sha256": "abb7429d3532e57a969d56d7188be808692469b4be23e5cb9de68cbf36178484"
+      },
+      "repo_codigo": {
+        "origen": "https://github.com/stefanomerinoderui/Quark-Anticheat.git",
+        "ref": "35c6031",
+        "commit": "35c6031d7b2f48a095e684b7c12c24e396a0cc59",
+        "clonado_el": "2026-11-26T00:14:15-03:00",
+        "tag_esperado": "",
+        "tag_fecha": null,
+        "antes_del_vencimiento": null
+      },
+      "repo_docs": {
+        "origen": "C:/Users/gabym/uni-dev/Quark-Anticheat",
+        "ref": "HEAD",
+        "commit": "cbfb87b24aac7934c3713f04d4077f1f4a795951",
+        "clonado_el": "2026-11-26T00:14:15-03:00",
+        "tag_esperado": null,
+        "tag_fecha": null,
+        "antes_del_vencimiento": null
+      }
+    }
+  ],
+  "observaciones": [
+    {
+      "id": "OBS-01",
+      "clave": "COH-01:control_negativo_invalidado",
+      "item_id": "COH-01",
+      "semaforo": "AMARILLO",
+      "resumen": "El Anexo III declara que feature/gameStartProtection invalida el control negativo; el informe lo avisa, pero la conclusión depende de un control que no es reproducible fuera de Dev@35c6031.",
+      "instancia_origen": "FINAL",
+      "estado": "reincidente",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "reincidente"
+        }
+      ]
+    },
+    {
+      "id": "OBS-02",
+      "clave": "DIA-01:sin_declaracion_de_ia",
+      "item_id": "DIA-01",
+      "semaforo": "ROJO",
+      "resumen": "No hay apartado final de declaración de uso de IA y el PDF mismo contiene firmas 'agent:claude-sonnet-5-5'; el repo tiene archivo de contexto de agentes.",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-03",
+      "clave": "ENT-01:tres_urls_repo",
+      "item_id": "ENT-01",
+      "semaforo": "AMARILLO",
+      "resumen": "La versión entregada no corresponde a un commit publicado ('+cambios sin commitear'). El PDF cita URL de repositorio distintas (una con posible errata 'quark-anticheaty' y otra a recoilengine); confir",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-04",
+      "clave": "EST-01:caratula_incompleta",
+      "item_id": "EST-01",
+      "semaforo": "AMARILLO",
+      "resumen": "La carátula no muestra universidad, facultad, carrera ni la denominación 'Proyecto Integrador Final'; la fecha lleva '+cambios sin commitear'.",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-05",
+      "clave": "EST-01:atributos_pandoc_en_titulos",
+      "item_id": "EST-01",
+      "semaforo": "AMARILLO",
+      "resumen": "Atributos de Pandoc ({#…}) aparecen impresos en carátulas de capítulo, índice y notas, en 16 páginas. Por esos residuos el detector no reconoció ninguna de las 13 carátulas de capítulo.",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-06",
+      "clave": "EST-01:resumen_excede_600",
+      "item_id": "EST-01",
+      "semaforo": "AMARILLO",
+      "resumen": "El Resumen cuenta 696 palabras según el script (límite 600). Falta confirmar el conteo a mano.",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-07",
+      "clave": "EST-02:encuesta_no_publicada",
+      "item_id": "EST-02",
+      "semaforo": "AMARILLO",
+      "resumen": "El Cap. II declara que la encuesta fue diseñada y no publicada: no hay datos primarios ni n. El capítulo usa investigación documental e hipótesis provisionales, y lo dice. Quedan sin cubrir instrument",
+      "instancia_origen": "FINAL",
+      "estado": "reincidente",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "reincidente"
+        }
+      ]
+    },
+    {
+      "id": "OBS-08",
+      "clave": "EST-04:inpi_incompleto",
+      "item_id": "EST-04",
+      "semaforo": "AMARILLO",
+      "resumen": "La búsqueda INPI cubre 'quark' y 'quark anticheat'; no consta la búsqueda de 'anticheat' ni de variantes fonéticas (confirmar leyendo el Cap. VIII).",
+      "instancia_origen": "FINAL",
+      "estado": "reincidente",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "reincidente"
+        }
+      ]
+    },
+    {
+      "id": "OBS-09",
+      "clave": "EST-06:anexos_sin_numeracion_xy",
+      "item_id": "EST-06",
+      "semaforo": "AMARILLO",
+      "resumen": "Los anexos no tienen numeración 'página X de Y' (0 de 110 páginas); el propio texto dice que se completa al maquetar.",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-10",
+      "clave": "FMT-01:tipografia_no_times",
+      "item_id": "FMT-01",
+      "semaforo": "AMARILLO",
+      "resumen": "El PDF usa TeX Gyre Termes (clon métrico de Times), no Times New Roman (fonts: FALLA). Margen derecho fuera de tolerancia solo en la p.19; 3 de 53 páginas (2-4) con interlineado menor a 1,9×.",
+      "instancia_origen": "FINAL",
+      "estado": "reincidente",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "reincidente"
+        }
+      ]
+    },
+    {
+      "id": "OBS-11",
+      "clave": "FMT-02:marcas_de_edicion_internas",
+      "item_id": "FMT-02",
+      "semaforo": "AMARILLO",
+      "resumen": "El documento conserva bloques 'Update' con firma de agente y notas de edición propias del vault ('se conserva sin cambios como historial'). Rompe el registro impersonal uniforme del Art. 21 y el docum",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-12",
+      "clave": "GATE-01:sin_manual_despliegue",
+      "item_id": "GATE-01",
+      "semaforo": "ROJO",
+      "resumen": "No se localizó manual de despliegue ni plan de construcción inferible en Dev@35c6031, y no hay CI; la construcción no se ejecutó. Sin manual no hay evidencia de que un tercero pueda construirlo y arra",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-13",
+      "clave": "REF-02:entradas_con_verificacion_pendiente",
+      "item_id": "REF-02",
+      "semaforo": "AMARILLO",
+      "resumen": "Hay entradas que declaran fuente no consultada o incompleta ('URL: pendiente de aportar', 'contenido tomado de resumen de búsqueda'). Indicador de Capa 1 (a revisar a mano): 5 referencias quedaron 'No",
+      "instancia_origen": "FINAL",
+      "estado": "reincidente",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "reincidente"
+        }
+      ]
+    },
+    {
+      "id": "OBS-14",
+      "clave": "REPO-01:sin_license_en_dev",
+      "item_id": "REPO-01",
+      "semaforo": "AMARILLO",
+      "resumen": "LICENSE (GPLv3) existe solo en dev/docs; el código entregado (Dev@35c6031) no la tiene. La referencia evaluada es un commit, no una etiqueta.",
+      "instancia_origen": "FINAL",
+      "estado": "subsanada_a_confirmar",
+      "historial": [
+        {
+          "instancia": "FINAL",
+          "estado": "abierta"
+        },
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "subsanada_a_confirmar",
+          "nota": "no reapareció; confirmar en SEG-01 o en el coloquio"
+        }
+      ]
+    },
+    {
+      "id": "OBS-15",
+      "clave": "DIA-01:declaracion_incompleta",
+      "item_id": "DIA-01",
+      "semaforo": "AMARILLO",
+      "resumen": "Hay apartado de declaración con para qué, verificación, prompts por referencia y un enlace real (sesión de desarrollo). Faltan el enlace de las sesiones de redacción y autorrevisión, la transcripción ",
+      "instancia_origen": "REENTREGA-1",
+      "estado": "abierta",
+      "historial": [
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "abierta"
+        }
+      ]
+    },
+    {
+      "id": "OBS-16",
+      "clave": "ENT-01:entrega_digital_identificada",
+      "item_id": "ENT-01",
+      "semaforo": "AMARILLO",
+      "resumen": "La URL oficial y el commit constan en el Cap. XIII y el PDF se generó desde un commit limpio. Faltan el tablero de gestión entre los entregables digitales y la etiqueta de la versión. El aviso de 5 UR",
+      "instancia_origen": "REENTREGA-1",
+      "estado": "abierta",
+      "historial": [
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "abierta"
+        }
+      ]
+    },
+    {
+      "id": "OBS-17",
+      "clave": "EST-01:caratula_completa",
+      "item_id": "EST-01",
+      "semaforo": "AMARILLO",
+      "resumen": "La carátula incluye universidad, facultad, carrera, denominación, título, autores y fecha, pero no logo de la UCP (Art. 22.1 lo exige; sin archivo en el repositorio).",
+      "instancia_origen": "REENTREGA-1",
+      "estado": "abierta",
+      "historial": [
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "abierta"
+        }
+      ]
+    },
+    {
+      "id": "OBS-18",
+      "clave": "EST-03:reparto_de_responsabilidades",
+      "item_id": "EST-03",
+      "semaforo": "AMARILLO",
+      "resumen": "El Cap. V 5.3 asigna roles pero no reparte actividades por integrante con evidencia (Art. 4). Faltan 'pérdida de un integrante' (riesgo, Cap. V) y 'definición de terminado' y 'retrospectiva' (Cap. VI)",
+      "instancia_origen": "REENTREGA-1",
+      "estado": "abierta",
+      "historial": [
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "abierta"
+        }
+      ]
+    },
+    {
+      "id": "OBS-19",
+      "clave": "EST-05:cap10_sin_cifras_financieras",
+      "item_id": "EST-05",
+      "semaforo": "AMARILLO",
+      "resumen": "El Cap. X 10.3 no da cifras: declara financiamiento nulo y horas no registradas. El Cap. XI no tiene supuestos, hipótesis, métrica accionable ni umbral de decisión según el .tex (estándar de cátedra).",
+      "instancia_origen": "REENTREGA-1",
+      "estado": "abierta",
+      "historial": [
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "abierta"
+        }
+      ]
+    },
+    {
+      "id": "OBS-20",
+      "clave": "GATE-01:manual_no_ejecutado",
+      "item_id": "GATE-01",
+      "semaforo": "AMARILLO",
+      "resumen": "El Anexo III.5 pasa a ser el manual de despliegue, pero declara que no se ejecutó, y Dev@35c6031 sigue sin manual propio ni CI. Mejora respecto de la pasada anterior (ROJO); sin ejecución no hay evide",
+      "instancia_origen": "REENTREGA-1",
+      "estado": "abierta",
+      "historial": [
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "abierta"
+        }
+      ]
+    },
+    {
+      "id": "OBS-21",
+      "clave": "REPO-01:license_y_tag_en_dev",
+      "item_id": "REPO-01",
+      "semaforo": "AMARILLO",
+      "resumen": "El Cap. XIII identifica repositorio y commit 35c6031, pero Dev no tiene LICENSE ni etiqueta de la versión entregada.",
+      "instancia_origen": "REENTREGA-1",
+      "estado": "abierta",
+      "historial": [
+        {
+          "instancia": "REENTREGA-1",
+          "estado": "abierta"
+        }
+      ]
+    }
+  ]
+}

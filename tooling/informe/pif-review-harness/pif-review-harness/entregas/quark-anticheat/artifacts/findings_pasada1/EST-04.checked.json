@@ -1,0 +1,43 @@
+[
+  {
+    "item_id": "EST-04",
+    "clave": "EST-04:inpi_incompleto",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.8"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 97,
+        "cita_literal": "8.3. Búsqueda de antecedentes en INPI"
+      }
+    ],
+    "observacion": "La búsqueda INPI cubre 'quark' y 'quark anticheat'; no consta la búsqueda de 'anticheat' ni de variantes fonéticas (confirmar leyendo el Cap. VIII).",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Búsquedas completas con constancia fechada.",
+    "evidencia_a_presentar": "Capturas INPI con fecha.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "La cita es solo el título 8.3, pero el texto de la p.97 (líneas 15-18) demuestra que se buscó 'quark' y 'quark anticheat'. Las afirmaciones sobre capturas con fecha y logotipo no están respaldadas por la cita (la tabla 8.1 declara fecha 2026-11-25) y la licencia ya está en REPO-01.",
+      "cambios": [
+        "observacion: se quitan capturas, logotipo y licencia; queda que no consta 'anticheat' ni variantes fonéticas (confirmar leyendo Cap. VIII)"
+      ]
+    }
+  }
+]

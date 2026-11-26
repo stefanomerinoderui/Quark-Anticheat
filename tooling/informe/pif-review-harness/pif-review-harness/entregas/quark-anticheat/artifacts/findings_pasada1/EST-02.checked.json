@@ -1,0 +1,42 @@
+[
+  {
+    "item_id": "EST-02",
+    "clave": "EST-02:encuesta_no_publicada",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.2"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 19,
+        "cita_literal": "Estado: diseñada, no publicada. Fuente del diseño: docs/Quark_Encuesta_Diapositivas.txt."
+      }
+    ],
+    "observacion": "El Cap. II declara que la encuesta fue diseñada y no publicada: no hay datos primarios ni n. El capítulo usa investigación documental e hipótesis provisionales, y lo dice. Quedan sin cubrir instrumentos aplicados, datos y análisis propios.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Datos relevados con n, procedencia y análisis, o alcance documental acordado con la cátedra.",
+    "evidencia_a_presentar": "Resultados de la encuesta o acta del acuerdo.",
+    "pregunta_coloquio": "¿Qué evidencia propia sostiene las hipótesis de demanda H-D1 a H-D3?",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "La cita literal demuestra que la encuesta no fue publicada; el hallazgo reconoce el alcance documental. AMARILLO como estándar de contenido (Art. 24.3.2).",
+      "cambios": []
+    }
+  }
+]

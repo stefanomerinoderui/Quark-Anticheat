@@ -1,0 +1,51 @@
+[
+  {
+    "item_id": "ENT-01",
+    "clave": "ENT-01:tres_urls_repo",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "coherence.json#repo_links"
+      },
+      {
+        "tipo": "pdf",
+        "pdf_page": 1,
+        "cita_literal": "2026-11-25 (commit 82f0e4d +cambios sin commitear)"
+      }
+    ],
+    "observacion": "La versión entregada no corresponde a un commit publicado ('+cambios sin commitear'). El PDF cita URL de repositorio distintas (una con posible errata 'quark-anticheaty' y otra a recoilengine); confirmar cuál es la oficial.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Una URL oficial por repositorio, coincidente con el Cap. XIII, y el PDF generado desde un commit etiquetado.",
+    "evidencia_a_presentar": "Commit o tag del informe y Cap. XIII con las URL.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        },
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "La cita (p.1) demuestra la versión con cambios sin commitear. Las URL: una con probable errata ('quark-anticheaty') y otra a recoilengine, que puede ser un repositorio distinto legítimo; no se puede afirmar que sean tres URL del mismo repositorio.",
+      "cambios": [
+        "observacion reformulada: confirmar cuál es la URL oficial"
+      ]
+    }
+  }
+]

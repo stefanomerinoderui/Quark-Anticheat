@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Estado longitudinal de revisión",
+  "type": "object",
+  "required": [
+    "proyecto_id",
+    "entregas",
+    "observaciones"
+  ],
+  "properties": {
+    "proyecto_id": {
+      "type": "string"
+    },
+    "entregas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "instancia": {
+            "type": "string"
+          },
+          "recibido_el": {
+            "type": "string"
+          },
+          "pdf": {
+            "type": "object",
+            "properties": {
+              "archivo": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string"
+              },
+              "paginas": {
+                "type": "integer"
+              }
+            }
+          },
+          "repo_codigo": {
+            "type": "object",
+            "properties": {
+              "origen": {
+                "type": "string"
+              },
+              "ref": {
+                "type": "string"
+              },
+              "commit": {
+                "type": "string"
+              },
+              "clonado_el": {
+                "type": "string"
+              },
+              "tag_fecha": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "antes_del_vencimiento": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            }
+          },
+          "informes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "observaciones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "clave",
+          "item_id",
+          "estado"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^OBS-[0-9]{2,3}$"
+          },
+          "clave": {
+            "type": "string"
+          },
+          "item_id": {
+            "type": "string"
+          },
+          "semaforo": {
+            "type": "string"
+          },
+          "resumen": {
+            "type": "string"
+          },
+          "instancia_origen": {
+            "type": "string"
+          },
+          "estado": {
+            "enum": [
+              "abierta",
+              "reincidente",
+              "parcial",
+              "subsanada",
+              "subsanada_a_confirmar",
+              "retirada"
+            ]
+          },
+          "historial": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "instancia": {
+                  "type": "string"
+                },
+                "estado": {
+                  "type": "string"
+                },
+                "nota": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

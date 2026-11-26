@@ -1,0 +1,46 @@
+[
+  {
+    "item_id": "ENG-01",
+    "clave": "ENG-01:sin_tests_ci_ni_specs",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "CAT",
+        "ref": "05 §higiene"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#tests"
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "sdd_harness.json#quality_gates"
+      }
+    ],
+    "observacion": "Sin tests, CI ni quality gates detectables; .env no figura en .gitignore. Las pruebas existen como scripts de VM.",
+    "destino": "informe_docente",
+    "origen": "maker",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "Consistente con sdd_harness.json (tests, quality_gates, env_tracked en ALERTA); estándar de cátedra, AMARILLO, destino informe_docente.",
+      "cambios": []
+    }
+  }
+]

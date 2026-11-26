@@ -1,0 +1,39 @@
+[
+  {
+    "item_id": "EST-03",
+    "clave": "EST-03:no_evaluado_a_fondo",
+    "semaforo": "GRIS",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "coherence.json#content_markers"
+      }
+    ],
+    "observacion": "No evaluado en esta pasada: el detector de contenido no halló capítulos por los residuos de Pandoc.",
+    "destino": "informe_docente",
+    "origen": "maker",
+    "motivo_gris": "Requiere lectura capítulo por capítulo; no se hizo.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (GRIS)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "GRIS justificado: no se leyó capítulo por capítulo; sin evidencia queda GRIS (el detector no reconoció capítulos por residuos de Pandoc).",
+      "cambios": []
+    }
+  }
+]

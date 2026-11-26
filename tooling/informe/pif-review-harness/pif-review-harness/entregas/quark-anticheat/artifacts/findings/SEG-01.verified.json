@@ -1,0 +1,33 @@
+[
+  {
+    "item_id": "SEG-01",
+    "clave": "SEG-01:seguimiento_de_la_autorrevision",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 8.2.2"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "diff_versiones.json"
+      }
+    ],
+    "observacion": "De 14 OBS previas: subsanadas OBS-03, 04, 05, 09, 11 y 06 (falso positivo); parciales OBS-02 y OBS-12; reinciden OBS-01, 07, 08, 10, 13 y 14 (requieren datos o decisiones de personas, o cambios en Dev).",
+    "destino": "informe_docente",
+    "origen": "maker",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "artifact_ok_sin_check"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

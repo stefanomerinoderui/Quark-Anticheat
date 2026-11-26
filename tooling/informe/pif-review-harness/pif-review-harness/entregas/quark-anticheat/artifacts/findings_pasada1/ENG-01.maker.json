@@ -1,0 +1,26 @@
+[
+ {
+  "item_id": "ENG-01",
+  "clave": "ENG-01:sin_tests_ci_ni_specs",
+  "semaforo": "AMARILLO",
+  "norma": [
+   {
+    "fuente": "CAT",
+    "ref": "05 §higiene"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "artifact",
+    "artifact": "sdd_harness.json#tests"
+   },
+   {
+    "tipo": "artifact",
+    "artifact": "sdd_harness.json#quality_gates"
+   }
+  ],
+  "observacion": "El repo no tiene tests, CI ni quality gates detectables y .env no figura en .gitignore. Las pruebas existen como scripts de VM, que el detector no cuenta.",
+  "destino": "informe_docente",
+  "origen": "maker"
+ }
+]

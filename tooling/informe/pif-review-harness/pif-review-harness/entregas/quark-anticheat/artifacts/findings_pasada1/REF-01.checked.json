@@ -1,0 +1,43 @@
+[
+  {
+    "item_id": "REF-01",
+    "clave": "REF-01:cruce_parser_poco_fiable",
+    "semaforo": "GRIS",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.6"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "artifact",
+        "artifact": "apa_citations.json#citas_sin_entrada"
+      }
+    ],
+    "observacion": "El cruce automático reporta 11 citas sin entrada, 7 con año distinto y 2 entradas no citadas, pero parseó nombres partidos ('NewRelic' vs 'New Relic') y contó solo 17 entradas. No son hallazgos confirmados.",
+    "destino": "ambos",
+    "origen": "maker",
+    "motivo_gris": "Revisar el cruce a mano contra el PDF antes de afirmar.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "GRIS: el cruce automático no es confiable; no afirma nada.",
+      "cambios": []
+    }
+  }
+]

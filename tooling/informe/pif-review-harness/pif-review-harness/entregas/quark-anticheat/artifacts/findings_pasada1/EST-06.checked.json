@@ -1,0 +1,94 @@
+[
+  {
+    "item_id": "EST-06",
+    "clave": "EST-06:anexos_sin_numeracion_xy",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 20"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.7"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 163,
+        "cita_literal": "Numeración propia: «página X de Y», que se completa al maquetar."
+      },
+      {
+        "tipo": "artifact",
+        "artifact": "pdf_format.json#annex_numbering"
+      }
+    ],
+    "observacion": "Los anexos no tienen numeración 'página X de Y' (0 de 110 páginas); el propio texto dice que se completa al maquetar.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Anexos con numeración independiente 'página X de Y'.",
+    "evidencia_a_presentar": "Páginas de anexos numeradas.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        },
+        {
+          "tipo": "artifact",
+          "resultado": "check (ALERTA)"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "pdf_format.json#annex_numbering = ALERTA (0 de 110) y la cita p.163 lo reconoce; Art. 20 y 22.7 en 00_fuentes.",
+      "cambios": []
+    }
+  },
+  {
+    "item_id": "EST-06",
+    "clave": "EST-06:conclusiones_honestas",
+    "semaforo": "VERDE",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 22.5"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.4"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 158,
+        "cita_literal": "La defensa puede sostener que el prototipo demuestra viabilidad técnica en el alcance"
+      }
+    ],
+    "observacion": "Las Conclusiones existen, distinguen lo medido de lo no medido y limitan la defensa al alcance probado.",
+    "destino": "ambos",
+    "origen": "maker",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "VERDE con evidencia positiva (cita p.158); Art. 22.5/24.4 registrados.",
+      "cambios": []
+    }
+  }
+]

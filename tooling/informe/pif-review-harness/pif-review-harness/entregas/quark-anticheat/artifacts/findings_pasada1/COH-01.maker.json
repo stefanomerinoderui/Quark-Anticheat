@@ -1,0 +1,48 @@
+[
+ {
+  "item_id": "COH-01",
+  "clave": "COH-01:adr001_aceptada_vs_proposed",
+  "semaforo": "AMARILLO",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 18.1.6"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "pdf",
+    "pdf_page": 6,
+    "cita_literal": "decisión registrada en la ADR-001 y aceptada por el autor, con seis ciclos"
+   }
+  ],
+  "observacion": "El Resumen dice que la ADR-001 fue aceptada; según el handoff del vault, sigue en estado 'proposed' sin línea de aceptación. UNVERIFIED desde el PDF: falta cotejar el archivo ADR.",
+  "destino": "ambos",
+  "origen": "maker",
+  "que_se_espera": "ADR-001 con línea de aceptación o texto del Resumen corregido.",
+  "evidencia_a_presentar": "Línea en la ADR y misma redacción en el informe."
+ },
+ {
+  "item_id": "COH-01",
+  "clave": "COH-01:control_negativo_invalidado",
+  "semaforo": "AMARILLO",
+  "norma": [
+   {
+    "fuente": "RR97",
+    "ref": "Art. 18.1.6"
+   }
+  ],
+  "ubicaciones": [
+   {
+    "tipo": "pdf",
+    "pdf_page": 170,
+    "cita_literal": "Esta rama modifica el control negativo «sin Quark» (el juego deja de arrancar sin demo-"
+   }
+  ],
+  "observacion": "El Anexo III declara que feature/gameStartProtection invalida el control negativo; el informe lo avisa, pero la conclusión depende de un control que no es reproducible fuera de Dev@35c6031.",
+  "destino": "ambos",
+  "origen": "maker",
+  "que_se_espera": "Control negativo re-ejecutado o acotado explícitamente a Dev@35c6031.",
+  "evidencia_a_presentar": "Captura de la corrida con commit."
+ }
+]

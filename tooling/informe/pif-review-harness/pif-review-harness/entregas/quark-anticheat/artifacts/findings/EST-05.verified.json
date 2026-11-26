@@ -1,0 +1,36 @@
+[
+  {
+    "item_id": "EST-05",
+    "clave": "EST-05:cap10_sin_cifras_financieras",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.10"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 134,
+        "cita_literal": "El proyecto se desarrolla sin financiamiento externo. No se contempla la contratación de"
+      }
+    ],
+    "observacion": "El Cap. X 10.3 no da cifras: declara financiamiento nulo y horas no registradas. El Cap. XI no tiene supuestos, hipótesis, métrica accionable ni umbral de decisión según el .tex (estándar de cátedra).",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Costos con cifras (por ejemplo, valorización de horas con tarifa declarada) y supuestos e hipótesis en el Cap. XI.",
+    "evidencia_a_presentar": "Tabla de costos con fuente y tarifa.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    }
+  }
+]

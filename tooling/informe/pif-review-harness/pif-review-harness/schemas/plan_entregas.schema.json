@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Plan de entregas del proyecto",
+  "type": "object",
+  "required": [
+    "proyecto_id",
+    "titulo",
+    "equipo",
+    "modalidad",
+    "instancias"
+  ],
+  "properties": {
+    "proyecto_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_\\-]+$"
+    },
+    "titulo": {
+      "type": "string"
+    },
+    "cohorte": {
+      "type": "string"
+    },
+    "equipo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "nombre"
+        ],
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "emails_git": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "usuario_git": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "modalidad": {
+      "enum": [
+        "23.1",
+        "23.2",
+        "23.3"
+      ]
+    },
+    "repos": {
+      "type": "object",
+      "properties": {
+        "codigo": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "dir": {
+              "type": "string"
+            }
+          }
+        },
+        "docs": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "dir": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "instancias": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "perfil"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "perfil": {
+            "type": "string"
+          },
+          "fecha_limite": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tag_esperado": {
+            "type": "string"
+          },
+          "politica_ia": {
+            "enum": [
+              "declaracion_catedra",
+              "gd2_27",
+              "prohibida"
+            ],
+            "description": "declaracion_catedra (por defecto): cláusula CAT-IA. gd2_27 y prohibida solo si la cátedra decide aplicar la Guía Docente II, 27."
+          },
+          "exige_portafolio_bitacora": {
+            "type": "boolean"
+          },
+          "capitulos_esperados": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "variaciones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "item_id",
+                "accion",
+                "motivo"
+              ],
+              "properties": {
+                "item_id": {
+                  "type": "string"
+                },
+                "accion": {
+                  "enum": [
+                    "omitir",
+                    "ajustar"
+                  ]
+                },
+                "detalle": {
+                  "type": "string"
+                },
+                "motivo": {
+                  "type": "string"
+                },
+                "acordado_el": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

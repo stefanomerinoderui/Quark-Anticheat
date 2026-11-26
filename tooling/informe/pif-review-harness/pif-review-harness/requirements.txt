@@ -1,0 +1,3 @@
+pymupdf>=1.24        # extracción de texto y geometría del PDF
+jsonschema>=4        # opcional: validación de plan_entregas.json en tests
+reportlab>=4         # solo para tests/make_fixture.py

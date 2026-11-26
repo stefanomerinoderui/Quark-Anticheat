@@ -1,0 +1,48 @@
+[
+  {
+    "item_id": "EST-03",
+    "clave": "EST-03:reparto_de_responsabilidades",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 4"
+      },
+      {
+        "fuente": "RR97",
+        "ref": "Art. 24.3.5"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 57,
+        "cita_literal": "5.3. Organización del Equipo"
+      }
+    ],
+    "observacion": "El Cap. V 5.3 asigna roles pero no reparte actividades por integrante con evidencia (Art. 4). Faltan 'pérdida de un integrante' (riesgo, Cap. V) y 'definición de terminado' y 'retrospectiva' (Cap. VI) según el .tex.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Tabla de actividades y responsabilidades por integrante.",
+    "evidencia_a_presentar": "Tabla en 5.3 con tareas, fechas y commits o PR.",
+    "verificacion_mecanica": {
+      "estado": "pagina_corregida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "pagina_corregida:55->2"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "checker": {
+      "decision": "corregido",
+      "motivo": "La cita estaba en el índice (p. 2); el apartado 5.3 está en p. 57. Se quitan las métricas de commits (sin respaldo en artifacts y solo van al informe docente).",
+      "cambios": [
+        "pdf_page 2 -> 57",
+        "Eliminadas métricas de commits de la observación"
+      ]
+    }
+  }
+]

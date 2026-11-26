@@ -1,0 +1,22 @@
+# pandoc --defaults: formato del PIF segun Reglamento RR-97/23 (Art. 20)
+from: markdown+pipe_tables+wikilinks_title_after_pipe
+pdf-engine: tectonic
+standalone: true
+toc: true
+toc-depth: 2
+top-level-division: chapter
+filters: [tooling/informe/filter.lua]
+include-in-header: [tooling/informe/header.tex]
+metadata:
+  title: "Quark Anticheat: análisis de viabilidad técnica e implementación de un sistema anticheat nativo para GNU/Linux"
+  author: "Martínez Alarcón, Gabriel Sebastián (colaborador: Merino De Rui, Stefano Nahuel)"
+  lang: es
+variables:
+  documentclass: report
+  papersize: a4
+  fontsize: 12pt
+  linestretch: 2
+  geometry: [top=2.5cm, bottom=2.5cm, left=3cm, right=3cm]
+  mainfont: texgyretermes
+  mainfontoptions: [Extension=.otf, "UprightFont=*-regular", "BoldFont=*-bold", "ItalicFont=*-italic", "BoldItalicFont=*-bolditalic"]
+  colorlinks: true

@@ -1,0 +1,87 @@
+[
+  {
+    "item_id": "COH-01",
+    "clave": "COH-01:adr001_aceptada_vs_proposed",
+    "semaforo": "GRIS",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 18.1.6"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 6,
+        "cita_literal": "decisión registrada en la ADR-001 y aceptada por el autor, con seis ciclos"
+      }
+    ],
+    "observacion": "El Resumen dice que la ADR-001 fue aceptada; según el handoff del vault, sigue en estado 'proposed' sin línea de aceptación. UNVERIFIED desde el PDF: falta cotejar el archivo ADR.",
+    "destino": "informe_docente",
+    "origen": "maker",
+    "que_se_espera": "ADR-001 con línea de aceptación o texto del Resumen corregido.",
+    "evidencia_a_presentar": "Línea en la ADR y misma redacción en el informe.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "ok"
+        }
+      ],
+      "advertencias": [],
+      "errores": []
+    },
+    "motivo_gris": "Estado de ADR-001 no cotejado contra el archivo ADR; proviene de una nota de handoff.",
+    "checker": {
+      "decision": "corregido",
+      "motivo": "La cita demuestra solo lo que dice el Resumen. El estado 'proposed' de la ADR-001 proviene de una nota de handoff del propio repo y no se cotejó el archivo ADR (sdd_harness reporta que no hay carpetas specs/ADR). Sin insumo verificable corresponde GRIS.",
+      "cambios": [
+        "semaforo AMARILLO -> GRIS",
+        "motivo_gris agregado",
+        "destino ambos -> informe_docente"
+      ]
+    }
+  },
+  {
+    "item_id": "COH-01",
+    "clave": "COH-01:control_negativo_invalidado",
+    "semaforo": "AMARILLO",
+    "norma": [
+      {
+        "fuente": "RR97",
+        "ref": "Art. 18.1.6"
+      }
+    ],
+    "ubicaciones": [
+      {
+        "tipo": "pdf",
+        "pdf_page": 170,
+        "cita_literal": "Esta rama modifica el control negativo «sin Quark» (el juego deja de arrancar sin demo-"
+      }
+    ],
+    "observacion": "El Anexo III declara que feature/gameStartProtection invalida el control negativo; el informe lo avisa, pero la conclusión depende de un control que no es reproducible fuera de Dev@35c6031.",
+    "destino": "ambos",
+    "origen": "maker",
+    "que_se_espera": "Control negativo re-ejecutado o acotado explícitamente a Dev@35c6031.",
+    "evidencia_a_presentar": "Captura de la corrida con commit.",
+    "verificacion_mecanica": {
+      "estado": "valida",
+      "ubicaciones": [
+        {
+          "tipo": "pdf",
+          "resultado": "aproximada"
+        }
+      ],
+      "advertencias": [
+        "cita_aproximada"
+      ],
+      "errores": []
+    },
+    "checker": {
+      "decision": "aprobado",
+      "motivo": "La cita literal (Anexo III, p.170) demuestra que el informe declara el control negativo invalidado en esa rama; Art. 18.1.6 figura en 00_fuentes; AMARILLO adecuado.",
+      "cambios": []
+    }
+  }
+]
