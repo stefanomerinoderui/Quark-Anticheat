@@ -18,6 +18,9 @@ function Pandoc(doc)
       if b.t == "Header" and b.level == 1 and text:match("^CAPÍTULO") then
         out[#out + 1] = caratula((text:gsub("[#%%&_{}]", "\\%0")))
       else
+        if b.t == "Header" and b.level == 1 and text:match("^Anexos") then
+          out[#out + 1] = pandoc.RawBlock("latex", "\\anexonum")
+        end
         out[#out + 1] = b
       end
     end

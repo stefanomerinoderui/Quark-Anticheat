@@ -35,13 +35,13 @@ status: snapshot
 
 #
 
-# **Resumen** {#resumen}
+# **Resumen**
 
 El presente proyecto aborda una limitación técnica que afecta a los usuarios de distribuciones GNU/Linux que utilizan su equipo para jugar videojuegos en línea. Un conjunto significativo de títulos multijugador requiere, como condición obligatoria de ejecución, la presencia de un sistema anticheat2 de nivel de kernel3. Dado que estos sistemas se diseñan principalmente para Windows y operan en el nivel de máximo privilegio (Ring 0), resultan incompatibles con el modelo de kernel de Linux; en esta plataforma el anticheat, cuando existe, opera en espacio de usuario sobre capas de compatibilidad y, según información pública reciente, mediante programas BPF-LSM sin módulo de kernel, lo que condiciona el acceso a dichos títulos con independencia de que el juego en sí sea compatible.
 
 La solución consiste en el diseño y desarrollo de un sistema anticheat de nivel de kernel orientado a entornos GNU/Linux, compuesto por tres elementos: un módulo de kernel, escrito en C, que deniega a cualquier otro proceso el acceso a la memoria de un proceso protegido mediante `ptrace`, `/proc/<pid>/mem` y `process_vm_readv/writev`; un servicio en espacio de usuario, escrito en Rust, que registra los procesos protegidos, ordena su protección al módulo por un canal autenticado, carga programas eBPF/BPF-LSM de protección y telemetría y vigila las variables que el juego declara; y una interfaz de integración (API4/SDK5) en C que permite incorporar el sistema en videojuegos y que falla de forma cerrada si el kernel no confirma la protección. El uso de C en el módulo, y no de Rust, responde a la contingencia prevista para el riesgo R2 (bindings de Rust for Linux insuficientes), que se materializó y se ejecutó.
 
-El desarrollo se declara en espiral; la ejecución real es un prototipado evolutivo guiado por riesgo, decisión registrada en la ADR-001 y aceptada por el autor, con seis ciclos reconstruidos desde el historial de git (Capítulos V y VI). Como pauta general del informe, ante un conflicto entre lo planeado en origen y lo ocurrido, prevalece lo ocurrido en la rama `Dev` (commit `35c6031`, 2026-11-05).
+El desarrollo se declara en espiral; la ejecución real es un prototipado evolutivo guiado por riesgo, decisión propuesta en la ADR-001 y adoptada por el autor en este informe, con seis ciclos reconstruidos desde el historial de git (Capítulos V y VI). Como pauta general del informe, ante un conflicto entre lo planeado en origen y lo ocurrido, prevalece lo ocurrido en la rama `Dev` (commit `35c6031`, 2026-11-05).
 
 Los resultados alcanzados son un prototipo funcional integrado con RecoilEngine (motor del juego de código abierto Beyond All Reason) y una validación en máquina virtual con el build de pruebas: con el módulo cargado, el ataque por `/proc/<pid>/mem` es denegado en 10 de 10 repeticiones sobre un juego simulado, y hay una verificación sobre el motor real. El impacto en el rendimiento, las tasas de detección y de falsos positivos y la resistencia a evasión no se midieron y se declaran como trabajo pendiente. El proyecto aporta una base abierta y documentada para el estudio de mecanismos de seguridad en GNU/Linux y demuestra la viabilidad técnica del enfoque dentro del alcance indicado.
 
@@ -59,15 +59,15 @@ Resumen · Capítulos I a XIII (secciones numeradas dentro de cada capítulo) ·
 
 #
 
-# **CAPÍTULO I — DEFINICIÓN DEL PROYECTO** {#capítulo-i-—-definición-del-proyecto}
+# **CAPÍTULO I — DEFINICIÓN DEL PROYECTO**
 
-## **1.1. Origen del Proyecto** {#1.1.-origen-del-proyecto}
+## **1.1. Origen del Proyecto**
 
 El proyecto surge a partir de la identificación de una limitación concreta que afecta a los usuarios de distribuciones GNU/Linux que utilizan sus equipos para jugar videojuegos en línea. Una parte significativa de los títulos multijugador más populares implementa sistemas anticheat de nivel de kernel como dependencia obligatoria de ejecución. Estos sistemas operan en el espacio del kernel (Ring 0), el nivel de máximo privilegio del procesador, lo que les otorga acceso amplio a los recursos del sistema para detectar modificaciones no autorizadas (Wikipedia, 2026a). Como se diseñaron principalmente para Windows, los usuarios de Linux quedan excluidos: en esta plataforma el anticheat, cuando se habilita a través de capas de compatibilidad como Proton, funciona en espacio de usuario y no mediante un controlador de kernel (GamingOnLinux, 2026).
 
 El contexto de aplicación es a la vez técnico y social: técnico, porque la brecha existe por una limitación arquitectónica real entre los modelos de kernel de ambos sistemas operativos; social, porque afecta a una comunidad de usuarios en crecimiento que ha optado por plataformas libres y abiertas. El proyecto se enmarca en el contexto académico de la carrera de Ingeniería en Sistemas de Información de la Universidad de la Cuenca del Plata, donde representa una oportunidad de aplicar conocimientos de sistemas operativos, seguridad y desarrollo de software de bajo nivel sobre un problema con impacto real y verificable.
 
-## **1.2. Misión, Visión y Objetivos** {#1.2.-misión,-visión-y-objetivos}
+## **1.2. Misión, Visión y Objetivos**
 
 **Misión.** Demostrar, mediante el diseño y desarrollo de un prototipo funcional, la viabilidad técnica de un sistema anticheat de nivel de kernel nativo para GNU/Linux que preserve la integridad del entorno de ejecución de videojuegos; su impacto en el rendimiento se mide y se informa en las Conclusiones, y hasta contar con esa medición no se afirma bajo impacto.
 
@@ -93,23 +93,23 @@ El contexto de aplicación es a la vez técnico y social: técnico, porque la br
 | 4 | Parcial: un vector validado con control negativo (10/10); no se calculan tasas de detección ni falsos positivos. |
 | 5 | No medido: no existe medición de overhead. |
 
-## **1.3. Necesidad o Problema que responde** {#1.3.-necesidad-o-problema-que-responde}
+## **1.3. Necesidad o Problema que responde**
 
 Los sistemas anticheat de nivel de kernel disponibles en el mercado se desarrollaron principalmente para Windows. Esta decisión de diseño los hace incompatibles con las distribuciones GNU/Linux, ya que dependen de interfaces internas del kernel de Windows que no tienen equivalente directo en Linux; las diferencias en los requisitos de firma de controladores, las políticas de módulos de kernel y la naturaleza descentralizada de las distribuciones complican el despliegue de controladores propietarios en Linux frente al modelo centralizado de Windows (Wikipedia, 2026a). Como resultado, los videojuegos que incorporan estos sistemas como dependencia obligatoria resultan inaccesibles para los usuarios de Linux, sin que exista una solución de nivel de kernel abierta y documentada equivalente para dicha plataforma; los proveedores comerciales anuncian para Linux un servicio con programas BPF-LSM (información pública, sin verificación propia; Capítulo II).
 
 El problema es de naturaleza técnica. Su causa radica en una incompatibilidad arquitectónica entre los mecanismos de kernel sobre los que se construyen los anticheats existentes y el modelo de kernel de Linux. No existe un componente organizacional o institucional que lo origine; es consecuencia directa de decisiones de desarrollo tomadas por la industria del videojuego orientadas al ecosistema Windows. El impacto, no obstante, trasciende lo técnico: la exclusión resultante afecta a un segmento de usuarios que ve limitado su acceso a productos de entretenimiento por razones ajenas a la capacidad de su hardware o a la compatibilidad del software en sí.
 
-## **1.4. ODS asociadas y Diferenciales** {#1.4.-ods-asociadas-y-diferenciales}
+## **1.4. ODS asociadas y Diferenciales**
 
 **ODS asociadas.** El proyecto se vincula principalmente con el Objetivo de Desarrollo Sostenible 9 (Industria, Innovación e Infraestructura), en tanto promueve la innovación tecnológica y el desarrollo de infraestructura de software abierta y resiliente. De forma secundaria se vincula con el ODS 10 (Reducción de las desigualdades), al reducir la brecha de acceso que excluye a una comunidad de usuarios de una plataforma libre. *(Asociación propuesta, a validar en la cátedra de Proyecto Final de Grado.)*
 
 **Diferenciales.** El primer diferencial es su carácter abierto y documentado, frente al carácter cerrado y propietario de los anticheats comerciales (GamingOnLinux, 2026). El segundo es la combinación de un módulo de kernel en C con un servicio en Rust y programas BPF-LSM, que cubren lo que un LSM clásico no puede registrar desde fuera del árbol del kernel. El tercero es su orientación académica y la trazabilidad de cada afirmación del informe. El carácter «nativo de kernel» deja de ser diferencial exclusivo, porque la industria converge hacia BPF-LSM sin módulo de kernel (Capítulo II).
 
-## **1.5. Descripción breve del Sistema** {#1.5.-descripción-breve-del-sistema}
+## **1.5. Descripción breve del Sistema**
 
 Un sistema anticheat es una solución de seguridad cuyo propósito es detectar y prevenir el uso de software de trampas en videojuegos, preservando la integridad del entorno de ejecución y garantizando condiciones de juego equitativas. El presente sistema constituye una implementación de este concepto a nivel de kernel, orientada a distribuciones GNU/Linux. Se compone de tres elementos que operan de forma coordinada: un módulo de kernel, un servicio en espacio de usuario y una interfaz de integración. El sistema opera en tiempo real durante la ejecución del videojuego, con privilegios elevados que le permiten acceder a información del sistema no accesible desde el espacio de usuario convencional.
 
-## **1.6. Descripción detallada del Sistema** {#1.6.-descripción-detallada-del-sistema}
+## **1.6. Descripción detallada del Sistema**
 
 El **módulo de kernel** deniega el acceso de nivel *attach* a la memoria de los procesos protegidos y registra cada intento en el log del kernel. Opera con privilegios de kernel mediante un `kretprobe` sobre `ptrace_may_access`, de modo que resiste técnicas de evasión que explotan las limitaciones del espacio de usuario. La capacidad de mediación se completa con programas BPF-LSM, que exponen ganchos de seguridad del kernel desde eBPF sin requerir un módulo LSM compilado en el kernel (The kernel development community, 2024a); la telemetría de eventos la generan programas eBPF cargados por el servicio, máquina virtual interna del kernel que ejecuta programas verificados con bajo overhead (New Relic, 2025). Un LSM clásico no puede registrarse desde un módulo fuera del árbol, porque `security_add_hooks()` solo existe durante la inicialización y no se exporta.
 
@@ -117,7 +117,7 @@ El **servicio en espacio de usuario** registra los procesos protegidos, ordena s
 
 La **interfaz de integración** expone una API/SDK que permite a los desarrolladores de videojuegos incorporar el sistema en sus títulos sin requerir conocimiento de los detalles internos del módulo ni del servicio. La política es de fallo cerrado: `quark_sdk_init()` falla si el kernel no confirma la protección y un *watchdog* termina el juego si el servicio deja de responder.
 
-# **CAPÍTULO II — RELEVAMIENTO E INVESTIGACIÓN DE MERCADO** {#capítulo-ii-—-relevamiento-e-investigación-de-mercado}
+# **CAPÍTULO II — RELEVAMIENTO E INVESTIGACIÓN DE MERCADO**
 
 ## **2.1. Objetivo y alcance del relevamiento**
 
@@ -231,7 +231,7 @@ Lectura: el 54 % de los títulos listados figura como *Broken* y el 5 % como *De
 
 ### 2.4.5. Oferta existente: EAC y BattlEye bajo Proton
 
-Los hallazgos de la investigación propia (Martínez Alarcón & Merino De Rui, 2026) se resumen en la sección D del Update 2026-11-13 y en `Proton-Anticheat-Research`: EAC bajo Proton es un cliente nativo (`easyanticheat_x64.so`) que incluye el desarrollador del juego y funciona en espacio de usuario; BattlEye distribuye un cliente empaquetado y virtualizado. Ambos dependen de la decisión de cada desarrollador y ninguno actúa como anticheat de kernel en Linux.
+Los hallazgos de la investigación propia (Martínez Alarcón & Merino De Rui, 2026) se resumen en la sección D del Anexo III.6 y en `Proton-Anticheat-Research`: EAC bajo Proton es un cliente nativo (`easyanticheat_x64.so`) que incluye el desarrollador del juego y funciona en espacio de usuario; BattlEye distribuye un cliente empaquetado y virtualizado. Ambos dependen de la decisión de cada desarrollador y ninguno actúa como anticheat de kernel en Linux.
 
 ### 2.4.6. Movimiento de la industria: EAC para Linux v2
 
@@ -247,7 +247,7 @@ Epic Games anunció el 2026-10-14 la reconstrucción de EAC para Linux («EAC Li
 
 ### 2.5.1. Hipótesis de demanda (provisional)
 
-Se formula una hipótesis de demanda provisional, no estática: se revisa cuando se apliquen la encuesta y cualquier dato nuevo, y se construye con lo relevado en la sección D del Update 2026-11-13, en `Proton-Anticheat-Research`, en AreWeAntiCheatYet y en Steam.
+Se formula una hipótesis de demanda provisional, no estática: se revisa cuando se apliquen la encuesta y cualquier dato nuevo, y se construye con lo relevado en la sección D del Anexo III.6, en `Proton-Anticheat-Research`, en AreWeAntiCheatYet y en Steam.
 
 **H-D1.** Existe una demanda insatisfecha de jugadores de Linux, porque el acceso a los títulos con anticheat depende de la decisión de cada desarrollador: en AreWeAntiCheatYet el 54 % de los juegos listados figura como *Broken* y el 5 % como *Denied*, y el cliente nativo de EAC bajo Proton y el cliente de BattlEye son opcionales por título (`proton-anticheats`).
 
@@ -266,15 +266,15 @@ Se formula una hipótesis de demanda provisional, no estática: se revisa cuando
 - La industria incorpora BPF-LSM en EAC v2, lo que respalda la dirección técnica de Quark.
 - La demanda se sostiene como hipótesis provisional (2.5.1) con supuestos y criterios de refutación explícitos; su validación con usuarios reales depende de la encuesta, diseñada y no publicada.
 
-# **CAPÍTULO III — ENTORNO Y DOMINIO DEL SISTEMA** {#capítulo-iii-—-entorno-y-dominio-del-sistema}
+# **CAPÍTULO III — ENTORNO Y DOMINIO DEL SISTEMA**
 
-## **3.1. Entorno del Sistema** {#3.1.-entorno-del-sistema}
+## **3.1. Entorno del Sistema**
 
 El sistema opera en equipos de escritorio o portátiles con distribuciones GNU/Linux instaladas, destinados a la ejecución de videojuegos en línea. El entorno de ejecución es heterogéneo: las distribuciones varían en versión de kernel, configuración de módulos habilitados, gestor de paquetes y políticas de seguridad activas. El sistema no asume una configuración uniforme del entorno.
 
 Para el desarrollo y las pruebas se toma como entorno vigente Nobara Linux 43 (derivada de Fedora, con ajustes orientados al rendimiento en gaming), kernel 7.0.9, en una máquina virtual QEMU/KVM6 (`docs/vm_test_environment.md`). Una VM con CachyOS (kernel 7.3.1, compilado con clang) se menciona solo como propuesta a futuro (`vm/README.md`). El sistema opera de forma simultánea con el proceso del videojuego y con otros procesos del sistema operativo, por lo que el impacto en el rendimiento del equipo constituye una variable relevante del entorno que el diseño considera.
 
-## **3.2. Dominio del Sistema (Variables)** {#3.2.-dominio-del-sistema-(variables)}
+## **3.2. Dominio del Sistema (Variables)**
 
 **Variables endógenas** (internas, bajo control directo del proyecto):
 
@@ -292,7 +292,7 @@ Para el desarrollo y las pruebas se toma como entorno vigente Nobara Linux 43 (d
 * **Técnicas de trampa utilizadas por el software adversario:** el proyecto identifica y cubre un conjunto acotado; pueden surgir nuevas técnicas fuera del alcance.  
 * **Videojuego seleccionado como caso de prueba:** sus características técnicas condicionan la forma de implementar y validar la interfaz de integración.
 
-## **3.3. Alcance (del Sistema y del Proyecto)** {#3.3.-alcance-(del-sistema-y-del-proyecto)}
+## **3.3. Alcance (del Sistema y del Proyecto)**
 
 **El sistema incluye:**
 
@@ -312,7 +312,7 @@ Para el desarrollo y las pruebas se toma como entorno vigente Nobara Linux 43 (d
 * El SDK del lado servidor, la prueba cliente↔servidor de punta a punta y la validación del build de *release* en hardware físico.  
 * Todo lo posterior a la defensa, incluida cualquier continuación por parte del colaborador.
 
-## **3.4. Límites y Restricciones** {#3.4.-límites-y-restricciones}
+## **3.4. Límites y Restricciones**
 
 * **Técnicas:** el sistema opera sobre el kernel de Linux. Las interfaces disponibles para módulos de kernel (`kretprobe`, Netlink) y para eBPF/BPF-LSM establecen límites sobre los eventos interceptables y su granularidad; Netfilter no se utiliza. El soporte de Rust para módulos de kernel presenta una madurez menor a la de C y ciertas APIs internas no cuentan con bindings estables (Ojeda, 2025), razón por la cual el módulo está en C. Las pruebas con privilegios elevados requieren entornos virtualizados para preservar la integridad de los equipos de desarrollo, y el build de producción se niega a proteger dentro de una VM: toda la validación disponible corresponde al build de pruebas.  
 * **Económicas:** el proyecto se desarrolla sin financiamiento externo. Los recursos disponibles son los equipos personales de los integrantes y herramientas de software libre o de acceso gratuito. No se contempla la contratación de infraestructura en la nube ni la adquisición de licencias.  
@@ -323,11 +323,11 @@ Para el desarrollo y las pruebas se toma como entorno vigente Nobara Linux 43 (d
 
 ## **4.1. Definición de negocios**
 
-**Actividades.** El proyecto diseña, desarrolla y documenta un sistema anticheat para GNU/Linux compuesto por un módulo de kernel (C, `kernel/quark_kernel.c`), un demonio en espacio de usuario (Rust, `quark_daemon/`) con programas eBPF, y un SDK en C (`sdk/`) que un juego integra para exigir la protección (Informe, Update 2026-11-13, §A). Las actividades de valor son: (a) el desarrollo y mantenimiento del código abierto; (b) la documentación técnica y de las decisiones de diseño; (c) la investigación comparada de los anticheats comerciales bajo Proton (Informe, Update 2026-11-13, §D); (d) la integración con motores de juego de código abierto (RecoilEngine, motor de *Beyond All Reason*).
+**Actividades.** El proyecto diseña, desarrolla y documenta un sistema anticheat para GNU/Linux compuesto por un módulo de kernel (C, `kernel/quark_kernel.c`), un demonio en espacio de usuario (Rust, `quark_daemon/`) con programas eBPF, y un SDK en C (`sdk/`) que un juego integra para exigir la protección (Anexo III.6, §A). Las actividades de valor son: (a) el desarrollo y mantenimiento del código abierto; (b) la documentación técnica y de las decisiones de diseño; (c) la investigación comparada de los anticheats comerciales bajo Proton (Anexo III.6, §D); (d) la integración con motores de juego de código abierto (RecoilEngine, motor de *Beyond All Reason*).
 
 **Mercado general.** El mercado es el de los videojuegos multijugador en línea que exigen un anticheat de nivel de kernel como condición de ejecución, y dentro de él el segmento de jugadores que usan GNU/Linux. Los anticheats comerciales se desarrollan principalmente para Windows (Wikipedia, 2026a), y en Linux su disponibilidad es optativa por título (ver 4.4); la oferta actual en esa plataforma funciona en espacio de usuario o, según información pública reciente, con BPF-LSM sin módulo de kernel. El tamaño del segmento Linux se estima en este proyecto como rango y su participación en cada título no se midió: **estimado** con fórmula y supuestos explícitos en 4.5.
 
-**Tecnología.** Protección en Ring 0 mediante un `kretprobe` sobre `ptrace_may_access`, BPF-LSM y telemetría eBPF cargados desde el demonio, canal Netlink autenticado (uid, SHA-256 del ejecutable, firma ECDSA P-256 y nonce) y política de fallo cerrado en el SDK (Features §1–§3). El alcance validado es una máquina virtual con build de *testing* y un juego simulado, más una validación sobre el motor real (Informe, Update 2026-11-13, §C).
+**Tecnología.** Protección en Ring 0 mediante un `kretprobe` sobre `ptrace_may_access`, BPF-LSM y telemetría eBPF cargados desde el demonio, canal Netlink autenticado (uid, SHA-256 del ejecutable, firma ECDSA P-256 y nonce) y política de fallo cerrado en el SDK (Features §1–§3). El alcance validado es una máquina virtual con build de *testing* y un juego simulado, más una validación sobre el motor real (Anexo III.6, §C).
 
 **Modelo de negocio en clave de adopción.** El proyecto no se comercializa (Cap. III, 3.3). No hay ingresos, precios ni clientes pagantes, y no se plantean. El "negocio" se define como la generación y sostenimiento de valor público: un componente abierto, auditable y reutilizable. El modelo se expresa en el CANVAS del Cap. XI.
 
@@ -335,12 +335,12 @@ Para el desarrollo y las pruebas se toma como entorno vigente Nobara Linux 43 (d
 
 **Misión y visión.** Se adoptan las del Cap. I, 1.2.
 
-**Propuesta de valor estratégica.** A partir del relevamiento de mercado, el diferencial pasa de "nativo a nivel de kernel" a **abierto, académico y documentado** (Informe, Update 2026-11-13, §D): la industria converge hacia BPF-LSM sin módulo de kernel, de modo que la ventaja sostenible reside en la apertura del código, la trazabilidad de las afirmaciones (Claims-Ledger) y la documentación del diseño, no en un mecanismo exclusivo.
+**Propuesta de valor estratégica.** A partir del relevamiento de mercado, el diferencial pasa de "nativo a nivel de kernel" a **abierto, académico y documentado** (Anexo III.6, §D): la industria converge hacia BPF-LSM sin módulo de kernel, de modo que la ventaja sostenible reside en la apertura del código, la trazabilidad de las afirmaciones (Claims-Ledger) y la documentación del diseño, no en un mecanismo exclusivo.
 
 **Objetivos estratégicos de adopción** (derivados de los objetivos del Cap. I; ninguna meta numérica de adopción se fija, **pendiente de definir por el equipo**):
 1. Publicar el repositorio bajo licencia GNU GPLv3 (Cap. VIII).
 2. Mantener la integración con al menos un motor de juego de código abierto (hoy: RecoilEngine, PR #1).
-3. Completar la medición pendiente (overhead, detección, falsos positivos) antes de cualquier afirmación de rendimiento (Informe, Update 2026-11-13, §C).
+3. Completar la medición pendiente (overhead, detección, falsos positivos) antes de cualquier afirmación de rendimiento (Anexo III.6, §C).
 
 ## **4.3. Análisis de rivalidad amplificada**
 
@@ -349,13 +349,13 @@ Se aplica el esquema de cinco fuerzas ampliado (competidores actuales, entrantes
 | Fuerza | Análisis | Fuente |
 |---|---|---|
 | Competencia actual | Easy Anti-Cheat (Epic), BattlEye, VAC (Valve) y Vanguard (Riot) dominan el segmento. En Linux, EAC y BattlEye funcionan bajo Proton solo si el desarrollador los habilita; VAC corre igual en Linux; Vanguard no se ofrece en Linux. | 4.4 |
-| Competidores potenciales | Epic anunció (2026-10-14, según fuentes públicas secundarias) Easy Anti-Cheat para Linux v2 con servicio systemd y programas BPF-LSM, sin módulo de kernel. Es el mismo mecanismo que usa la capa BPF-LSM de Quark. Su funcionamiento interno no es público y no puede observarse; se describe según la documentación pública y la investigación interna del proyecto. | Informe, Update 2026-11-13, §D; `EAC_BPF_LSM_Service.md` |
+| Competidores potenciales | Epic anunció (2026-10-14, según fuentes públicas secundarias) Easy Anti-Cheat para Linux v2 con servicio systemd y programas BPF-LSM, sin módulo de kernel. Es el mismo mecanismo que usa la capa BPF-LSM de Quark. Su funcionamiento interno no es público y no puede observarse; se describe según la documentación pública y la investigación interna del proyecto. | Anexo III.6, §D; `EAC_BPF_LSM_Service.md` |
 | Sustitutos | (a) Detección del lado del servidor, que no depende del cliente; (b) no ofrecer el título en Linux; (c) juegos sin anticheat de kernel (ej. VAC en espacio de usuario). | Informe, Cap. XI previsto; GamingOnLinux (2026) |
 | Proveedores | Kernel de Linux (interfaces LSM, eBPF, Netlink, kprobes), toolchain Rust/libbpf, distribuciones. Dependencia alta de la estabilidad de interfaces internas del kernel (riesgo R7) y de la configuración del usuario (BPF-LSM requiere `bpf` en `lsm=`; Features §1.5). | Informe, Cap. V 5.7; Known-Limitations |
-| Clientes / adoptantes | Desarrolladores de juegos (integran el SDK; hoy un motor de código abierto) y jugadores Linux (instalan módulo y demonio). Los estudios comerciales dependen de proveedores con servicio, soporte y respaldo de servidor, que Quark no ofrece. | Informe, Update 2026-11-13, §A, §E |
+| Clientes / adoptantes | Desarrolladores de juegos (integran el SDK; hoy un motor de código abierto) y jugadores Linux (instalan módulo y demonio). Los estudios comerciales dependen de proveedores con servicio, soporte y respaldo de servidor, que Quark no ofrece. | Anexo III.6, §A, §E |
 | Barreras de entrada | Altas en lo técnico (kernel, detección, atestación) y para obtener confianza (ver Riot: Linux no permite atestar el estado de arranque ni los módulos de kernel). | GamingOnLinux (2024) |
 
-**Lectura de rivalidad.** Quark no compite hoy por clientes comerciales: carece de SDK del lado servidor, de prueba de punta a punta cliente-servidor y de atestación verificada por servidor (Features §5; Informe, Update 2026-11-13, §E). Su espacio es el de la alternativa abierta, estudiable y reproducible.
+**Lectura de rivalidad.** Quark no compite hoy por clientes comerciales: carece de SDK del lado servidor, de prueba de punta a punta cliente-servidor y de atestación verificada por servidor (Features §5; Anexo III.6, §E). Su espacio es el de la alternativa abierta, estudiable y reproducible.
 
 ## **4.4. Mapeo de competencia**
 
@@ -368,7 +368,7 @@ Se aplica el esquema de cinco fuerzas ampliado (competidores actuales, entrantes
 | VAC (Valve) | Sistema de Valve que detecta cheats en la PC del usuario con una base de cheats conocidos, similar a un antivirus; reportado como de espacio de usuario, no de kernel (descripción de terceros; Valve no publica el detalle interno). Los bans se aplican vía API de Steamworks. | La versión de Linux es idéntica a la de Windows (Valve Developer Community, s. f.). | Propietario, ligado a Steam/Steamworks | Valve Corporation (s. f.); Valve Developer Community (s. f.) |
 | Vanguard (Riot Games) | Anticheat con driver; Riot afirma que necesita verificar el entorno y atestar estado de arranque y módulos de kernel. | No soportado; Riot declara que Linux no permite atestar el estado de arranque ni los módulos de kernel, y que rechaza emulación y VM. | Propietario, cerrado, ligado a títulos de Riot | GamingOnLinux (2024a) |
 | Easy Anti-Cheat para Linux v2 (Epic) | Servicio systemd + programas BPF-LSM, sin módulo de kernel; ocho requisitos de plataforma (BPF-LSM, *lockdown*, Secure Boot, TPM 2.0, IOMMU, entre otros). Se describe según documentación pública y la investigación interna; su funcionamiento no es público y no puede observarse. | Nativo Linux con requisitos estrictos | Propietario | `EAC_BPF_LSM_Service.md` §0–§3; Phoronix (s. f.); It's FOSS (2026) |
-| **Quark Anticheat** | Módulo de kernel (C) + BPF-LSM/eBPF + demonio (Rust) + SDK (C). Bloquea localmente `ptrace`, `/proc/<pid>/mem` y `process_vm_*` en Ring 0; bloquea BPF de *tracing*; autoprotege al demonio (Features §1). | Nativo Linux. Validado en VM, build de *testing*, juego simulado y motor real. | **Abierto**, académico, documentado (GNU GPLv3, Cap. VIII) | Features; Informe, Update 2026-11-13, §A, §C |
+| **Quark Anticheat** | Módulo de kernel (C) + BPF-LSM/eBPF + demonio (Rust) + SDK (C). Bloquea localmente `ptrace`, `/proc/<pid>/mem` y `process_vm_*` en Ring 0; bloquea BPF de *tracing*; autoprotege al demonio (Features §1). | Nativo Linux. Validado en VM, build de *testing*, juego simulado y motor real. | **Abierto**, académico, documentado (GNU GPLv3, Cap. VIII) | Features; Anexo III.6, §A, §C |
 
 **Tabla IV-2. Comparación cualitativa de capacidades.** «Sí/No/No público» según información pública; la comparación con EAC es contra información pública y documentación, no contra su comportamiento medido (que no es público).
 
@@ -405,9 +405,9 @@ El tamaño del segmento se estima como rango con una fórmula simple, usando sol
 
 **Qué la refutaría.** Un dato oficial de Valve de usuarios mensuales actuales, un sesgo demostrado de la encuesta o una participación de Linux sustancialmente distinta en lecturas posteriores.
 
-# **CAPÍTULO V — PLANIFICACIÓN DEL PROYECTO** {#capítulo-v-—-planificación-del-proyecto}
+# **CAPÍTULO V — PLANIFICACIÓN DEL PROYECTO**
 
-## **5.1. Definición de Etapas** {#5.1.-definición-de-etapas}
+## **5.1. Definición de Etapas**
 
 El proyecto se organiza en cuatro etapas secuenciales:
 
@@ -430,7 +430,7 @@ El proyecto se organiza en cuatro etapas secuenciales:
 | C5 | 2026-09-30 a 2026-10-05 | BPF-LSM y telemetría | `e497dbf` |
 | C6 | 2026-11-05/06 | Linter e instalador | `35c6031` (Dev); `2b088ab` (rama sin integrar) |
 
-## **5.2. Entregables por etapa** {#5.2.-entregables-por-etapa}
+## **5.2. Entregables por etapa**
 
 **Tabla V-2. Entregables por etapa y estado al 2026-11-25**
 
@@ -441,7 +441,7 @@ El proyecto se organiza en cuatro etapas secuenciales:
 | 3 — Desarrollo del módulo | Módulo de kernel compilado (v0.4.0) y operativo en VM, servicio de espacio de usuario, API/SDK y pruebas (E3.1–E3.4) | Cumplido en lo esencial; sin SDK de servidor |
 | 4 — Validación y soporte | Informe de validación (tasas de detección y falsos positivos), medición de overhead de CPU/RAM, documentación final y defensa (E4.1–E4.4) | En curso: integración con motor real lograda; mediciones pendientes |
 
-## **5.3. Organización del Equipo** {#5.3.-organización-del-equipo}
+## **5.3. Organización del Equipo**
 
 El proyecto lo desarrollan dos personas con roles diferenciados, pero la presentación y la defensa del PIF corresponden a una sola.
 
@@ -451,7 +451,7 @@ El proyecto lo desarrollan dos personas con roles diferenciados, pero la present
 
 El equipo se comunica de forma asincrónica y realiza reuniones de seguimiento para la revisión de hitos. Todo lo posterior a la defensa queda fuera del alcance del informe.
 
-## **5.4. Cronograma (Gantt)** {#5.4.-cronograma-(gantt)}
+## **5.4. Cronograma (Gantt)**
 
 El cronograma planificado se estructura en cuatro etapas distribuidas entre mayo y noviembre de 2026, con un horizonte total de siete meses; la ejecución real se resume en la Tabla V-1. Las etapas de análisis técnico y diseño arquitectónico se solapan parcialmente en junio. El desarrollo del módulo concentra la mayor parte del esfuerzo, de julio a octubre, con las pruebas corriendo en paralelo. La validación se inicia en octubre solapada con el cierre del desarrollo, dejando noviembre para pruebas finales, medición de rendimiento, documentación y defensa.
 
@@ -479,7 +479,7 @@ El cronograma planificado se estructura en cuatro etapas distribuidas entre mayo
 | E4.3 | Medición de impacto en rendimiento (CPU/RAM) | E4.1 |  |  |  |  |  |  |  |
 | E4.4 | Documentación final y preparación de defensa | E4.2, E4.3 |  |  |  |  |  |  |  |
 
-## **5.5. Análisis PERT/CPM** {#5.5.-análisis-pert/cpm}
+## **5.5. Análisis PERT/CPM**
 
 El análisis PERT identifica trece actividades distribuidas en cuatro etapas, con duraciones estimadas mediante la ponderación de tiempos optimistas, más probables y pesimistas. El camino crítico recorre las actividades E1.1/E1.2 → E2.1/E2.2 → E3.1 → E4.1 → E4.2 → E4.4, con una duración total esperada de 19 semanas. Las actividades E1.3, E2.3 y E4.3 presentan holgura y no condicionan el plazo final. La actividad de mayor varianza es E3.1 (desarrollo del módulo de kernel, Var \= 2,25), lo que la identifica como el principal factor de riesgo sobre el cronograma.
 
@@ -503,9 +503,9 @@ El análisis PERT identifica trece actividades distribuidas en cuatro etapas, co
 
 **Figura 1. Grafo PERT con CPM del proyecto.** Los precedentes de cada actividad constan en la Tabla V-4 y el camino crítico se describe arriba (E1.1/E1.2 → E2.1/E2.2 → E3.1 → E4.1 → E4.2 → E4.4; 19 semanas). La lámina gráfica del grafo original no se incorpora a esta versión; la reconstrucción visual a partir de la Tabla V-4 es una tarea editorial pendiente de una persona.
 
-## **5.6. Estimación de Tamaño y Esfuerzo** {#5.6.-estimación-de-tamaño-y-esfuerzo}
+## **5.6. Estimación de Tamaño y Esfuerzo**
 
-### **Estimación SLOC por componente (planificación)** {#estimación-sloc-por-componente}
+### **Estimación SLOC por componente (planificación)**
 
 Para proyectos de complejidad similar en el ecosistema Linux, la estimación de origen fue la siguiente:
 
@@ -540,7 +540,7 @@ Como pauta general, prevalece lo ocurrido: el tamaño real se mide en el árbol 
 
 El tamaño real (2,762 KSLOC con pruebas; 1,977 KSLOC solo el producto) es menor que la estimación de origen (8 KSLOC); el módulo de kernel no contiene Rust. La comparación es entre un prototipo y una estimación de planificación y no implica sobreestimación ni subestimación de esfuerzo.
 
-### **Story Points del módulo de kernel** {#story-points-del-módulo-de-kernel}
+### **Story Points del módulo de kernel**
 
 Para el componente de kernel, que no se mide bien con SLOC puro, la planificación aplicó estimación por Story Points:
 
@@ -559,7 +559,7 @@ Para el componente de kernel, que no se mide bien con SLOC puro, la planificaci�
 
 El ítem «Integración con Rust for Linux» no se ejecutó; el esfuerzo se reasigna a BPF-LSM y al canal autenticado. No hay registro de Story Points reales, por lo que no se informan.
 
-### **Ajuste de complejidad COCOMO II** {#ajuste-de-complejidad-cocomo-ii}
+### **Ajuste de complejidad COCOMO II**
 
 Se mantiene la metodología: el modelo utiliza factores de escala y multiplicadores de esfuerzo (cost drivers) para ajustar la estimación (Boehm et al., 2000).
 
@@ -579,7 +579,7 @@ Se mantiene la metodología: el modelo utiliza factores de escala y multiplicado
 
 **Factor de ajuste compuesto (EAF).** EAF = 1,10 × 1,34 × 1,19 × 1,29 × 1,13 × 1,09 × 1,20 × 1,00 × 1,00 ≈ **3,34**. La versión de origen informaba 3,76; el producto de los mismos multiplicadores es 3,34, por lo que se corrige el valor.
 
-### **Estimación del esfuerzo (recalculada con el tamaño real)** {#estimación-del-esfuerzo}
+### **Estimación del esfuerzo (recalculada con el tamaño real)**
 
 Fórmula aplicada, sin cambios: **Esfuerzo = A × (KSLOC)^B × EAF**, con A = 3,0, B = 1,12 y EAF = 3,34. Cambian las entradas: KSLOC pasa de 8,0 (estimado) a 2,762 (medido, con pruebas, comparable con el 8,0 de origen, que incluía la suite de pruebas) y a 1,977 (solo producto).
 
@@ -602,7 +602,7 @@ Fórmula aplicada, sin cambios: **Esfuerzo = A × (KSLOC)^B × EAF**, con A = 3,
 
 *Nota metodológica: las constantes A = 3,0 y B = 1,12 corresponden a la calibración del modo semi-detached del COCOMO intermedio (Boehm, 1981). La versión COCOMO II reemplaza el exponente fijo por uno derivado de cinco factores de escala y emplea constantes nominales A = 2,94 y B = 0,91 (Boehm et al., 2000). Se mantiene el cálculo original del proyecto y se deja constancia de la distinción para una eventual recalibración.*
 
-## **5.7. Gestión de Riesgos** {#5.7.-gestión-de-riesgos}
+## **5.7. Gestión de Riesgos**
 
 Se identifican catorce riesgos: los siete primeros se planificaron y los siete restantes se observaron durante el desarrollo ([[Risk-Register]]).
 
@@ -635,7 +635,7 @@ Se identifican catorce riesgos: los siete primeros se planificaron y los siete r
 * **R6 — Limitaciones del videojuego seleccionado.** *Estado:* mitigado; la integración con RecoilEngine/Beyond All Reason se logró. El plan de evaluar al menos dos candidatos no consta como ejecutado.
 * **R7 — Cambios en interfaces internas del kernel.** *Preventivo:* se evitan las interfaces experimentales y se documentan los kernels de prueba. *Contingente:* si una actualización rompe funcionalidades, el entorno se fija en la versión estable y no se actualiza hasta el cierre.
 
-## **5.8. Hitos de Control** {#5.8.-hitos-de-control}
+## **5.8. Hitos de Control**
 
 **Tabla V-11. Hitos de control y estado al 2026-11-25**
 
@@ -649,31 +649,31 @@ Se identifican catorce riesgos: los siete primeros se planificaron y los siete r
 
 **Criterios de aprobación por hito.** H1: documento de diseño preliminar aprobado por la cátedra; ICC ≥ 80 %. H2: diagramas completos y revisados; desvío de esfuerzo ≤ 20 %. H3: el módulo carga sin errores en QEMU/KVM y registra al menos un evento de supervisión; 0 kernel panics no controlados (sin registro de panics). H4: al menos el 75 % de los casos de prueba aprobados; velocidad de SP sostenida. H5: integración con videojuego funcionando, documentación completa y defensa realizada en fecha.
 
-## **5.9. Descripción del MVP** {#5.9.-descripción-del-mvp}
+## **5.9. Descripción del MVP**
 
 El Producto Mínimo Viable es un prototipo funcional compuesto por el módulo de kernel (C), el servicio en espacio de usuario (Rust) y el SDK (C), integrado con RecoilEngine. Impide el acceso externo a la memoria del proceso protegido por `ptrace`, `/proc/<pid>/mem` y `process_vm_*`, bloquea la carga de programas BPF de *tracing* y se autoprotege. Se valida en una VM con el build de pruebas. No incluye SDK de servidor ni medición de rendimiento. El MVP se congela en `Dev@35c6031`; la rama `feature/gameStartProtection` (`2b088ab`) es trabajo adicional sin integrar. Su descripción detallada está en el Capítulo IX y en el Anexo III.
 
-# **CAPÍTULO VI — METODOLOGÍAS DE GESTIÓN** {#capítulo-vi-—-metodologías-de-gestión}
+# **CAPÍTULO VI — METODOLOGÍAS DE GESTIÓN**
 
-## **6.1. Técnicas y Prácticas de Ingeniería de Software** {#6.1.-técnicas-y-prácticas-de-ingeniería-de-software}
+## **6.1. Técnicas y Prácticas de Ingeniería de Software**
 
 Se declara el **modelo en espiral** como metodología de origen, con prácticas de **SCRUM** (Boehm, 1988; Schwaber & Sutherland, 2020). El modelo en espiral organiza el desarrollo en ciclos sucesivos guiados por el riesgo; cada ciclo atraviesa las fases de determinación de objetivos, identificación y resolución de riesgos, desarrollo y validación, y planificación de la siguiente iteración. La elección respondió a la naturaleza del dominio: el desarrollo de un módulo de kernel exige rigor estructural y trazabilidad, y la naturaleza evolutiva de las amenazas hace inviable un modelo lineal.
 
 **Ejecución real.** El historial de git muestra prototipos sucesivos cada vez más realistas, integrados por *pull request* en `Dev`, en seis ciclos reconstruidos (Tabla V-1), sin *sprints* ni análisis de riesgo escrito por ciclo. La decisión ADR-001, aceptada por el autor, establece presentar el proceso como **prototipado evolutivo guiado por riesgo**: el modelo en espiral queda como declaración de origen y los ciclos C1–C6 son una reconstrucción desde git, no un registro de la época. La línea de aceptación en la ADR, que forma parte de la zona de evidencia, queda por agregarse. Como pauta general, ante un conflicto entre lo planeado en origen y lo ocurrido, prevalece lo ocurrido. No se registran *sprints*.
 
-## **6.2. Trazabilidad del Proyecto** {#6.2.-trazabilidad-del-proyecto}
+## **6.2. Trazabilidad del Proyecto**
 
 El historial de git (29 commits en `Dev` y 3 *pull requests* integrados) registra el avance real; el repositorio de trabajo es del colaborador. Los mensajes de commit no mencionan identificadores de actividad del Gantt y no existe registro de horas, por lo que los indicadores de cumplimiento de cronograma y de desvío de esfuerzo no pueden calcularse con datos de la época. El tablero Kanban del vault complementa el seguimiento.
 
-## **6.3. Gestión de la Configuración** {#6.3.-gestión-de-la-configuración}
+## **6.3. Gestión de la Configuración**
 
 La gestión de la configuración se apoya en el sistema de control de versiones del repositorio, que conserva el historial de cambios del módulo de kernel, el servicio de usuario, la API/SDK y la suite de pruebas. La documentación técnica registra los kernels de prueba (7.0.9 en Nobara 43; 7.3.1 en CachyOS como propuesta futura) y no fija una versión mínima soportada; el módulo se compila contra los *headers* de cada equipo y `vmlinux.h` se genera por equipo, con relocalizaciones CO-RE (ver R4 y R7, Capítulo V). El control de versiones usa ramas con integración por *pull request*; el estado de las ramas está en el Anexo III.
 
-## **6.4. Testing del Proyecto** {#6.4.-testing-del-proyecto}
+## **6.4. Testing del Proyecto**
 
 Las pruebas se ejecutan en una VM QEMU/KVM con el build de pruebas del módulo. Comprenden scripts de escenario (`run_test.sh`, `run_test_kernel.sh`, `run_test_kernel_release.sh`, `run_test_no_quark.sh`, `capture.sh`), 11 pruebas `#[test]` en el servicio (9 en `bpf.rs` y 2 en `main.rs`; una exige root) y la tabla de verificación de `docs/vm_test_environment.md`, sobre un juego simulado y sobre RecoilEngine/BAR. Las tasas de detección y de falsos positivos no se midieron. El harness tiene defectos conocidos (`results.csv` malformado, `summary.txt` que solo reporta la condición B). La cita de New Relic (2025) respalda una afirmación general sobre eBPF y no una medición de Quark. Las pruebas de carga, condiciones de carrera y entradas malformadas quedan pendientes.
 
-## **6.5. Indicadores de Seguimiento** {#6.5.-indicadores-de-seguimiento}
+## **6.5. Indicadores de Seguimiento**
 
 Se definen cinco indicadores distribuidos en las dimensiones de tiempo, costo y calidad.
 
@@ -1062,7 +1062,7 @@ Orden de arranque de la autoprotección (`bpf.rs:178-232`): se cargan los objeto
 | `int quark_sdk_get_version(char*, size_t)` | 94 | Versión del módulo (`:257-275`) |
 | `void quark_sdk_close(void)` | 99 | Cierra la conexión (`:277-285`) |
 
-Los valores devueltos por `is_*` son calculados en el proceso del cliente. Un cliente adulterado puede falsificarlos (Informe, Update 2026-11-13 §E; no hay atestación verificada por servidor, `docs/features.md:254-256`).
+Los valores devueltos por `is_*` son calculados en el proceso del cliente. Un cliente adulterado puede falsificarlos (Informe, Anexo III.6 §E; no hay atestación verificada por servidor, `docs/features.md:254-256`).
 
 ## **9.4. Modelo de datos**
 
@@ -1161,7 +1161,7 @@ La VM obliga a usar el módulo de *testing*: el build de *release* rechaza prote
 
 | Decisión | Motivo documentado | Fuente |
 |---|---|---|
-| Módulo de kernel en C, no Rust | Contingencia del riesgo R2 (bindings insuficientes), prevista en §5.7 del informe | Informe, Update 2026-11-13 §B |
+| Módulo de kernel en C, no Rust | Contingencia del riesgo R2 (bindings insuficientes), prevista en §5.7 del informe | Informe, Anexo III.6 §B |
 | `kretprobe` en lugar de gancho LSM en el módulo | Un módulo fuera del árbol no puede registrar LSM: `security_add_hooks()` es `__init` y no se exporta | `quark.bpf.c:7-9` |
 | Ganchos LSM mediante BPF-LSM desde el demonio | Única forma de obtener LSM reales; además cubre BPF de tracing, que no pasa por `ptrace_may_access` | `quark.bpf.c:3-15` |
 | Bloquear solo `PTRACE_MODE_ATTACH` | Los accesos de lectura saturaban `dmesg` y afectaban `ps`/`htop` sin impedir lecturas de memoria | `quark_kernel.c:409-417` |
@@ -1179,14 +1179,14 @@ La VM obliga a usar el módulo de *testing*: el build de *release* rechaza prote
 Declarados en el código o en `docs/features.md`; ninguno fue medido por esta redacción más allá de lo citado.
 
 1. **Lecturas de nivel *read* por root.** `/proc/<pid>/{environ,maps,auxv}` quedan legibles para cualquier proceso con `CAP_PERFMON`, porque `mm_access()` los concede después de que `ptrace_may_access()` se niega. Se expone el diseño de memoria (ASLR). No puede anularse desde un módulo (`docs/features.md:44-53`; `quark.bpf.c:248-253`; `vm_test_environment.md` §15.5).
-2. **Escrituras sin llamada al sistema.** Una inyección por `LD_PRELOAD` o DLL que no use `ptrace`/`/proc/mem` no se observa; `EXEC_MPROTECT` es solo un indicador (Informe, Update 2026-11-13 §B).
+2. **Escrituras sin llamada al sistema.** Una inyección por `LD_PRELOAD` o DLL que no use `ptrace`/`/proc/mem` no se observa; `EXEC_MPROTECT` es solo un indicador (Informe, Anexo III.6 §B).
 3. **BPF-LSM de mejor esfuerzo.** Si el usuario arranca sin `bpf` en `lsm=`, quedan solo el `kretprobe` y el SDK lo informa con `bpf_lsm_active=0` (`main.rs:571-585`; `sdk/quark_sdk.h:73-84`). El motor RecoilEngine aún no aplica política sobre ese valor (`docs/features.md:260-262`).
 4. **Atestación del cliente.** `quark_sdk_is_*` se calculan en el cliente; no existe SDK de servidor ni prueba cliente-servidor de punta a punta (`docs/features.md:252-259`).
 5. **Capacidad.** 16 PID en el kernel y en `quark_protected` (`quark_kernel.c:47`; `quark.bpf.c:55`), 8/16/16 objetos propios en `quark_config` (`quark.bpf.c:47-49`) y un cliente activo por vez en el demonio (§9.5).
 6. **Efectos colaterales mientras hay un PID protegido.** `bpftrace`, `perf trace` con BPF y la carga de programas de tracing fallan (`docs/features.md:125-127`; `quark.bpf.c:157-187`).
 7. **Pérdida de estado.** Al recargar el módulo se reinician `protected_pids` y `last_nonce` (`quark_kernel.c:155-157`); no hay persistencia.
 8. **Arquitectura.** El *entry handler* solo extrae argumentos en x86_64; en otras arquitecturas deja `task = NULL` y no bloquea nada (`quark_kernel.c:430-436`).
-9. **Clave de firma.** El par de claves es de prueba, sin almacenamiento seguro, rotación ni distribución; la raíz de confianza para una versión productiva es un problema abierto (`tooling/keys/generate-testing-key.sh:1-15`; Informe, Update 2026-11-13 §E).
+9. **Clave de firma.** El par de claves es de prueba, sin almacenamiento seguro, rotación ni distribución; la raíz de confianza para una versión productiva es un problema abierto (`tooling/keys/generate-testing-key.sh:1-15`; Informe, Anexo III.6 §E).
 10. **Lecturas de memoria del propio demonio.** El hilo monitor no puede leer un proceso si el demonio no corre como root (`main.rs:437-459`). Un comentario de ese bloque (`main.rs:447-450`) todavía menciona una exención a root que el kernel ya no aplica (`quark_kernel.c:476-483`): discrepancia de documentación, sin efecto en la ejecución.
 11. **Documentación desactualizada.** `docs/funcionamiento_codigo.md:13` atribuye al módulo ganchos LSM sobre `ptrace_access_check`, y `docs/funcionamiento_codigo.md:9-11` describe solo el prototipo de espacio de usuario; el código real usa `kretprobe` y canal firmado. Para este capítulo se tomó el código (R12 del registro de riesgos).
 12. **Sobrecarga.** No se midió el costo en rendimiento de los ganchos (R14 del Informe).
@@ -1197,7 +1197,7 @@ Estado de las ramas al 2026-11-13 (Informe, Update §F): la solución descrita e
 
 Validación respaldada por documentación (no repetida por esta redacción; alcance: VM, build de *testing*): bloqueo del `cheat` con RecoilEngine real y control negativo con el módulo descargado (`docs/vm_test_environment.md` §7); *watchdog* con retardo observado de ~5,5 s (§8); 12 programas BPF cargados y comprobaciones de autoprotección (§15.4). Falta medir tasa de detección, falsos positivos y sobrecarga.
 
-# **CAPÍTULO X — RECURSOS DEL PROYECTO** {#capítulo-x-—-recursos-del-proyecto}
+# **CAPÍTULO X — RECURSOS DEL PROYECTO**
 
 ## **10.1. Recursos humanos**
 
@@ -1259,8 +1259,8 @@ Cada oportunidad indica su fuente y su estado. Ninguna está implementada hoy sa
 2. **SDK del lado servidor y prueba cliente-servidor de punta a punta.** No implementados (Features §5). Habilitan que un estudio decida con base en la atestación.
 3. **Canal de mensajes del anticheat por la red del propio juego** y **reporte tipado de violaciones.** Fuente: `EAC_bridge_and_quark_takeaways.md` §3.
 4. **Gancho `lsm/mmap_file`** para mapeos ejecutables de archivos ajenos, que `EXEC_MPROTECT` no cubre. Fuente: `EAC_BPF_LSM_Service.md` §7.
-5. **Ampliación de la cobertura de detección** a nuevos vectores (Cap. I, objetivo 2) y límites hoy declarados: DLL o `LD_PRELOAD` que escribe sin llamadas al sistema no es observable; `/proc/<pid>/maps` legible por root (Informe, Update 2026-11-13, §B).
-6. **Soporte multi-distribución y de versiones de kernel** más allá de Nobara 43 y del entorno de VM, con una VM CachyOS (kernel 7.3.1, compilado con clang) como propuesta a futuro (`vm/README.md`); hoy solo hay validación en VM y el build de *release* no se probó en hardware físico (Informe, Update 2026-11-13, §C).
+5. **Ampliación de la cobertura de detección** a nuevos vectores (Cap. I, objetivo 2) y límites hoy declarados: DLL o `LD_PRELOAD` que escribe sin llamadas al sistema no es observable; `/proc/<pid>/maps` legible por root (Anexo III.6, §B).
+6. **Soporte multi-distribución y de versiones de kernel** más allá de Nobara 43 y del entorno de VM, con una VM CachyOS (kernel 7.3.1, compilado con clang) como propuesta a futuro (`vm/README.md`); hoy solo hay validación en VM y el build de *release* no se probó en hardware físico (Anexo III.6, §C).
 7. **Migración progresiva de C a Rust** a medida que maduran los bindings del kernel; el soporte de Rust dejó de considerarse experimental en 2025 (Ojeda, 2025). El módulo actual está escrito en C por la contingencia del riesgo R2.
 8. **Detección basada en comportamiento del lado del servidor** como complemento de la observación a nivel de kernel (Cap. XI previsto en el avance de mayo).
 9. **Integración con más motores de código abierto** y distribución como paquete de distribución (instalador `tooling/install.sh`, rama `feature/gameStartProtection` sin integrar al 2026-11-13).
@@ -1277,7 +1277,7 @@ Este capítulo recoge lo que el historial del repositorio y las notas del vault 
 
 ## **12.2. Aspectos positivos**
 
-**12.2.1. La contingencia del riesgo R2 se ejecuta y resulta viable.** El plan contingente de R2 (componentes sin bindings estables en C) estaba escrito antes del desarrollo (§5.7). El módulo de kernel resulta en C (`kernel/quark_kernel.c`), el demonio en Rust y los programas eBPF en C cargados con `libbpf-rs` (Update 2026-11-13, B; [[Risk-Register]] Update 2026-11-11; [[Claims-Ledger]] fila 12). La decisión por componente, que la sección 5.7 exigía documentar, queda sustentada por una restricción técnica concreta: un LSM clásico no se registra desde un módulo fuera del árbol porque `security_add_hooks()` solo existe durante la inicialización y no se exporta; la capa LSM se obtiene mediante BPF-LSM desde el demonio ([[Features]] §1.5; [[Claims-Ledger]] fila 13).
+**12.2.1. La contingencia del riesgo R2 se ejecuta y resulta viable.** El plan contingente de R2 (componentes sin bindings estables en C) estaba escrito antes del desarrollo (§5.7). El módulo de kernel resulta en C (`kernel/quark_kernel.c`), el demonio en Rust y los programas eBPF en C cargados con `libbpf-rs` (Anexo III.6, B; [[Risk-Register]] Update 2026-11-11; [[Claims-Ledger]] fila 12). La decisión por componente, que la sección 5.7 exigía documentar, queda sustentada por una restricción técnica concreta: un LSM clásico no se registra desde un módulo fuera del árbol porque `security_add_hooks()` solo existe durante la inicialización y no se exporta; la capa LSM se obtiene mediante BPF-LSM desde el demonio ([[Features]] §1.5; [[Claims-Ledger]] fila 13).
 
 **12.2.2. Los hallazgos de seguridad propios se corrigen en el desarrollo.** Durante el diseño del canal de control se encuentran dos fallas de escalada local: (1) cualquier proceso local podía abrir un socket Netlink (protocolo 31) y ordenar desproteger el PID de otro; (2) el socket Unix del demonio (`/tmp/quark.sock`, `SocketMode=0666`) confiaba en el `pid` declarado por el cliente, de modo que el propio demonio, con privilegios de root, desprotegía a la víctima (`docs/vm_test_environment.md:610-624`, `docs/features.md:157-163`). La corrección se hace en capas (pid real por `SO_PEERCRED`, emisor root verificado por el kernel, hash SHA-256 de `quark_cli`, firma ECDSA P-256 con nonce creciente; commit `48cc3f6`; [[Features]] §2). El documento de la VM deja asentado que corregir solo la primera falla habría sido insuficiente porque la segunda produce el mismo efecto (`docs/vm_test_environment.md:623-624`). Estado de la verificación: DOCUMENTED, sin reverificar ([[Claims-Ledger]] fila 7). Queda un residual declarado: `SocketMode=0666` ([[Risk-Register]] Update 2026-11-11, R10).
 
@@ -1289,17 +1289,17 @@ Este capítulo recoge lo que el historial del repositorio y las notas del vault 
 
 **12.2.6. La práctica de afirmar solo con evidencia se instala.** El [[Claims-Ledger]] clasifica cada afirmación como SUPPORTED, DOCUMENTED, NOT MEASURED o CONTRADICTED, y [[Working-Guidelines]] §6 define cuándo una afirmación está lista para el informe. Esta práctica permite declarar con precisión lo no medido (filas 10, 11, 14, 15) en lugar de repetir la formulación aspiracional del README.
 
-**12.2.7. El análisis de la competencia aporta una validación de rumbo.** El relevamiento sobre Easy Anti-Cheat y BattlEye bajo Proton, y la información pública sobre EAC para Linux v2 basada en BPF-LSM, indican que la industria converge hacia el mecanismo que Quark usa en su capa BPF-LSM (Update 2026-11-13, D). Alcance: información pública y análisis estático; el comportamiento de EAC v2 no se observó.
+**12.2.7. El análisis de la competencia aporta una validación de rumbo.** El relevamiento sobre Easy Anti-Cheat y BattlEye bajo Proton, y la información pública sobre EAC para Linux v2 basada en BPF-LSM, indican que la industria converge hacia el mecanismo que Quark usa en su capa BPF-LSM (Anexo III.6, D). Alcance: información pública y análisis estático; el comportamiento de EAC v2 no se observó.
 
 ## **12.3. Aspectos a mejorar**
 
 **12.3.1. Falta de registro contemporáneo del proceso.** El informe declara modelo en espiral con prácticas SCRUM (§6.1), pero el historial muestra prototipos sucesivos integrados por *pull request* sin análisis de riesgo escrito por ciclo, planificación del ciclo siguiente, *sprints* ni velocidad ([[Cycle-Log]], "Lo que NO muestra el historial"; [[Process-Recommendation]], contexto). Los indicadores de la sección 6.5 (ICC, velocidad en SP, desvío de esfuerzo) no se calcularon con datos de la época (UNVERIFIED: ningún documento revisado los contiene). Los ciclos C1–C6 son interpretación posterior. Lección: la puerta de riesgo por iteración de [[Working-Guidelines]] §2 (objetivo, alcance, tres riesgos, criterio de salida, decisión GO/NO-GO/PIVOT) se aplica desde el inicio de cada ciclo y no al final. La desviación se declara así: modelo en espiral declarado; ejecución real, prototipado evolutivo guiado por riesgo (ADR-001, aceptada por el autor; la línea de aceptación en la ADR queda por agregarse).
 
-**12.3.2. Trabajo en ráfagas.** Los commits se concentran en junio, fines de agosto, octubre y noviembre; entre 2026-06-26 y 2026-08-27 no hay commits y la causa no consta (UNVERIFIED) ([[Cycle-Log]]; Update 2026-11-13, F). Frente a una estimación de ≈ 22 h/semana por integrante (§5.6), el historial no permite contrastar horas reales, porque no hay registro de horas en las fuentes revisadas (UNVERIFIED). Lección: registrar horas y tareas semanalmente, como ya preveía la sección 6.2, para que el riesgo R5 (disponibilidad) y R3 (esfuerzo) tengan datos.
+**12.3.2. Trabajo en ráfagas.** Los commits se concentran en junio, fines de agosto, octubre y noviembre; entre 2026-06-26 y 2026-08-27 no hay commits y la causa no consta (UNVERIFIED) ([[Cycle-Log]]; Anexo III.6, F). Frente a una estimación de ≈ 22 h/semana por integrante (§5.6), el historial no permite contrastar horas reales, porque no hay registro de horas en las fuentes revisadas (UNVERIFIED). Lección: registrar horas y tareas semanalmente, como ya preveía la sección 6.2, para que el riesgo R5 (disponibilidad) y R3 (esfuerzo) tengan datos.
 
 **12.3.3. Documentación que contradice al código.** El README de `Dev` y el informe original afirman un módulo "en Rust" y el uso del "framework LSM"; el módulo es C y la capa LSM es BPF-LSM ([[Claims-Ledger]] filas 12 y 13, CONTRADICTED). El README de `Dev` es aspiracional respecto del overhead (`contexto_proyecto.md`, según [[Test-Status]] Update 2026-11-11). El Resumen y el Cap. X decían "Rust como lenguaje principal"; se corrigieron en esta versión del informe. Esto se registra como R12 ([[Risk-Register]]). Lección: actualizar la documentación en el mismo *pull request* que cambia la decisión técnica, y no dejar la corrección en un bloque `Update` al final del informe.
 
-**12.3.4. Divergencia de ramas.** `main` queda en el commit del 2026-06-11 más un cambio de `.gitignore`; la integración real ocurre en `Dev`. `feature/gameStartProtection` (4 commits, sin PR) hace que el juego simulado exija demonio y BPF-LSM para arrancar, con lo que el control negativo "sin Quark" deja de funcionar tal cual; `dev/docs` tampoco está integrada ([[Risk-Register]] R13; Update 2026-11-13, F; [[Plan-Inmediato-2026-11-25]], "Congelamiento del MVP"). Lección: un solo prototipo vivo, `main` actualizada solo con versiones congeladas y etiquetadas (`rc-1`, pendiente), y revisión del impacto sobre los scripts de prueba antes de cada *merge*.
+**12.3.4. Divergencia de ramas.** `main` queda en el commit del 2026-06-11 más un cambio de `.gitignore`; la integración real ocurre en `Dev`. `feature/gameStartProtection` (4 commits, sin PR) hace que el juego simulado exija demonio y BPF-LSM para arrancar, con lo que el control negativo "sin Quark" deja de funcionar tal cual; `dev/docs` tampoco está integrada ([[Risk-Register]] R13; Anexo III.6, F; [[Plan-Inmediato-2026-11-25]], "Congelamiento del MVP"). Lección: un solo prototipo vivo, `main` actualizada solo con versiones congeladas y etiquetadas (`rc-1`, pendiente), y revisión del impacto sobre los scripts de prueba antes de cada *merge*.
 
 **12.3.5. Procedencia de las capturas y defectos del harness.** Las capturas del 2026-08-29 se hicieron sin registrar `git_commit` ni `git_branch` en `environment.txt`, por lo que el commit probado no se puede demostrar y la correspondencia con `2624ae4` es probable pero UNVERIFIED ([[Test-Status]] Update 2026-11-11; [[Risk-Register]] R8). El harness presenta `results.csv` malformado y `summary.txt` que solo reporta la condición B; `quark_cli` informa éxito sin confirmación del kernel en el binario capturado ([[Capture-findings-2026-08-29]] §7.1, §7.6). Se asume sin corregir `capture.sh` (UNVERIFIED). Lección: fijar y registrar la revisión antes de capturar y tratar el harness como código sujeto a pruebas.
 
@@ -1309,11 +1309,13 @@ Este capítulo recoge lo que el historial del repositorio y las notas del vault 
 
 **12.3.8. Encuesta y datos de mercado.** El instrumento de encuesta del Cap. II está diseñado y sin resultados; además, la serie histórica de Steam proviene de una compilación de procedencia débil. Lección: publicar el instrumento al inicio del cronograma, ya que depende de respuestas de terceros.
 
-# **CAPÍTULO XIII — ENTREGABLES** {#capítulo-xiii-—-entregables}
+# **CAPÍTULO XIII — ENTREGABLES**
 
 ## **13.1. Código fuente del proyecto**
 
 Módulo de kernel (C, `kernel/`), servicio en espacio de usuario (Rust, `quark_daemon/`), SDK (C, `sdk/`), programas eBPF (C, `quark_daemon/src/bpf/`), cliente de control `quark_cli` (C), herramientas de prueba (juego simulado `game_target/`, atacante `cheat/`, scripts de VM), unidades systemd (`quark_daemon/systemd/`) y scripts de instalación (`tooling/install.sh`, solo en la rama `feature/gameStartProtection`, sin integrar). Se alojan en el repositorio `Quark-Anticheat`, rama `Dev` (commit `35c6031`); el submódulo `RecoilEngine` contiene la integración con el motor. El repositorio, la titularidad y las ramas se detallan en el Anexo III.
+
+**Repositorio oficial y versión entregada.** Repositorio `https://github.com/stefanomerinoderui/Quark-Anticheat`: código en la rama `Dev`, versión congelada en el commit `35c6031` (2026-11-05); documentación y licencia GNU GPLv3 (archivo `LICENSE`) en la rama `dev/docs`. La versión entregada se identifica por commit y no por etiqueta (UNVERIFIED que exista una etiqueta). El procedimiento de construcción, instalación y arranque consta en el Anexo III.5, que cumple la función de manual de despliegue porque `Dev` no contiene uno propio. El submódulo `RecoilEngine` apunta a `https://github.com/Billones142/RecoilEngine.git`.
 
 ## **13.2. Documentación**
 
@@ -1337,7 +1339,7 @@ Las conclusiones son de carácter **parcial**: el proyecto no cierra todas las m
 
 ## **C.1. Frente al objetivo general**
 
-El objetivo general comprometía analizar, diseñar y desarrollar un anticheat de nivel de kernel para GNU/Linux y evaluar su viabilidad técnica, su impacto en el rendimiento y los riesgos de seguridad asociados a los privilegios de kernel. Se logra un prototipo funcional de tres piezas (módulo de kernel v0.4.0, demonio, SDK en C) y se muestra, dentro de una VM, con build de *testing* y juego simulado, que un módulo de kernel reforzado con BPF-LSM impide el acceso externo a la memoria de un proceso protegido y que el mecanismo se integra en un motor real (Update 2026-11-13, A y G; [[Test-Status]]). **No se evalúa el impacto en el rendimiento**, por lo que la parte del objetivo y de la misión referida a "sin degradar la experiencia del usuario" **no tiene respaldo medido**. No se afirma bajo impacto de rendimiento ([[Claims-Ledger]] fila 10, NOT MEASURED). Los riesgos de seguridad de los privilegios de kernel se abordan en parte: se encuentran y corrigen dos fallas propias de escalada local (12.2.2), y quedan límites declarados en [[Known-Limitations]].
+El objetivo general comprometía analizar, diseñar y desarrollar un anticheat de nivel de kernel para GNU/Linux y evaluar su viabilidad técnica, su impacto en el rendimiento y los riesgos de seguridad asociados a los privilegios de kernel. Se logra un prototipo funcional de tres piezas (módulo de kernel v0.4.0, demonio, SDK en C) y se muestra, dentro de una VM, con build de *testing* y juego simulado, que un módulo de kernel reforzado con BPF-LSM impide el acceso externo a la memoria de un proceso protegido y que el mecanismo se integra en un motor real (Anexo III.6, A y G; [[Test-Status]]). **No se evalúa el impacto en el rendimiento**, por lo que la parte del objetivo y de la misión referida a "sin degradar la experiencia del usuario" **no tiene respaldo medido**. No se afirma bajo impacto de rendimiento ([[Claims-Ledger]] fila 10, NOT MEASURED). Los riesgos de seguridad de los privilegios de kernel se abordan en parte: se encuentran y corrigen dos fallas propias de escalada local (12.2.2), y quedan límites declarados en [[Known-Limitations]].
 
 ## **C.2. Frente a los objetivos específicos**
 
@@ -1345,8 +1347,8 @@ El objetivo general comprometía analizar, diseñar y desarrollar un anticheat d
 
 | N° | Objetivo (Cap. I, 1.2) | Estado | Evidencia |
 |---|---|---|---|
-| 1 | Definir la arquitectura (kernel, servicio, interfaz) en un documento de diseño | Parcial. La arquitectura existe en código y en la documentación de `Dev` ([[Features]]); el Cap. IX se redacta a partir de ella. Entregable E1.4/E2.3 como documento formal: UNVERIFIED | Update 2026-11-13, A–B |
-| 2 | Identificar y documentar al menos cinco vectores de ataque | Parcial. El diseño cubre ptrace, `/proc/<pid>/mem`, `process_vm_readv/writev` y carga de BPF de *tracing*; con `EXEC_MPROTECT` como indicador. Eso suma cuatro vectores bloqueados o cubiertos más un indicador. La clasificación formal de cinco vectores no consta en las fuentes revisadas (UNVERIFIED) | [[Features]] §1.1, §1.5; Update 2026-11-13, A–B |
+| 1 | Definir la arquitectura (kernel, servicio, interfaz) en un documento de diseño | Parcial. La arquitectura existe en código y en la documentación de `Dev` ([[Features]]); el Cap. IX se redacta a partir de ella. Entregable E1.4/E2.3 como documento formal: UNVERIFIED | Anexo III.6, A–B |
+| 2 | Identificar y documentar al menos cinco vectores de ataque | Parcial. El diseño cubre ptrace, `/proc/<pid>/mem`, `process_vm_readv/writev` y carga de BPF de *tracing*; con `EXEC_MPROTECT` como indicador. Eso suma cuatro vectores bloqueados o cubiertos más un indicador. La clasificación formal de cinco vectores no consta en las fuentes revisadas (UNVERIFIED) | [[Features]] §1.1, §1.5; Anexo III.6, A–B |
 | 3 | Implementar la API/SDK y verificarla en un juego de código abierto | Logrado en lo esencial: SDK en C integrado en RecoilEngine/BAR; el motor no inicia una partida protegida sin confirmación. Faltan SDK de servidor y prueba cliente↔servidor | PR #1; [[VM-test-environment]] §6.5, §7; [[Features]] §5 |
 | 4 | Validar con casos de prueba por vector, registrando tasas de detección y falsos positivos | Parcial. Un vector (`/proc/<pid>/mem`) con 10/10 de bloqueo y control negativo; `process_vm_*` y `ptrace` documentados sin reverificar. **No se calculan tasas de detección ni falsos positivos** | [[Test-Status]]; [[Claims-Ledger]] filas 1–3, 8, 11 |
 | 5 | Medir el overhead de CPU y RAM | **No cumplido.** No existe medición | [[Claims-Ledger]] fila 10; [[Test-Status]] |
@@ -1362,11 +1364,11 @@ El objetivo general comprometía analizar, diseñar y desarrollar un anticheat d
 
 ## **C.4. Limitaciones del resultado**
 
-La conclusión es válida para: VM, build de *testing*, kernel de la distribución de referencia en la versión capturada (kernel y distribución de generaciones Fedora distintas, [[Capture-findings-2026-08-29]] §7.5), un juego simulado y un motor real. El diseño no cubre `/proc/<pid>/maps` legible por root, un máximo de 16 procesos protegidos y BPF-LSM *best-effort*: sin `bpf` en `lsm=` queda solo el `kretprobe` ([[Features]] §1.1, §1.5; [[Known-Limitations]]). No hay atestación verificada por servidor: `quark_sdk_is_active()` y similares devuelven valores calculados por el cliente (Update 2026-11-13, E).
+La conclusión es válida para: VM, build de *testing*, kernel de la distribución de referencia en la versión capturada (kernel y distribución de generaciones Fedora distintas, [[Capture-findings-2026-08-29]] §7.5), un juego simulado y un motor real. El diseño no cubre `/proc/<pid>/maps` legible por root, un máximo de 16 procesos protegidos y BPF-LSM *best-effort*: sin `bpf` en `lsm=` queda solo el `kretprobe` ([[Features]] §1.1, §1.5; [[Known-Limitations]]). No hay atestación verificada por servidor: `quark_sdk_is_active()` y similares devuelven valores calculados por el cliente (Anexo III.6, E).
 
 ## **C.5. Sobre el diferencial**
 
-El relevamiento muestra que Easy Anti-Cheat para Linux v2 adopta BPF-LSM sin módulo de kernel (información pública secundaria; no observado). El diferencial de Quark pasa de "nativo de kernel" a "abierto, académico y documentado", con la ventaja de bloquear localmente en Ring 0 `ptrace`, `/proc/<pid>/mem` y `process_vm_*`. Esa ventaja se compara contra información pública, no contra el comportamiento medido de EAC (Update 2026-11-13, D–E).
+El relevamiento muestra que Easy Anti-Cheat para Linux v2 adopta BPF-LSM sin módulo de kernel (información pública secundaria; no observado). El diferencial de Quark pasa de "nativo de kernel" a "abierto, académico y documentado", con la ventaja de bloquear localmente en Ring 0 `ptrace`, `/proc/<pid>/mem` y `process_vm_*`. Esa ventaja se compara contra información pública, no contra el comportamiento medido de EAC (Anexo III.6, D–E).
 
 ## **C.6. Trabajo pendiente**
 
@@ -1378,7 +1380,7 @@ El relevamiento muestra que Easy Anti-Cheat para Linux v2 adopta BPF-LSM sin mó
 
 La defensa puede sostener que el prototipo demuestra viabilidad técnica *en el alcance indicado*; no puede sostener bajo overhead, tasas de detección ni resistencia a evasión hasta contar con esas mediciones.
 
-# **Bibliografía** {#bibliografía}
+# **Bibliografía**
 
 AreWeAntiCheatYet. (2026). *Are We Anti-Cheat Yet?* Recuperado el 25 de noviembre de 2026, de [https://areweanticheatyet.com/](https://areweanticheatyet.com/)
 
@@ -1442,13 +1444,61 @@ World Intellectual Property Organization. (s. f.-b). *Filing international trade
 
 #
 
-# **Anexos** {#anexos}
+# **Notas al pie de página**
+
+1. GNU/Linux es un sistema operativo libre basado en el kernel Linux, creado por Linus Torvalds en 1991 e integrado con herramientas del proyecto GNU. Su código abierto permite acceder, modificar y distribuir el software. ↩
+
+2. Un sistema anticheat es un conjunto de herramientas diseñadas para detectar y prevenir trampas en videojuegos competitivos, como bots, aimbots y modificaciones no autorizadas. ↩
+
+3. El kernel es el núcleo central del sistema operativo que gestiona la comunicación entre el hardware y las aplicaciones de software. ↩
+
+4. Una API (Interfaz de Programación de Aplicaciones) define las reglas para que diferentes software se comuniquen entre sí. ↩
+
+5. Un SDK (Kit de Desarrollo de Software) proporciona herramientas, librerías y documentación para implementar esa comunicación, facilitando la integración de funcionalidades externas en nuevas aplicaciones. ↩
+
+6. QEMU/KVM es una solución de virtualización que combina QEMU (emulador de código abierto) con KVM (aceleración por hardware del kernel Linux). Permite ejecutar múltiples máquinas virtuales simultáneamente con rendimiento cercano al nativo. ↩
+
+7. LSM (Linux Security Modules) es un framework de seguridad que proporciona ganchos en el kernel para insertar módulos de control de acceso, base de implementaciones como SELinux y AppArmor; BPF-LSM permite adjuntar programas eBPF a esos ganchos. ↩
+
+8. eBPF (Extended Berkeley Packet Filter) es una máquina virtual dentro del kernel que ejecuta bytecode verificado para monitoreo, análisis de tráfico y seguridad, cargable en tiempo de ejecución. ↩
+
+# **Declaración de uso de inteligencia artificial**
+
+Este apartado cumple la cláusula de cátedra sobre uso de IA generativa y el Art. 10.1.2 del Reglamento.
+
+**Herramientas.** Claude Code (Anthropic), con los modelos que cada sesión registra (en este repositorio, `claude-sonnet-5-5`). Las sesiones de agente firman sus entradas como `agent:<modelo>`.
+
+**Para qué se usó.**
+
+1. Redacción e integración del informe: lectura de `origin/Dev` y del vault, armado de los Capítulos I a XIII, de las Conclusiones y de los Anexos a partir de las fuentes del repositorio, cálculo de SLOC y de COCOMO con herramientas del repositorio, y generación del PDF con `tooling/build_informe.sh`.
+2. Redacción de notas del vault (`Claims-Ledger`, `Test-Status`, `Cycle-Log`, ADR) bajo la guía de trabajo del repositorio.
+3. Desarrollo del código: 11 commits de la rama `Dev` (2026-08-27 a 2026-08-31, cuenta `Billones142`) llevan el trailer `Claude-Session` con la sesión de Claude Code citada más abajo. Cubren, entre otros, la autenticación del canal Netlink (`48cc3f6`), el rechazo de la protección en una VM con omisión de pruebas (`333bbe2`), el watchdog y la validación contra el motor real (`6b05ad7`).
+4. Autorrevisión del informe con el harness de revisión de PIF de la cátedra y corrección de las observaciones resultantes (2026-11-25 y 2026-11-26).
+
+**Cómo se verificó.**
+
+- Cada afirmación sobre el código lleva `archivo:línea` o commit y se leyó de `Dev@35c6031`; lo inferido se marca `UNVERIFIED`.
+- Los resultados de pruebas (10/10, 5/5, control negativo) provienen de capturas reproducibles y constan en el `Claims-Ledger`, con su alcance (VM, build de pruebas, juego simulado).
+- El tamaño del código se midió con `tooling/sloc.py`.
+- Las citas bibliográficas se contrastaron con las fuentes cuando fue posible; las que no se consultaron directamente quedan declaradas en la Bibliografía.
+- Los autores revisan y responden por lo incluido, y pueden dar cuenta oralmente de cada parte.
+
+**Prompts.** Las instrucciones permanentes dadas a los agentes están versionadas en `AGENTS.md`, en `Working-Guidelines.md` y en `Append-Only-Standard.md` del vault. Los pedidos puntuales de cada sesión constan en el registro de la sesión indicada abajo. La transcripción de los prompts de las demás sesiones de este informe es UNVERIFIED: queda pendiente que los autores la exporten.
+
+**Enlaces a las conversaciones.**
+
+- Desarrollo del código: `https://claude.ai/code/session_01JeTq4KYFDuzr41fQnUoCfQ` (trailer `Claude-Session` de los 11 commits indicados).
+- Sesiones de redacción del informe y autorrevisión: enlace pendiente de aportar por los autores (UNVERIFIED).
+
+**Alcance de la declaración.** Se declara el uso de Claude Code. UNVERIFIED si los integrantes usaron otras herramientas de IA generativa; en ese caso los autores las agregan aquí.
+
+# **Anexos**
 
 *Las hojas de los anexos se numeran de forma independiente, indicando "página X de Y".*
 
 ## **Anexo I — Datos relevados**
 
-*Numeración propia: «página X de Y», que se completa al maquetar.*
+*Numeración propia: «página X de Y».*
 
 ### I.1. Cuestionario (versión de diseño)
 
@@ -1486,7 +1536,7 @@ Los valores de Valve y AreWeAntiCheatYet se obtuvieron el 2026-11-25 mediante le
 
 ## **Anexo II — Documentos del entorno o dominio del Proyecto**
 
-*Numeración propia: «página X de Y», que se completa al maquetar.*
+*Numeración propia: «página X de Y».*
 
 ### II.1. Planificación
 
@@ -1586,7 +1636,7 @@ Alcance común: **máquina virtual QEMU/KVM, build de pruebas del módulo** (`is
 
 Rutas del repositorio principal: código en `kernel/`, `quark_daemon/`, `sdk/`, `game_target/`, `cheat/`; documentación técnica en `docs/` de `Dev` (`features.md`, `vm_test_environment.md`, `log_messages.md`, `funcionamiento_codigo.md`, `contexto_proyecto.md`); vault en `docs/obsidian-vault/quark-vault/`; informe en `01-Project/Informe-PIF-Avance.md`; generación del documento en `tooling/build_informe.sh`.
 
-### **III.5. Cómo reproducir**
+### **III.5. Manual de despliegue y reproducción**
 
 > Procedimiento extraído de `Makefile`, `kernel/Makefile`, `run_test_kernel.sh`, `tooling/keys/generate-testing-key.sh`, `docs/vm_test_environment.md` §15 y `tooling/install.sh` (rama `feature/gameStartProtection`). **No se ejecutó** para redactarlo. Debe ejecutarse **solo en una máquina virtual descartable**: carga un módulo de kernel y requiere privilegios de root.
 
@@ -1603,31 +1653,16 @@ Rutas del repositorio principal: código en `kernel/`, `quark_daemon/`, `sdk/`, 
 
 **Registro obligatorio al reproducir** ([[Test-Status]]): guardar `git_commit` y `git_branch` en `environment.txt` antes de capturar, para cerrar el riesgo R8.
 
-  # **Notas al pie de página**  {#notas-al-pie-de-página}
 
-1. GNU/Linux es un sistema operativo libre basado en el kernel Linux, creado por Linus Torvalds en 1991 e integrado con herramientas del proyecto GNU. Su código abierto permite acceder, modificar y distribuir el software. ↩
+### **III.6. Registro de los desarrollos posteriores al avance de mayo (2026-11-13)**
 
-2. Un sistema anticheat es un conjunto de herramientas diseñadas para detectar y prevenir trampas en videojuegos competitivos, como bots, aimbots y modificaciones no autorizadas. ↩
+Este registro reúne lo ocurrido entre mayo y noviembre de 2026 tal como se relevó el 2026-11-13; su contenido se integró a los Capítulos I a XIII el 2026-11-25 y se conserva aquí como respaldo de las citas del informe.
 
-3. El kernel es el núcleo central del sistema operativo que gestiona la comunicación entre el hardware y las aplicaciones de software. ↩
 
-4. Una API (Interfaz de Programación de Aplicaciones) define las reglas para que diferentes software se comuniquen entre sí. ↩
-
-5. Un SDK (Kit de Desarrollo de Software) proporciona herramientas, librerías y documentación para implementar esa comunicación, facilitando la integración de funcionalidades externas en nuevas aplicaciones. ↩
-
-6. QEMU/KVM es una solución de virtualización que combina QEMU (emulador de código abierto) con KVM (aceleración por hardware del kernel Linux). Permite ejecutar múltiples máquinas virtuales simultáneamente con rendimiento cercano al nativo. ↩
-
-7. LSM (Linux Security Modules) es un framework de seguridad que proporciona ganchos en el kernel para insertar módulos de control de acceso, base de implementaciones como SELinux y AppArmor; BPF-LSM permite adjuntar programas eBPF a esos ganchos. ↩
-
-8. eBPF (Extended Berkeley Packet Filter) es una máquina virtual dentro del kernel que ejecuta bytecode verificado para monitoreo, análisis de tráfico y seguridad, cargable en tiempo de ejecución. ↩
-
-## Update 2026-11-13 — agent:claude-sonnet-5-5 — desarrollos posteriores al avance de mayo
-
-> Nota 2026-11-25 (agent:claude-sonnet-5-5): el contenido de este bloque se integró a los capítulos el 2026-11-25; se conserva sin cambios como historial.
 
 **Alcance de la evidencia.** Este bloque incorpora al informe lo ocurrido entre mayo y noviembre de 2026. Las afirmaciones sobre el código se apoyan en la rama `origin/Dev` (commit `35c6031`, 2026-11-05) y en su documentación; se **leyeron, no se volvieron a ejecutar** para esta actualización. Cada afirmación indica su alcance (máquina virtual, build de *testing*, juego simulado o motor real) y su fuente, conforme al [[Claims-Ledger]]. Lo no medido se declara como tal.
 
-### A. Estado del prototipo (reemplaza el estado "a desarrollar" de los Capítulos V y IX)
+#### A. Estado del prototipo (reemplaza el estado "a desarrollar" de los Capítulos V y IX)
 
 - **ADDED** — Existe un prototipo funcional compuesto por tres piezas, tal como el informe lo planteó: un módulo de kernel (`kernel/quark_kernel.c`, v0.4.0), un demonio en espacio de usuario (`quark_daemon/`) y un SDK en C (`sdk/`). Respecto de `main`, la rama `Dev` suma 43 archivos y 5.883 líneas nuevas. Fuente: `git diff --stat main...origin/Dev`; [[Features]].
 - **ADDED** — **Protección en Ring 0.** Un `kretprobe` sobre `ptrace_may_access` deniega, para un proceso protegido, los intentos de acceso de nivel *attach* de cualquier otro proceso: `ptrace`, lectura y escritura de `/proc/<pid>/mem` y `process_vm_readv/writev`. Las lecturas de solo lectura (por ejemplo `ps` o `htop`) no se bloquean. Fuente: [[Features]] §1.1.
@@ -1636,20 +1671,20 @@ Rutas del repositorio principal: código en `kernel/`, `quark_daemon/`, `sdk/`, 
 - **ADDED** — **Política de fallo cerrado.** `quark_sdk_init()` devuelve error si el kernel no confirma la protección, y un *watchdog* del SDK termina el juego si el demonio deja de responder. El build de *release* se niega a proteger dentro de una máquina virtual (bit *hypervisor* de CPUID); el build de *testing* lo permite pero se declara a sí mismo como tal (`is_testing_build=1`). Fuente: [[Features]] §1.2, §1.4, §3; commits `2624ae4`, `333bbe2`.
 - **ADDED** — **Integración con un juego real.** El SDK se integró en RecoilEngine (motor de *Beyond All Reason*), que impide iniciar una partida protegida si Quark no confirma la protección. Fuente: [[VM-test-environment]] §6.5, §7; PR #1.
 
-### B. Decisiones técnicas que modifican el informe original
+#### B. Decisiones técnicas que modifican el informe original
 
 - **REPLACES** — «utiliza Rust como lenguaje principal» (Resumen) y «Codificación en Rust del módulo de kernel» (§5.1) → el módulo de kernel está escrito en **C**; el demonio está en **Rust** y los programas eBPF en C, cargados con `libbpf-rs`. Es la contingencia del riesgo R2 (bindings de Rust for Linux insuficientes), prevista en §5.7 y ejecutada. Fuente: `kernel/quark_kernel.c`; [[Risk-Register]] Update 2026-11-11; [[Claims-Ledger]] fila 12.
 - **REPLACES** — «el framework de Linux Security Modules (LSM)» como base del módulo (§1.6, §9) → un LSM clásico no puede registrarse desde un módulo fuera del árbol del kernel, porque `security_add_hooks()` solo existe durante la inicialización y no se exporta. El módulo usa un `kretprobe`, y los ganchos LSM se obtienen a través de **BPF-LSM** desde el demonio. Fuente: [[Features]] §1.5; [[Claims-Ledger]] fila 13.
 - **REPLACES** — la verificación en espacio de usuario como defensa autónoma (Modo A) → la verificación periódica de variables del juego (50 ms, con `kill -9`) se conserva, pero ya no es un modo autónomo sino una capa suplementaria: el SDK no arranca sin protección de kernel confirmada. Fuente: [[Test-Status]] Update 2026-11-11.
 - **ADDED** — Límites declarados del diseño: una DLL o `LD_PRELOAD` inyectada que escribe sin llamadas al sistema no es observable (`EXEC_MPROTECT` es solo un indicador); `/proc/<pid>/maps` queda legible por root por política del kernel ≥ 6.x, lo que expone el diseño de memoria (ASLR) y no puede anularse desde un módulo; el máximo es de 16 procesos protegidos; y BPF-LSM es *best-effort*: si el usuario arranca sin `bpf` en `lsm=`, queda solo el `kretprobe`. Fuente: [[Features]] §1.1, §1.5; [[Known-Limitations]].
 
-### C. Validación realizada y alcance de lo medido (Objetivos específicos 4 y 5)
+#### C. Validación realizada y alcance de lo medido (Objetivos específicos 4 y 5)
 
 - **ADDED** — Con el módulo cargado, el ataque por `/proc/<pid>/mem` es denegado (`EACCES` en `open()`) en 10 de 10 repeticiones y el valor del juego permanece intacto; sin defensa el mismo ataque funciona en 5 de 5; descargando el módulo, el ataque vuelve a funcionar sobre el mismo PID, lo que atribuye el bloqueo a Quark y no a Yama (control negativo). **Alcance:** máquina virtual, build de *testing*, juego simulado; hay además una validación sobre el motor real. Fuente: [[Capture-findings-2026-08-29]] §2; [[Test-Status]].
 - **ADDED** — Según la documentación de `Dev`, `process_vm_*` devuelve `EPERM` y la telemetría registra `PROCESS_VM_ACCESS` y `PTRACE_ATTEMPT`. Estado: DOCUMENTED, sin reverificar. Fuente: [[VM-test-environment]] §15.4.
 - **ADDED** — **Pendiente de medición (H5).** No se midió el *overhead* de CPU y RAM (Objetivo 5); no se calcularon tasas de detección ni falsos positivos (Objetivo 4, KPI TDP ≥ 75 %); no se probaron intentos de evasión ni el build de *release* en hardware físico. El informe final no debe afirmar «bajo impacto de rendimiento» hasta contar con la medición. Plan: tres configuraciones (sin Quark, módulo, módulo + BPF-LSM), al menos 10 repeticiones cada una, registrando media, desviación y comando exacto ([[Working-Guidelines]] §3). Fuente: [[Claims-Ledger]] filas 10, 11, 15.
 
-### D. Relevamiento de mercado ampliado (Capítulo II)
+#### D. Relevamiento de mercado ampliado (Capítulo II)
 
 Se realizó una investigación propia sobre cómo funcionan los anticheats comerciales bajo Proton. Está en un repositorio aparte (`proton-anticheats`, último commit `cc5078e`, 2026-11-13); ver [[Proton-Anticheat-Research]]. Hallazgos principales:
 
@@ -1660,13 +1695,13 @@ Se realizó una investigación propia sobre cómo funcionan los anticheats comer
 - **REPLACES** — «Esto evidencia un nicho sin una solución nativa equivalente» (Cap. II) → vigente respecto del nivel de kernel local, pero el relevamiento muestra que la industria se mueve hacia el mismo enfoque (BPF-LSM sin módulo de kernel). El diferencial de Quark pasa de ser «nativo de kernel» a ser **abierto, académico y documentado**, y debe presentarse así en la defensa.
 - **UNVERIFIED** — Las 45 afirmaciones inferidas del análisis estático están registradas en `Validation_Log.md`: 6 confirmadas por observación y el resto abiertas o bloqueadas (juego en línea, juego con EAC v2, BattlEye en VM). Hasta cerrarlas, son hipótesis.
 
-### E. Brechas identificadas frente a la industria (Capítulos IX y XI)
+#### E. Brechas identificadas frente a la industria (Capítulos IX y XI)
 
 - **ADDED** — Qué incorporar según la comparación, en orden de valor: (1) **atestación verificada por servidor**: hoy `quark_sdk_is_active()` y similares devuelven valores calculados por el cliente, que un tramposo puede falsificar con un `LD_PRELOAD`; la firma debería originarse en el kernel y existe un problema abierto de raíz de confianza (clave por máquina; alternativas: confianza en el primer uso, clave del proveedor, cita TPM 2.0); (2) un canal de mensajes del anticheat a través de la red del propio juego; (3) reporte tipado de violaciones; (4) un gancho `lsm/mmap_file` para mapeos ejecutables de archivos ajenos, que `EXEC_MPROTECT` no cubre. Fuente: `EAC_bridge_and_quark_takeaways.md` §3; `EAC_BPF_LSM_Service.md` §6–7.
 - **ADDED** — Ventaja de Quark sobre el cliente Linux de EAC en la comparación: bloqueo local en Ring 0 de `ptrace`, `/proc/<pid>/mem` y `process_vm_*`, bloqueo de BPF de *tracing* y autoprotección del servicio. Es una comparación contra información pública, no contra el comportamiento medido de EAC. Fuente: `EAC_bridge_and_quark_takeaways.md` §4.
 - **ADDED** — No implementado hoy: SDK del lado servidor, prueba de punta a punta cliente↔servidor y política del motor sobre `bpf_lsm_active`. Fuente: [[Features]] §5.
 
-### F. Proceso, riesgos y configuración (Capítulos V y VI)
+#### F. Proceso, riesgos y configuración (Capítulos V y VI)
 
 - **ADDED** — **Desviación metodológica.** El historial de git muestra prototipos sucesivos cada vez más realistas, integrados por *pull request* en `Dev`, en ráfagas de trabajo (junio, fines de agosto, octubre y noviembre) y sin registro contemporáneo de análisis de riesgo por ciclo ni de *sprints*. La propuesta de [[Process-Recommendation]] (estado: **propuesta**, pendiente de aceptación del equipo) es presentar el proceso como «modelo en espiral declarado; ejecución real: prototipado evolutivo guiado por riesgo». Los ciclos C1–C6 de [[Cycle-Log]] son una **reconstrucción desde git**, no un registro de la época. Hay un intervalo sin commits entre 2026-06-26 y 2026-08-27 cuya causa no consta (UNVERIFIED).
 - **ADDED** — **Hitos.** H3 (módulo funcional en VM) y H4 (sistema integrado y probado) se cumplen en lo esencial según el historial; H5 (validación, documentación y defensa) sigue abierto. Fuente: [[Roadmap-and-Milestones]] Update 2026-11-11.
@@ -1674,6 +1709,6 @@ Se realizó una investigación propia sobre cómo funcionan los anticheats comer
 - **ADDED** — Riesgos nuevos: R11 (la validación solo puede hacerse con build de *testing* porque el de *release* se niega a proteger en una VM), R12 (documentación que contradice al código), R13 (divergencia de ramas) y R14 (*overhead* sin medir con poco tiempo restante). Fuente: [[Risk-Register]] Update 2026-11-11.
 - **ADDED** — **Gestión de la configuración (estado al 2026-11-13).** `main` quedó en el commit del 2026-06-11 más un cambio de `.gitignore`; la integración real ocurre en `Dev`. Las ramas `dev/linter` y `feat/bpf-lsm-telemetry` ya están integradas en `Dev` (PR #3 y #2). Quedan sin integrar dos ramas: `feature/gameStartProtection` (4 commits: instalador `tooling/install.sh` y un juego de prueba que se niega a arrancar sin el demonio ni BPF-LSM, lo que invalida el control negativo «sin Quark» tal como está) y `dev/docs` (2 commits: el vault, el estándar de escritura y el README corregido). Decisión pendiente: integrar ambas en `Dev`, actualizar `main` con una versión congelada y etiquetar un candidato a versión (`rc-1`). Fuente: `git rev-list --count` entre ramas.
 
-### G. Conclusión parcial
+#### G. Conclusión parcial
 
 El proyecto demostró que es viable, dentro de una VM y con un build de *testing*, impedir en Linux el acceso externo a la memoria de un proceso mediante un módulo de kernel reforzado con BPF-LSM, y que ese mecanismo se integra en un motor de juego real. Queda por demostrar, antes de la defensa, el costo en rendimiento, la tasa de detección y la tasa de falsos positivos. La investigación sobre Easy Anti-Cheat y BattlEye muestra que la industria converge hacia BPF-LSM, lo que respalda la dirección técnica elegida y desplaza el aporte diferencial hacia la apertura y la documentación.

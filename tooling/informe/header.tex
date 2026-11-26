@@ -3,3 +3,25 @@
 \newunicodechar{≤}{\ensuremath{\leq}}
 \newunicodechar{≥}{\ensuremath{\geq}}
 \newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\usepackage{lastpage}
+\makeatletter
+% Caratula (Art. 22.1): universidad, facultad, carrera, denominacion, titulo, autores y fecha.
+\renewcommand{\maketitle}{%
+  \begin{titlepage}\begingroup\linespread{1.15}\selectfont\centering
+    {\bfseries\Large Universidad de la Cuenca del Plata\par}\vspace{0.6cm}
+    {\large Facultad de Ingeniería y Tecnología\par}\vspace{0.3cm}
+    {\large Ingeniería en Sistemas de Información\par}
+    \vfill
+    {\bfseries\large PROYECTO INTEGRADOR FINAL\par}\vspace{1cm}
+    {\bfseries\LARGE \@title\par}
+    \vfill
+    {\large \@author\par}
+    \vfill
+    {\large \@date\par}
+  \endgroup\end{titlepage}}
+% Anexos: numeracion propia "pagina X de Y" (se activa desde el filtro).
+\newcommand{\anexonum}{%
+  \clearpage\setcounter{page}{1}%
+  \renewcommand{\ps@plain}{\renewcommand{\@oddfoot}{\hfil página \thepage\ de \pageref{LastPage}\hfil}\let\@evenfoot\@oddfoot}%
+  \pagestyle{plain}}
+\makeatother
